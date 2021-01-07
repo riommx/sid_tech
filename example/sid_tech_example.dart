@@ -2,7 +2,7 @@ import 'package:sid_tech/domain/muzeek_factory.dart';
 import 'package:sid_tech/sid_tech.dart';
 
 void main() {
-  var vo_name = VO.name(value: 'Sssbbb SSd');
+  var vo_name = VOs.name('Sssbbb SSd');
   print(vo_name);
 
   var artista = Muz.artist(id: 12345, name: 'Sid Souza');
@@ -11,6 +11,10 @@ void main() {
   var mapa = artista.toMap();
   print(mapa);
   print(mapa['id'].runtimeType);
+  artista.printInfo();
+
+  var vo_date = VOs.date('2021');
+  print(vo_date);
 }
 
 // ******************************************************************

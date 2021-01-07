@@ -1,37 +1,25 @@
-import 'package:sid_tech/core/entity.dart';
+import 'package:meta/meta.dart';
 //
+import 'package:sid_tech/core/entity_factory.dart';
+import 'package:sid_tech/domain/album.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
-class Artist extends Entity {
-  final VOInt _id;
-  final VOString _name;
-
-  const Artist(this._id, this._name);
-
-  bool isValid() => _id.isValid() && _name.isValid();
-
-  // GETTERS ========
-  VOInt get id => _id;
-  VOString get name => _name;
-
-  String get pic => '${_id.value}.jpg';
-
-  String get urlPic =>
-      'https://api.deezer.com/artist/${_id.value}/image?size=xl';
-
-  Map toMap() => {
-        'id': _id.value,
-        'name': _name.value,
-      };
-
+class AlbumFactory implements EntityFactory {
+  //
   @override
-  String toString() => 'id: ${_id.toString()} name: ${_name.toString()}';
-
-  void printInfo() {
-    print('-------------------------------------------------------');
-    print('${_name.value} (${_id.value})');
-  }
+  Album create({
+    @required VOInt id,
+    @required VOString title,
+    @required VOString releaseDate,
+    @required VOInt artistId,
+  }) =>
+      Album(
+        id,
+        title,
+        releaseDate,
+        artistId,
+      );
 }
 
 // ******************************************************************

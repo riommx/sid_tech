@@ -1,15 +1,15 @@
+import 'package:meta/meta.dart';
+//
+import 'package:sid_tech/core/entity_factory.dart';
+import 'package:sid_tech/domain/artist.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
-abstract class VO {
-  static StringVO name({String value}) => StringVO(
-      value: value,
-      maxLength: 10,
-      minLength: 3,
-      regex: RegExp(r'[A-Z]{1}[a-z]* [A-Z]{1}[a-z]*'));
-
-  static IntVO id({int value}) =>
-      IntVO(value: value, maxValue: 20000, regex: RegExp(r'^[0-9]{5}$'));
+class ArtistFactory implements EntityFactory {
+  //
+  @override
+  Artist create({@required VOInt id, @required VOString name}) =>
+      Artist(id, name);
 }
 
 // ******************************************************************

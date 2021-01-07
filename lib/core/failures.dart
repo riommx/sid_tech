@@ -1,3 +1,5 @@
+//import 'dart:indexed_db';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 //
 part 'failures.freezed.dart';
@@ -9,6 +11,10 @@ abstract class ValueFailure<T> with _$ValueFailure<T> {
   const factory ValueFailure.nullValue({
     @required Type type,
   }) = NullValue<T>;
+  //
+  const factory ValueFailure.invalidDateTime({
+    @required T failedValue,
+  }) = InvalidDateTime<T>;
   //
   const factory ValueFailure.overMaxValue({
     @required T failedValue,

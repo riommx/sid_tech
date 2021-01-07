@@ -21,6 +21,13 @@ class _$ValueFailureTearOff {
   }
 
 // ignore: unused_element
+  InvalidDateTime<T> invalidDateTime<T>({@required T failedValue}) {
+    return InvalidDateTime<T>(
+      failedValue: failedValue,
+    );
+  }
+
+// ignore: unused_element
   OverMaxValue<T> overMaxValue<T>(
       {@required T failedValue, @required int max}) {
     return OverMaxValue<T>(
@@ -116,6 +123,7 @@ mixin _$ValueFailure<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -130,6 +138,7 @@ mixin _$ValueFailure<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -145,6 +154,7 @@ mixin _$ValueFailure<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -159,6 +169,7 @@ mixin _$ValueFailure<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),
@@ -251,6 +262,7 @@ class _$NullValue<T> implements NullValue<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -263,6 +275,7 @@ class _$NullValue<T> implements NullValue<T> {
     @required TResult shortPassword(T failedValue),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -280,6 +293,7 @@ class _$NullValue<T> implements NullValue<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -303,6 +317,7 @@ class _$NullValue<T> implements NullValue<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -315,6 +330,7 @@ class _$NullValue<T> implements NullValue<T> {
     @required TResult shortPassword(ShortPassword<T> value),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -332,6 +348,7 @@ class _$NullValue<T> implements NullValue<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),
@@ -357,6 +374,185 @@ abstract class NullValue<T> implements ValueFailure<T> {
 
   Type get type;
   $NullValueCopyWith<T, NullValue<T>> get copyWith;
+}
+
+/// @nodoc
+abstract class $InvalidDateTimeCopyWith<T, $Res> {
+  factory $InvalidDateTimeCopyWith(
+          InvalidDateTime<T> value, $Res Function(InvalidDateTime<T>) then) =
+      _$InvalidDateTimeCopyWithImpl<T, $Res>;
+  $Res call({T failedValue});
+}
+
+/// @nodoc
+class _$InvalidDateTimeCopyWithImpl<T, $Res>
+    extends _$ValueFailureCopyWithImpl<T, $Res>
+    implements $InvalidDateTimeCopyWith<T, $Res> {
+  _$InvalidDateTimeCopyWithImpl(
+      InvalidDateTime<T> _value, $Res Function(InvalidDateTime<T>) _then)
+      : super(_value, (v) => _then(v as InvalidDateTime<T>));
+
+  @override
+  InvalidDateTime<T> get _value => super._value as InvalidDateTime<T>;
+
+  @override
+  $Res call({
+    Object failedValue = freezed,
+  }) {
+    return _then(InvalidDateTime<T>(
+      failedValue:
+          failedValue == freezed ? _value.failedValue : failedValue as T,
+    ));
+  }
+}
+
+/// @nodoc
+class _$InvalidDateTime<T> implements InvalidDateTime<T> {
+  const _$InvalidDateTime({@required this.failedValue})
+      : assert(failedValue != null);
+
+  @override
+  final T failedValue;
+
+  @override
+  String toString() {
+    return 'ValueFailure<$T>.invalidDateTime(failedValue: $failedValue)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is InvalidDateTime<T> &&
+            (identical(other.failedValue, failedValue) ||
+                const DeepCollectionEquality()
+                    .equals(other.failedValue, failedValue)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(failedValue);
+
+  @override
+  $InvalidDateTimeCopyWith<T, InvalidDateTime<T>> get copyWith =>
+      _$InvalidDateTimeCopyWithImpl<T, InvalidDateTime<T>>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
+    @required TResult overMaxValue(T failedValue, int max),
+    @required TResult subMinValue(T failedValue, int min),
+    @required TResult invalidRegex(T failedValue, String regex),
+    @required TResult exceedingLength(T failedValue, int length, int maxLength),
+    @required TResult shortLength(T failedValue, int length, int minLength),
+    @required TResult empty(T failedValue),
+    @required TResult multiline(T failedValue),
+    @required TResult listTooLong(T failedValue, int max),
+    @required TResult invalidEmail(T failedValue),
+    @required TResult shortPassword(T failedValue),
+  }) {
+    assert(nullValue != null);
+    assert(invalidDateTime != null);
+    assert(overMaxValue != null);
+    assert(subMinValue != null);
+    assert(invalidRegex != null);
+    assert(exceedingLength != null);
+    assert(shortLength != null);
+    assert(empty != null);
+    assert(multiline != null);
+    assert(listTooLong != null);
+    assert(invalidEmail != null);
+    assert(shortPassword != null);
+    return invalidDateTime(failedValue);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
+    TResult overMaxValue(T failedValue, int max),
+    TResult subMinValue(T failedValue, int min),
+    TResult invalidRegex(T failedValue, String regex),
+    TResult exceedingLength(T failedValue, int length, int maxLength),
+    TResult shortLength(T failedValue, int length, int minLength),
+    TResult empty(T failedValue),
+    TResult multiline(T failedValue),
+    TResult listTooLong(T failedValue, int max),
+    TResult invalidEmail(T failedValue),
+    TResult shortPassword(T failedValue),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (invalidDateTime != null) {
+      return invalidDateTime(failedValue);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
+    @required TResult overMaxValue(OverMaxValue<T> value),
+    @required TResult subMinValue(SubMinValue<T> value),
+    @required TResult invalidRegex(IntRegex<T> value),
+    @required TResult exceedingLength(ExceedingLength<T> value),
+    @required TResult shortLength(ShortLength<T> value),
+    @required TResult empty(Empty<T> value),
+    @required TResult multiline(Multiline<T> value),
+    @required TResult listTooLong(ListTooLong<T> value),
+    @required TResult invalidEmail(InvalidEmail<T> value),
+    @required TResult shortPassword(ShortPassword<T> value),
+  }) {
+    assert(nullValue != null);
+    assert(invalidDateTime != null);
+    assert(overMaxValue != null);
+    assert(subMinValue != null);
+    assert(invalidRegex != null);
+    assert(exceedingLength != null);
+    assert(shortLength != null);
+    assert(empty != null);
+    assert(multiline != null);
+    assert(listTooLong != null);
+    assert(invalidEmail != null);
+    assert(shortPassword != null);
+    return invalidDateTime(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
+    TResult overMaxValue(OverMaxValue<T> value),
+    TResult subMinValue(SubMinValue<T> value),
+    TResult invalidRegex(IntRegex<T> value),
+    TResult exceedingLength(ExceedingLength<T> value),
+    TResult shortLength(ShortLength<T> value),
+    TResult empty(Empty<T> value),
+    TResult multiline(Multiline<T> value),
+    TResult listTooLong(ListTooLong<T> value),
+    TResult invalidEmail(InvalidEmail<T> value),
+    TResult shortPassword(ShortPassword<T> value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (invalidDateTime != null) {
+      return invalidDateTime(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class InvalidDateTime<T> implements ValueFailure<T> {
+  const factory InvalidDateTime({@required T failedValue}) =
+      _$InvalidDateTime<T>;
+
+  T get failedValue;
+  $InvalidDateTimeCopyWith<T, InvalidDateTime<T>> get copyWith;
 }
 
 /// @nodoc
@@ -432,6 +628,7 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -444,6 +641,7 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
     @required TResult shortPassword(T failedValue),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -461,6 +659,7 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -484,6 +683,7 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -496,6 +696,7 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
     @required TResult shortPassword(ShortPassword<T> value),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -513,6 +714,7 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),
@@ -615,6 +817,7 @@ class _$SubMinValue<T> implements SubMinValue<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -627,6 +830,7 @@ class _$SubMinValue<T> implements SubMinValue<T> {
     @required TResult shortPassword(T failedValue),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -644,6 +848,7 @@ class _$SubMinValue<T> implements SubMinValue<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -667,6 +872,7 @@ class _$SubMinValue<T> implements SubMinValue<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -679,6 +885,7 @@ class _$SubMinValue<T> implements SubMinValue<T> {
     @required TResult shortPassword(ShortPassword<T> value),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -696,6 +903,7 @@ class _$SubMinValue<T> implements SubMinValue<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),
@@ -797,6 +1005,7 @@ class _$IntRegex<T> implements IntRegex<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -809,6 +1018,7 @@ class _$IntRegex<T> implements IntRegex<T> {
     @required TResult shortPassword(T failedValue),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -826,6 +1036,7 @@ class _$IntRegex<T> implements IntRegex<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -849,6 +1060,7 @@ class _$IntRegex<T> implements IntRegex<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -861,6 +1073,7 @@ class _$IntRegex<T> implements IntRegex<T> {
     @required TResult shortPassword(ShortPassword<T> value),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -878,6 +1091,7 @@ class _$IntRegex<T> implements IntRegex<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),
@@ -992,6 +1206,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -1004,6 +1219,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
     @required TResult shortPassword(T failedValue),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1021,6 +1237,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -1044,6 +1261,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -1056,6 +1274,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
     @required TResult shortPassword(ShortPassword<T> value),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1073,6 +1292,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),
@@ -1190,6 +1410,7 @@ class _$ShortLength<T> implements ShortLength<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -1202,6 +1423,7 @@ class _$ShortLength<T> implements ShortLength<T> {
     @required TResult shortPassword(T failedValue),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1219,6 +1441,7 @@ class _$ShortLength<T> implements ShortLength<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -1242,6 +1465,7 @@ class _$ShortLength<T> implements ShortLength<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -1254,6 +1478,7 @@ class _$ShortLength<T> implements ShortLength<T> {
     @required TResult shortPassword(ShortPassword<T> value),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1271,6 +1496,7 @@ class _$ShortLength<T> implements ShortLength<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),
@@ -1363,6 +1589,7 @@ class _$Empty<T> implements Empty<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -1375,6 +1602,7 @@ class _$Empty<T> implements Empty<T> {
     @required TResult shortPassword(T failedValue),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1392,6 +1620,7 @@ class _$Empty<T> implements Empty<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -1415,6 +1644,7 @@ class _$Empty<T> implements Empty<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -1427,6 +1657,7 @@ class _$Empty<T> implements Empty<T> {
     @required TResult shortPassword(ShortPassword<T> value),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1444,6 +1675,7 @@ class _$Empty<T> implements Empty<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),
@@ -1534,6 +1766,7 @@ class _$Multiline<T> implements Multiline<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -1546,6 +1779,7 @@ class _$Multiline<T> implements Multiline<T> {
     @required TResult shortPassword(T failedValue),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1563,6 +1797,7 @@ class _$Multiline<T> implements Multiline<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -1586,6 +1821,7 @@ class _$Multiline<T> implements Multiline<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -1598,6 +1834,7 @@ class _$Multiline<T> implements Multiline<T> {
     @required TResult shortPassword(ShortPassword<T> value),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1615,6 +1852,7 @@ class _$Multiline<T> implements Multiline<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),
@@ -1715,6 +1953,7 @@ class _$ListTooLong<T> implements ListTooLong<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -1727,6 +1966,7 @@ class _$ListTooLong<T> implements ListTooLong<T> {
     @required TResult shortPassword(T failedValue),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1744,6 +1984,7 @@ class _$ListTooLong<T> implements ListTooLong<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -1767,6 +2008,7 @@ class _$ListTooLong<T> implements ListTooLong<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -1779,6 +2021,7 @@ class _$ListTooLong<T> implements ListTooLong<T> {
     @required TResult shortPassword(ShortPassword<T> value),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1796,6 +2039,7 @@ class _$ListTooLong<T> implements ListTooLong<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),
@@ -1889,6 +2133,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -1901,6 +2146,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
     @required TResult shortPassword(T failedValue),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1918,6 +2164,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -1941,6 +2188,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -1953,6 +2201,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
     @required TResult shortPassword(ShortPassword<T> value),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -1970,6 +2219,7 @@ class _$InvalidEmail<T> implements InvalidEmail<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),
@@ -2061,6 +2311,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
+    @required TResult invalidDateTime(T failedValue),
     @required TResult overMaxValue(T failedValue, int max),
     @required TResult subMinValue(T failedValue, int min),
     @required TResult invalidRegex(T failedValue, String regex),
@@ -2073,6 +2324,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
     @required TResult shortPassword(T failedValue),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -2090,6 +2342,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
+    TResult invalidDateTime(T failedValue),
     TResult overMaxValue(T failedValue, int max),
     TResult subMinValue(T failedValue, int min),
     TResult invalidRegex(T failedValue, String regex),
@@ -2113,6 +2366,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
   @optionalTypeArgs
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
     @required TResult overMaxValue(OverMaxValue<T> value),
     @required TResult subMinValue(SubMinValue<T> value),
     @required TResult invalidRegex(IntRegex<T> value),
@@ -2125,6 +2379,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
     @required TResult shortPassword(ShortPassword<T> value),
   }) {
     assert(nullValue != null);
+    assert(invalidDateTime != null);
     assert(overMaxValue != null);
     assert(subMinValue != null);
     assert(invalidRegex != null);
@@ -2142,6 +2397,7 @@ class _$ShortPassword<T> implements ShortPassword<T> {
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
     TResult overMaxValue(OverMaxValue<T> value),
     TResult subMinValue(SubMinValue<T> value),
     TResult invalidRegex(IntRegex<T> value),

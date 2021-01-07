@@ -3,7 +3,7 @@
 /// More dartdocs go here.
 library sid_tech;
 
-export 'domain/vo_factory.dart';
+export 'domain/vos.dart';
 export 'domain/muzeek_factory.dart';
 // TODO: Export any libraries intended for clients of this package.
 

@@ -6,35 +6,35 @@ import 'package:sid_tech/core/errors.dart';
 
 abstract class ValueObject<T> extends Equatable {
   //
-  final Either<ValueFailure<T>, T> _value;
+  final Either<ValueFailure<T>, T> _unit;
   //
-  const ValueObject(this._value);
+  const ValueObject(this._unit);
   //
-  T get value => _value.fold((l) => null, id);
-  //
-  /// Throws [UnexpectedValueError] containing the [ValueFailure]
-  T getOrCrash() {
-    // id = identity - same as writing (right) => right
-    return _value.fold((f) => throw UnexpectedValueError(f), id);
-  }
+  T get value => _unit.fold((l) => null, id);
 
-  //
   Either<ValueFailure<T>, Unit> get failureOrUnit {
-    return _value.fold(
+    return _unit.fold(
       (l) => left(l),
       (r) => right(unit),
     );
   }
 
   //
-  bool isValid() => _value.isRight();
+  /// Throws [UnexpectedValueError] containing the [ValueFailure]
+  T getOrCrash() {
+    // id = identity - same as writing (right) => right
+    return _unit.fold((f) => throw UnexpectedValueError(f), id);
+  }
+
+  //
+  bool isValid() => _unit.isRight();
   //
   @override
-  String toString() => _value.fold((l) => l.toString(), (r) => r.toString());
+  String toString() => _unit.fold((l) => l.toString(), (r) => r.toString());
   //
   // for Equatable
   @override
-  List<Object> get props => [_value];
+  List<Object> get props => [_unit];
 }
 
 // ******************************************************************

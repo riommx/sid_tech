@@ -4,6 +4,8 @@ import 'package:kt_dart/kt.dart';
 //
 import 'package:sid_tech/core/failures.dart';
 
+// DATETIME
+
 // STRING
 Either<ValueFailure<String>, String> validateStrValueNotNull(
   String value,
@@ -13,6 +15,16 @@ Either<ValueFailure<String>, String> validateStrValueNotNull(
     return right(value);
   } else {
     return left(ValueFailure.nullValue(type: type));
+  }
+}
+
+Either<ValueFailure<String>, String> validateDateTimeParse(
+  String value,
+) {
+  if (DateTime.tryParse(value) != null) {
+    return right(value);
+  } else {
+    return left(ValueFailure.invalidDateTime(failedValue: value));
   }
 }
 
