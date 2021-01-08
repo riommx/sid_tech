@@ -26,9 +26,21 @@ abstract class VOs {
   static VOInt seconds(int value) =>
       VOIntFactory().create(value: value, minValue: 1);
 
+  // TODO: URL regex
   static VOString url(String value) => VOStringFactory().create(
         value: value,
       );
+
+  // TODO: TrackFile regex
+  static VOString trackFile(String value) => VOStringFactory().create(
+        value: value,
+      );
+
+  static List<VOString> files(List<String> values) {
+    var filesList = [];
+    values.forEach((f) => filesList.add(trackFile(f)));
+    return filesList;
+  }
 }
 
 // ******************************************************************

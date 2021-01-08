@@ -24,6 +24,16 @@ class TrackFactory implements EntityFactory {
         artistId,
         previewURL,
       );
+
+  @override
+  Track createFromMap({@required Map map}) => Track(
+        map['id'],
+        map['title'],
+        map['duration'],
+        map['albumId'],
+        map['artistId'],
+        map['previewURL'],
+      );
 }
 
 // ******************************************************************
@@ -39,6 +49,6 @@ class TrackFactory implements EntityFactory {
 // *  ┈┈┃┊┊┊╱▽▽▽┛┈┈  -< Designed by Sedinir Consentini @ 2021 >-
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
-// *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
+// *  v 1.0
 // ******************************************************************

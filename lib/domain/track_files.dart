@@ -1,33 +1,39 @@
-import 'package:meta/meta.dart';
+import 'package:sid_tech/core/entity.dart';
 //
-import 'package:sid_tech/core/entity_factory.dart';
-import 'package:sid_tech/domain/album.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
-class AlbumFactory implements EntityFactory {
-  //
-  @override
-  Album create({
-    @required VOInt id,
-    @required VOString title,
-    @required VOString releaseDate,
-    @required VOInt artistId,
-  }) =>
-      Album(
-        id,
-        title,
-        releaseDate,
-        artistId,
-      );
+class TrackFiles extends Entity {
+  final VOInt _id;
+  final List<VOString> _files;
+
+  const TrackFiles(this._id, this._files);
+
+  bool isValid() {
+    var valid = true;
+    for (var file in _files) {
+      valid = valid && file.isValid();
+    }
+    return valid;
+  }
+
+  // GETTERS ========
+  VOInt get id => _id;
+  List<VOString> get files => _files;
+
+  Map toMap() => {
+        'id': _id.value,
+        'files': _files.toString(),
+      };
 
   @override
-  Album createFromMap({@required Map map}) => Album(
-        map['id'],
-        map['title'],
-        map['releaseDate'],
-        map['artistId'],
-      );
+  String toString() => 'id: ${_id.toString()} files: ${_files.toString()}';
+
+  void printInfo() {
+    print('-------------------------------------------------------');
+    print(_id.value);
+    _files.forEach((f) => print(f.value));
+  }
 }
 
 // ******************************************************************

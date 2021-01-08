@@ -1,9 +1,21 @@
-import 'package:sid_tech/core/entity.dart';
-
+import 'package:meta/meta.dart';
 //
-abstract class EntityFactory {
-  Entity create();
-  Entity createFromMap();
+import 'package:sid_tech/core/entity_factory.dart';
+import 'package:sid_tech/domain/playlist.dart';
+import 'package:sid_tech/core/vo_int.dart';
+import 'package:sid_tech/core/vo_string.dart';
+
+class PlaylistFactory implements EntityFactory {
+  //
+  @override
+  Playlist create({@required VOInt id, @required VOString name}) =>
+      Playlist(id, name);
+
+  @override
+  Playlist createFromMap({@required Map map}) => Playlist(
+        map['id'],
+        map['name'],
+      );
 }
 
 // ******************************************************************
@@ -18,7 +30,7 @@ abstract class EntityFactory {
 // *  ┈┈╭╯┊◣╰━━━━╮┈┈
 // *  ┈┈┃┊┊┊╱▽▽▽┛┈┈  -< Designed by Sedinir Consentini @ MMXXI >-
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
-// *  ━━╯┊┊┊.△△△┓┈┈
+// *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈    --->  May the source be with you!  <---
 // *  v 1.0
-//
+// ******************************************************************

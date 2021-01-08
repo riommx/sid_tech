@@ -27,9 +27,9 @@ void main() {
 // *
 // *  ┈┈┈╭━━╮┈┈┈┈┈┈
 // *  ┈┈╭╯┊◣╰━━━━╮┈┈
-// *  ┈┈┃┊┊┊╱▽▽▽┛┈┈  -< Designed by Sedinir Consentini @ 2021 >-
+// *  ┈┈┃┊┊┊╱▽▽▽┛┈┈  -< Designed by Sedinir Consentini @ MMXXI >-
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
-// *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
-// ******************************************************************
+// *  ┊┊┊┊╭━━━━━━━╯┈┈    --->  May the source be with you!  <---
+// *  v 1.0
+//
