@@ -1,7 +1,8 @@
+import 'package:sid_tech/application/muzeek.dart';
 import 'package:sid_tech/domain/muzeek_factory.dart';
 import 'package:sid_tech/sid_tech.dart';
 
-void main() {
+Future<void> main() async {
   var vo_name = VOs.name('Sssbbb SSd');
   print(vo_name);
 
@@ -15,6 +16,10 @@ void main() {
 
   var vo_date = VOs.date('2021');
   print(vo_date);
+  var muz = Muzeek();
+  //await muz.scan();
+  await muz.load();
+  //print(await muz.save());
 }
 
 // ******************************************************************

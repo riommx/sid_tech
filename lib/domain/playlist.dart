@@ -17,7 +17,7 @@ class Playlist extends Entity {
 
   @override
   Map toMap() => {
-        'id': _id.value,
+        'id': _id.value.toString(),
         'name': _name.value,
       };
 

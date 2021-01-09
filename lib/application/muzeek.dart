@@ -11,11 +11,11 @@ import 'package:sid_tech/domain/track_files.dart';
 import 'package:sid_tech/domain/muzeek_factory.dart';
 
 class Muzeek {
-  Map<int, Track> _tracks;
-  Map<int, Album> _albums;
-  Map<int, Artist> _artists;
-  Map<int, Playlist> _playlists;
-  Map<int, TrackFiles> _trackFiles;
+  final Map<int, Track> _tracks = {};
+  final Map<int, Album> _albums = {};
+  final Map<int, Artist> _artists = {};
+  final Map<int, Playlist> _playlists = {};
+  final Map<int, TrackFiles> _trackFiles = {};
 
 // https://api.deezer.com/user/2668644462/playlists
 // https://api.deezer.com/playlist/5901083884/tracks
@@ -27,11 +27,16 @@ class Muzeek {
 
 // ============================================================================
   Future<void> load() async {
+    /*
     var whatList = [
       {'artists': Artist},
       {'albums': Album},
       {'tracks': Track},
       {'playlists': Playlist},
+      {'trackFiles': TrackFiles},
+    ];
+    */
+    var whatList = [
       {'trackFiles': TrackFiles},
     ];
 
@@ -40,28 +45,30 @@ class Muzeek {
       //
       contentMap.forEach((key, value) {
         //
-        var id = int.parse(key);
+        //var id = int.parse(key);
         var entity = Muz.fromMap(map: value, type: what.values.first);
         //
         switch (what.values.first) {
           case Artist:
-            entity = _artists.putIfAbsent(id, () => entity);
+            entity = _artists.putIfAbsent(key, () => entity);
             break;
           case Album:
-            entity = _albums.putIfAbsent(id, () => entity);
+            entity = _albums.putIfAbsent(key, () => entity);
             break;
           case Track:
-            entity = _tracks.putIfAbsent(id, () => entity);
+            entity = _tracks.putIfAbsent(key, () => entity);
             break;
           case Playlist:
-            entity = _playlists.putIfAbsent(id, () => entity);
+            entity = _playlists.putIfAbsent(key, () => entity);
             break;
           case TrackFiles:
-            entity = _trackFiles.putIfAbsent(id, () => entity);
+            entity = _trackFiles.putIfAbsent(key, () => entity);
             break;
         }
       });
     }
+
+    _trackFiles.forEach((key, value) => print(value.toString()));
   }
 
 // ============================================================================
@@ -70,14 +77,21 @@ class Muzeek {
     var success = false;
     //
     var whatList = [
+      {'trackFiles': _trackFiles},
+    ];
+/*
+    var whatList = [
       {'artists': _artists},
       {'albums': _albums},
       {'tracks': _tracks},
       {'playlists': _playlists},
       {'trackFiles': _trackFiles},
     ];
+*/
+
     for (var what in whatList) {
       var map = {};
+
       what.values.first.forEach((key, value) {
         map.putIfAbsent(key, () => value.toMap());
       });
@@ -88,22 +102,112 @@ class Muzeek {
     return success;
   }
 
-/*
 // ============================================================================
   Future<void> scan({bool playlists = false}) async {
     //
-    _scanned = true;
+    //_scanned = true;
     //
-    if (playlists) await _scanPlaylists();
+    // if (playlists) await _scanPlaylists();
     //
-    await _scanFiles(pathScan: _lib, recursive: true);
+    await _scanTrackFiles(pathScan: Paths.WHAT['lib'], recursive: true);
 
-    await _scanPics();
+    //await _scanPics();
 
-    var downloaded = await _scanDeezerPreviews();
-    print('downloaded: ${downloaded.length} previews');
+    //var downloaded = await _scanDeezerPreviews();
+    //print('downloaded: ${downloaded.length} previews');
   }
 
+  // ============================================================================
+  Future<void> _scanTrackFiles(
+      {String pathScan, bool recursive = false}) async {
+    //
+    // LOG
+    print('Start scan files at ${DateTime.now()}');
+    var stopW = Stopwatch();
+    stopW.start();
+    var total = 0;
+    var subTotal = 0;
+    //
+    //_filesReset();
+    //
+    final tracks = <int, List<String>>{};
+    final notDeezer = <String>[];
+    final other = <String>[];
+    final lrc = <String>[];
+    var nfiles = 0;
+    var nTracks = 0;
+    //
+    var files = await listPathContent(pathFrom: pathScan, recursive: recursive);
+    //print(files);
+    //
+
+    files.forEach((file) {
+      //
+      // LOG
+
+      if (subTotal == 500) {
+        subTotal = 0;
+        print(total);
+        print(
+            '$total at ${DateTime.now()} - elapsed: ${stopW.elapsed.toString()}');
+      }
+
+      subTotal++;
+      total++;
+      //
+      var ext = extFromFilePath(filePath: file).toLowerCase();
+      if (ext == 'mp3') {
+        if (kbpsFromFilePath(filePath: file) != '') {
+          //
+          var id = idFromFilePath(filePath: file);
+          if (tracks.containsKey(id)) {
+            tracks[id].add(file);
+          } else {
+            //print(_tracks[file.id]);
+            nTracks++;
+            //print('NEW');
+            tracks.putIfAbsent(id, () => [file]);
+          }
+          nfiles++;
+          //
+        } else {
+          notDeezer.add(file);
+        }
+      } else {
+        if (ext == 'lrc') {
+          lrc.add(file);
+        } else {
+          other.add(file);
+        }
+      }
+    });
+
+    //
+    tracks.forEach((key, value) {
+      var vo = Muz.fromMap(map: {'id': key, 'files': value}, type: TrackFiles);
+      _trackFiles.putIfAbsent(key, () => vo);
+    });
+
+    //_scanned = true;
+    // LOG
+    stopW.stop();
+    print(
+        'End of scan files at ${DateTime.now()} - elapsed: ${stopW.elapsed.toString()}');
+    //
+    print('Scanned ${files.length} files');
+    print('${nfiles} files of ${tracks.length} tracks / ${nTracks} new add');
+    print(
+        'notDeezer: ${notDeezer.length}, lrc: ${lrc.length}, other: ${other.length}');
+
+    //_trackFiles.forEach((key, value) => value.printInfo());
+    print('NON DEEZER - ${notDeezer.length} ==============================');
+    notDeezer.forEach((element) => print(element));
+    print('OTHER - ${other.length} ===============================');
+    other.forEach((element) => print(element));
+
+    // VOID
+  }
+/*
 
 
 // ============================================================================

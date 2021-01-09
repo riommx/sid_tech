@@ -21,12 +21,13 @@ class TrackFiles extends Entity {
   VOInt get id => _id;
   List<VOString> get files => _files;
 
+  @override
   Map toMap() => {
-        'id': _id.value,
+        'id': _id.value.toString(),
         'files': _filesToList(),
       };
 
-  List<String> _filesToList() {
+  List _filesToList() {
     var list = [];
     _files.forEach((f) => list.add(f.value));
     return list;

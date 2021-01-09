@@ -34,21 +34,10 @@ Future<Map<dynamic, dynamic>> read({String what, bool isList = false}) async {
 
 // FILE
 // ============================================================================
-Future<List> listPathContent({String pathFrom, bool recursive = false}) async {
-  //
-  var dir = Directory(pathFrom);
-  var content = await dir.listSync(recursive: recursive);
-  var list = <String>[];
-  content.forEach(
-      (element) => list.add(fullPathFromFileSystemEntity(element.toString())));
-  // RETURN
-  return list;
-}
+
 
 // ============================================================================
-String fullPathFromFileSystemEntity(String path) =>
-    // RETURN
-    path.substring(path.indexOf('\'') + 1, path.length - 1);
+
 
 // ============================================================================
 Future<bool> writeMap(Map map, String path) async {

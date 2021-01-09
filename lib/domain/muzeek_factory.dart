@@ -29,7 +29,7 @@ abstract class Muz {
 
   static TrackFiles trackFiles({
     @required int id,
-    @required List<String> files,
+    @required List files,
   }) =>
       TrackFilesFactory().create(id: VOs.id(id), files: VOs.files(files));
 

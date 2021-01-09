@@ -37,11 +37,11 @@ class Track extends Entity {
 
   @override
   Map toMap() => {
-        'id': _id.value,
+        'id': _id.value.toString(),
         'title': _title.value,
-        'duration': _duration.value,
-        'albumId': _albumId.value,
-        'artistId': _artistId.value,
+        'duration': _duration.value.toString(),
+        'albumId': _albumId.value.toString(),
+        'artistId': _artistId.value.toString(),
         'previewURL': _previewURL.value,
       };
 

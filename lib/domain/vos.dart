@@ -5,20 +5,11 @@ import 'package:sid_tech/core/vo_string_factory.dart';
 
 // TODO: FORMATAR TIPOS
 abstract class VOs {
-  static VOString name(String value) => VOStringFactory().create(
-      value: value,
-      maxLength: 10,
-      minLength: 3,
-      regex: RegExp(r'[A-Z]{1}[a-z]* [A-Z]{1}[a-z]*'));
+  static VOString name(String value) => VOStringFactory().create(value: value);
 
-  static VOString title(String value) => VOStringFactory().create(
-      value: value,
-      maxLength: 10,
-      minLength: 3,
-      regex: RegExp(r'[A-Z]{1}[a-z]* [A-Z]{1}[a-z]*'));
+  static VOString title(String value) => VOStringFactory().create(value: value);
 
-  static VOInt id(int value) => VOIntFactory()
-      .create(value: value, maxValue: 20000, regex: RegExp(r'^[0-9]{5}$'));
+  static VOInt id(int value) => VOIntFactory().create(value: value);
 
   static VOString date(String value) =>
       VOStringFactory().create(value: value, dateTime: true);
@@ -27,17 +18,14 @@ abstract class VOs {
       VOIntFactory().create(value: value, minValue: 1);
 
   // TODO: URL regex
-  static VOString url(String value) => VOStringFactory().create(
-        value: value,
-      );
+  static VOString url(String value) => VOStringFactory().create(value: value);
 
   // TODO: TrackFile regex
-  static VOString trackFile(String value) => VOStringFactory().create(
-        value: value,
-      );
+  static VOString trackFile(String value) =>
+      VOStringFactory().create(value: value);
 
-  static List<VOString> files(List<String> values) {
-    var filesList = [];
+  static List<VOString> files(List values) {
+    var filesList = <VOString>[];
     values.forEach((f) => filesList.add(trackFile(f)));
     return filesList;
   }

@@ -30,10 +30,10 @@ class Album extends Entity {
 
   @override
   Map toMap() => {
-        'id': _id.value,
+        'id': _id.value.toString(),
         'title': _title.value,
         'releaseDate': _releaseDate.value,
-        'artistId': _artistId.value,
+        'artistId': _artistId.value.toString(),
       };
 
   @override
