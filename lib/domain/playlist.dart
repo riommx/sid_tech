@@ -15,6 +15,7 @@ class Playlist extends Entity {
   VOInt get id => _id;
   VOString get name => _name;
 
+  @override
   Map toMap() => {
         'id': _id.value,
         'name': _name.value,

@@ -20,6 +20,7 @@ class Artist extends Entity {
   String get urlPic =>
       'https://api.deezer.com/artist/${_id.value}/image?size=xl';
 
+  @override
   Map toMap() => {
         'id': _id.value,
         'name': _name.value,

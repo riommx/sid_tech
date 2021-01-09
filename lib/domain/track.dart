@@ -35,6 +35,7 @@ class Track extends Entity {
   VOInt get artistId => _artistId;
   VOString get previewURL => _previewURL;
 
+  @override
   Map toMap() => {
         'id': _id.value,
         'title': _title.value,

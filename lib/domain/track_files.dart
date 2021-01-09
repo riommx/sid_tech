@@ -23,8 +23,14 @@ class TrackFiles extends Entity {
 
   Map toMap() => {
         'id': _id.value,
-        'files': _files.toString(),
+        'files': _filesToList(),
       };
+
+  List<String> _filesToList() {
+    var list = [];
+    _files.forEach((f) => list.add(f.value));
+    return list;
+  }
 
   @override
   String toString() => 'id: ${_id.toString()} files: ${_files.toString()}';

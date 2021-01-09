@@ -28,6 +28,7 @@ class Album extends Entity {
   String get urlPic =>
       'https://api.deezer.com/album/${_id.value}/image?size=xl';
 
+  @override
   Map toMap() => {
         'id': _id.value,
         'title': _title.value,

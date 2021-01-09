@@ -23,7 +23,7 @@ class Muzeek {
   //final _missing = {'128': 8342147642, '320': 8342153942};
 
   //
-  var _scanned = false;
+  //var _scanned = false;
 
 // ============================================================================
   Future<void> load() async {
@@ -36,7 +36,7 @@ class Muzeek {
     ];
 
     for (var what in whatList) {
-      var contentMap = await readMap(Paths.WHAT[what.keys.first]);
+      var contentMap = await readMap(path: Paths.WHAT[what.keys.first]);
       //
       contentMap.forEach((key, value) {
         //
@@ -63,6 +63,31 @@ class Muzeek {
       });
     }
   }
+
+// ============================================================================
+  Future<bool> save() async {
+    //
+    var success = false;
+    //
+    var whatList = [
+      {'artists': _artists},
+      {'albums': _albums},
+      {'tracks': _tracks},
+      {'playlists': _playlists},
+      {'trackFiles': _trackFiles},
+    ];
+    for (var what in whatList) {
+      var map = {};
+      what.values.first.forEach((key, value) {
+        map.putIfAbsent(key, () => value.toMap());
+      });
+
+      success = await writeMap(path: Paths.WHAT[what.keys.first], map: map);
+    }
+
+    return success;
+  }
+
 /*
 // ============================================================================
   Future<void> scan({bool playlists = false}) async {
@@ -79,58 +104,7 @@ class Muzeek {
     print('downloaded: ${downloaded.length} previews');
   }
 
-// ============================================================================
-  Future<void> save() async {
-    //
-    if (_scanned) {
-      var success;
-      //
-      // tracks
-      final tracks = {};
-      _tracks.forEach((key, track) {
-        var map = {};
-        map.putIfAbsent('track', () => track['track'].map);
-        var files = [];
-        track['files'].forEach((file) {
-          files.add(file.map);
-        });
-        map.putIfAbsent('files', () => files);
-        var pls = [];
-        track['playlists'].forEach((pl) {
-          pls.add(pl.toString());
-        });
-        map.putIfAbsent('playlists', () => pls);
-        tracks.putIfAbsent(key.toString(), () => map);
-      });
-      success = await writeMap(tracks, _paths['tracks']);
-      print('tracks saved: $success');
-      //
-      // albums
-      final albums = {};
-      _albums.forEach((key, value) {
-        albums.putIfAbsent(key.toString(), () => value.map);
-      });
-      success = await writeMap(albums, _paths['albums']);
-      print('albums saved: $success');
-      //
-      // playlists
-      final playlists = {};
-      _playlists.forEach((key, value) {
-        playlists.putIfAbsent(key.toString(), () => value);
-      });
-      success = await writeMap(playlists, _paths['playlists']);
-      print('playlists saved: $success');
-      //
-      // artists
-      final artists = {};
-      _artists.forEach((key, value) {
-        artists.putIfAbsent(key.toString(), () => value.map);
-      });
-      success = await writeMap(artists, _paths['artists']);
-      print('artists saved: $success');
-    }
-    // VOID
-  }
+
 
 // ============================================================================
   void _filesReset() {
