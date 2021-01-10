@@ -1,4 +1,5 @@
 import 'package:sid_tech/application/helpers.dart';
+import 'package:sid_tech/application/helpers_deezer.dart';
 //
 import 'package:sid_tech/application/paths.dart';
 //
@@ -27,16 +28,11 @@ class Muzeek {
 
 // ============================================================================
   Future<void> load() async {
-    /*
     var whatList = [
       {'artists': Artist},
       {'albums': Album},
       {'tracks': Track},
       {'playlists': Playlist},
-      {'trackFiles': TrackFiles},
-    ];
-    */
-    var whatList = [
       {'trackFiles': TrackFiles},
     ];
 
@@ -45,7 +41,6 @@ class Muzeek {
       //
       contentMap.forEach((key, value) {
         //
-        //var id = int.parse(key);
         var entity = Muz.fromMap(map: value, type: what.values.first);
         //
         switch (what.values.first) {
@@ -68,7 +63,15 @@ class Muzeek {
       });
     }
 
-    _trackFiles.forEach((key, value) => print(value.toString()));
+    //_playlists.forEach((key, value) => print(value.toString()));
+  }
+
+  void lengths() {
+    print('artists => ${_artists.length}');
+    print('albums => ${_albums.length}');
+    print('tracks => ${_tracks.length}');
+    print('playlists => ${_playlists.length}');
+    print('trackFiles => ${_trackFiles.length}');
   }
 
 // ============================================================================
@@ -77,17 +80,12 @@ class Muzeek {
     var success = false;
     //
     var whatList = [
-      {'trackFiles': _trackFiles},
-    ];
-/*
-    var whatList = [
       {'artists': _artists},
       {'albums': _albums},
       {'tracks': _tracks},
       {'playlists': _playlists},
       {'trackFiles': _trackFiles},
     ];
-*/
 
     for (var what in whatList) {
       var map = {};
@@ -103,14 +101,20 @@ class Muzeek {
   }
 
 // ============================================================================
-  Future<void> scan({bool playlists = false}) async {
+  Future<void> scan(
+      {bool playlists = false,
+      bool trackFiles = false,
+      bool fromPlaylists = false}) async {
     //
     //_scanned = true;
     //
-    // if (playlists) await _scanPlaylists();
+    if (playlists) await _scanPlaylists();
     //
-    await _scanTrackFiles(pathScan: Paths.WHAT['lib'], recursive: true);
-
+    if (trackFiles) {
+      await _scanTrackFiles(pathScan: Paths.WHAT['lib'], recursive: true);
+    }
+    //
+    if (fromPlaylists) await _scanFromPlaylists();
     //await _scanPics();
 
     //var downloaded = await _scanDeezerPreviews();
@@ -121,54 +125,54 @@ class Muzeek {
   Future<void> _scanTrackFiles(
       {String pathScan, bool recursive = false}) async {
     //
-    // LOG
+    // LOG ===================
+    /*
     print('Start scan files at ${DateTime.now()}');
     var stopW = Stopwatch();
     stopW.start();
     var total = 0;
     var subTotal = 0;
-    //
-    //_filesReset();
+    */
     //
     final tracks = <int, List<String>>{};
     final notDeezer = <String>[];
     final other = <String>[];
     final lrc = <String>[];
+    // FOR LOG
     var nfiles = 0;
     var nTracks = 0;
     //
     var files = await listPathContent(pathFrom: pathScan, recursive: recursive);
-    //print(files);
-    //
 
     files.forEach((file) {
       //
-      // LOG
-
+      // LOG ===================
+      /*
       if (subTotal == 500) {
         subTotal = 0;
         print(total);
         print(
             '$total at ${DateTime.now()} - elapsed: ${stopW.elapsed.toString()}');
       }
-
       subTotal++;
       total++;
+      */
       //
       var ext = extFromFilePath(filePath: file).toLowerCase();
       if (ext == 'mp3') {
         if (kbpsFromFilePath(filePath: file) != '') {
           //
+          nfiles++;
+          //
           var id = idFromFilePath(filePath: file);
           if (tracks.containsKey(id)) {
             tracks[id].add(file);
           } else {
-            //print(_tracks[file.id]);
+            //
             nTracks++;
-            //print('NEW');
+            //
             tracks.putIfAbsent(id, () => [file]);
           }
-          nfiles++;
           //
         } else {
           notDeezer.add(file);
@@ -181,15 +185,14 @@ class Muzeek {
         }
       }
     });
-
     //
     tracks.forEach((key, value) {
       var vo = Muz.fromMap(map: {'id': key, 'files': value}, type: TrackFiles);
       _trackFiles.putIfAbsent(key, () => vo);
     });
-
-    //_scanned = true;
-    // LOG
+    //
+    // LOG ===================
+    /*
     stopW.stop();
     print(
         'End of scan files at ${DateTime.now()} - elapsed: ${stopW.elapsed.toString()}');
@@ -198,49 +201,86 @@ class Muzeek {
     print('${nfiles} files of ${tracks.length} tracks / ${nTracks} new add');
     print(
         'notDeezer: ${notDeezer.length}, lrc: ${lrc.length}, other: ${other.length}');
-
     //_trackFiles.forEach((key, value) => value.printInfo());
     print('NON DEEZER - ${notDeezer.length} ==============================');
     notDeezer.forEach((element) => print(element));
     print('OTHER - ${other.length} ===============================');
     other.forEach((element) => print(element));
+    */
+  }
+
+  Future<void> _scanPlaylists() async {
+    //
+    // FOR LOG
+    print('start Scan Playlists: ${DateTime.now()}');
+    //
+
+    var index = 0;
+    var next = false;
+
+    do {
+      var playlists = await deezer_API(
+          what: 'user',
+          id: '2668644462',
+          arguments: '/playlists?index=${index}');
+      for (var pl in playlists['data']) {
+        var id = pl['id'];
+        var name = pl['title'];
+        _playlists.putIfAbsent(id, () => Muz.playlist(id: id, name: name));
+      }
+      index += 25;
+      next = playlists.containsKey('next');
+    } while (next);
+    // LOG
+    //_playlistNames
+    //    .forEach((key, value) => print('$key ${key.runtimeType} - $value'));
+    //
+    /*
+ 
+    */
+    // LOG
+    print('end of Scan Playlists: ${DateTime.now()}');
+    print('playlists ${_playlists.length}');
+
+    //
 
     // VOID
+  }
+
+  Future<void> _scanFromPlaylists() async {
+    // FOR LOG
+    print('start Scan From Playlists: ${DateTime.now()}');
+
+    await Future.forEach(_playlists.keys, (playId) async {
+      var playlist = await deezer_API(what: 'playlist', id: playId.toString());
+      // LOG
+      print(_playlists[playId]);
+
+      for (var trackMap in playlist['tracks']['data']) {
+        //
+        var id = trackMap['id'];
+        if (_tracks.containsKey(id)) {
+          //_tracks[trackMap['id']]['playlists'].add(pl);
+          //print(_tracks[trackMap['id']]['playlists']);
+        } else {
+          Track track = Muz.fromDeezerTrackMap(map: trackMap, type: Track);
+          _tracks.putIfAbsent(id, () => track);
+
+          Album album = Muz.fromDeezerTrackMap(map: trackMap, type: Album);
+          _albums.putIfAbsent(album.id.value, () => album);
+          //
+          Artist artist = Muz.fromDeezerTrackMap(map: trackMap, type: Artist);
+          _artists.putIfAbsent(artist.id.value, () => artist);
+        }
+      }
+    });
+
+    print('end of Scan From Playlists: ${DateTime.now()}');
   }
 /*
 
 
-// ============================================================================
-  void _filesReset() {
-    // LOG
-    print('Start reset at ${DateTime.now()}');
-    var stopW = Stopwatch();
-    stopW.start();
-    var total = 0;
-    var subTotal = 0;
-    //
-    _tracks.forEach((id, track) {
-      // LOG
-      /*
-      if (subTotal == 500) {
-        subTotal = 0;
-        print(total);
-        print(
-            '$total at ${DateTime.now()} - elapsed: ${stopW.elapsed.toString()}');
-      }
-      */
-      subTotal++;
-      total++;
-      //
-      _tracks[id]['files'].clear();
-    });
-    _scanned = true;
-    // LOG
-    stopW.stop();
-    print(
-        'End of reset at ${DateTime.now()} - elapsed: ${stopW.elapsed.toString()}');
-    // VOID
-  }
+
 
 // ============================================================================
   Future<void> _scanFiles({String pathScan, bool recursive = false}) async {
@@ -330,63 +370,7 @@ class Muzeek {
   }
 
 // ============================================================================
-  Future<void> _scanPlaylists() async {
-    //
-    // FOR LOG
-    print('start Scan Playlists: ${DateTime.now()}');
-    var index = 0;
-    var next = false;
-    do {
-      var playlists = await deezer_API(
-          what: 'user',
-          id: '2668644462',
-          arguments: '/playlists?index=${index}');
-      for (var pl in playlists['data']) {
-        var id = pl['id'];
-        var name = pl['title'];
-        _playlists.putIfAbsent(id, () => name);
-      }
-      index += 25;
-      next = playlists.containsKey('next');
-    } while (next);
-    // LOG
-    //_playlistNames
-    //    .forEach((key, value) => print('$key ${key.runtimeType} - $value'));
-    //
-    await Future.forEach(_playlists.keys, (playId) async {
-      var playlist = await deezer_API(what: 'playlist', id: playId.toString());
-      // LOG
-      print(_playlists[playId]);
-      var pl = Id.create(id: playId);
-      for (var trackMap in playlist['tracks']['data']) {
-        if (_tracks.containsKey(trackMap['id'])) {
-          _tracks[trackMap['id']]['playlists'].add(pl);
-          //print(_tracks[trackMap['id']]['playlists']);
-        } else {
-          var track = Track.fromDeezer(track: trackMap);
-          _tracks.putIfAbsent(
-              trackMap['id'],
-              () => {
-                    'track': track,
-                    'files': <FilePath>{},
-                    'playlists': <Id>{pl}
-                  });
-          var album = Album.fromDeezer(track: trackMap);
-          _albums.putIfAbsent(album.id, () => album);
-          //
-          var artist = Artist.fromDeezer(track: trackMap);
-          _artists.putIfAbsent(artist.id, () => artist);
-        }
-      }
-    });
-    // LOG
-    print('end of Scan Playlists: ${DateTime.now()}');
-    print('tracks: ${_tracks.length} / playlists ${_playlists.length}');
-    print('artists: ${_artists.length} / albums ${_albums.length}');
-    //
 
-    // VOID
-  }
 
 // ============================================================================
   Future<void> _scanPics() async {

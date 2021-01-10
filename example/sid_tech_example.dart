@@ -3,23 +3,13 @@ import 'package:sid_tech/domain/muzeek_factory.dart';
 import 'package:sid_tech/sid_tech.dart';
 
 Future<void> main() async {
-  var vo_name = VOs.name('Sssbbb SSd');
-  print(vo_name);
-
-  var artista = Muz.artist(id: 12345, name: 'Sid Souza');
-  print(artista);
-  print(artista.isValid());
-  var mapa = artista.toMap();
-  print(mapa);
-  print(mapa['id'].runtimeType);
-  artista.printInfo();
-
-  var vo_date = VOs.date('2021');
-  print(vo_date);
   var muz = Muzeek();
   //await muz.scan();
   await muz.load();
+
+  //await muz.scan(fromPlaylists: true);
   //print(await muz.save());
+  muz.lengths();
 }
 
 // ******************************************************************
@@ -37,4 +27,4 @@ Future<void> main() async {
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈    --->  May the source be with you!  <---
 // *  v 1.0
-//
+// ******************************************************************

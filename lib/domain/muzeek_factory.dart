@@ -67,23 +67,22 @@ abstract class Muz {
     var entity;
     switch (type) {
       case Artist:
-        entity = artist(
-            id: int.parse(map['artist']['id']), name: map['artist']['name']);
+        entity = artist(id: map['artist']['id'], name: map['artist']['name']);
         break;
       case Album:
         entity = album(
-            id: int.parse(map['album']['id']),
+            id: map['album']['id'],
             title: map['album']['title'],
             releaseDate: map['album']['release_date'],
-            artistId: int.parse(map['artist']['id']));
+            artistId: map['artist']['id']);
         break;
       case Track:
         entity = track(
-            id: int.parse(map['id']),
+            id: map['id'],
             title: map['title'],
-            duration: int.parse(map['duration']),
-            albumId: int.parse(map['album']['id']),
-            artistId: int.parse(map['artist']['id']),
+            duration: map['duration'],
+            albumId: map['album']['id'],
+            artistId: map['artist']['id'],
             previewURL: map['preview']);
         break;
     }

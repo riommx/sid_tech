@@ -8,13 +8,17 @@ import 'package:sid_tech/core/vo_string.dart';
 class PlaylistFactory implements EntityFactory {
   //
   @override
-  Playlist create({@required VOInt id, @required VOString name}) =>
-      Playlist(id, name);
+  Playlist create(
+          {@required VOInt id,
+          @required VOString name,
+          @required List<VOInt> tracks}) =>
+      Playlist(id, name, tracks);
 
   @override
   Playlist createFromMap({@required Map map}) => Playlist(
         map['id'],
         map['name'],
+        map['tracks'],
       );
 }
 

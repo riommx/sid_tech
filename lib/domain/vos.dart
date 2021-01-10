@@ -25,9 +25,15 @@ abstract class VOs {
       VOStringFactory().create(value: value);
 
   static List<VOString> files(List values) {
-    var filesList = <VOString>[];
-    values.forEach((f) => filesList.add(trackFile(f)));
-    return filesList;
+    var list = <VOString>[];
+    values.forEach((e) => list.add(trackFile(e)));
+    return list;
+  }
+
+  static List<VOInt> tracks(List values) {
+    var list = <VOInt>[];
+    values.forEach((e) => list.add(id(e)));
+    return list;
   }
 }
 
