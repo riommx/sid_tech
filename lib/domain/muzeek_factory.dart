@@ -24,8 +24,10 @@ abstract class Muz {
   static Playlist playlist({
     @required int id,
     @required String name,
+    @required List tracks,
   }) =>
-      PlaylistFactory().create(id: VOs.id(id), name: VOs.name(name));
+      PlaylistFactory().create(
+          id: VOs.id(id), name: VOs.name(name), tracks: VOs.tracks(tracks));
 
   static TrackFiles trackFiles({
     @required int id,
@@ -141,7 +143,11 @@ abstract class Muz {
         break;
       //
       case Playlist:
-        entity = playlist(id: int.parse(map['id']), name: map['name']);
+        var intList = [];
+        map['tracks'].forEach((e) => intList.add(int.parse(e)));
+        entity = playlist(
+            id: int.parse(map['id']), name: map['name'], tracks: intList);
+
         break;
       //
       case TrackFiles:

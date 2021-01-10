@@ -7,8 +7,8 @@ Future<void> main() async {
   //await muz.scan();
   await muz.load();
 
-  //await muz.scan(fromPlaylists: true);
-  //print(await muz.save());
+  await muz.scan(fromTrackFiles: true);
+  print(await muz.save());
   muz.lengths();
 }
 
