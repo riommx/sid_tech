@@ -11,6 +11,8 @@ abstract class VOs {
 
   static VOInt id(int value) => VOIntFactory().create(value: value);
 
+  static VOInt upc(int value) => VOIntFactory().create(value: value);
+
   static VOString date(String value) =>
       VOStringFactory().create(value: value, dateTime: true);
 

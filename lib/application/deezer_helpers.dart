@@ -4,6 +4,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 import 'package:sid_tech/application/helpers.dart';
+import 'package:sid_tech/application/paths.dart';
+
+// https://api.deezer.com/user/2668644462/playlists
+// https://api.deezer.com/playlist/5901083884/tracks
 
 // DEEZER
 // ============================================================================
@@ -31,22 +35,22 @@ Future<List> scanDeezerPics({Map artists, Map albums = const {}}) async {
   if (albums.isEmpty) {
     what = 'artist';
     keys = artists.keys;
-    path = 'E:\\__DEEZ\\muzeek\\artists\\';
+    path = Paths.WHAT['pictures'];
   } else {
     what = 'album';
     keys = albums.keys;
-    path = 'E:\\__DEEZ\\muzeek\\covers\\';
+    path = Paths.WHAT['covers'];
   }
   await Future.forEach(keys, (id) async {
     //
     var filename;
     if (albums.isEmpty) {
-      filename = '${removeIvalidChars(artists[id].name)} - ${id}.jpg';
+      filename = '${removeIvalidChars(artists[id].name.value)} - ${id}.jpg';
     } else {
-      var artist = artists[albums[id].artist];
-      var title = removeIvalidChars(albums[id].title);
+      var artist = artists[albums[id].artistId.value];
+      var title = removeIvalidChars(albums[id].title.value);
       filename =
-          '${removeIvalidChars(artist.name)} [${artist.id}] - ${title} [${id}].jpg';
+          '${removeIvalidChars(artist.name.value)} [${artist.id.value}] - ${title} [${id}].jpg';
     }
     var file = '${path}${filename}';
     var url = 'https://api.deezer.com/${what}/${id}/image?size=xl';

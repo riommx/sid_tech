@@ -7,20 +7,24 @@ class Album extends Entity {
   final VOInt _id;
   final VOString _title;
   final VOString _releaseDate; //  DateTime.parse("1969-07-20");
+  final VOInt _upc;
   final VOInt _artistId;
 
-  const Album(this._id, this._title, this._releaseDate, this._artistId);
+  const Album(
+      this._id, this._title, this._releaseDate, this._upc, this._artistId);
 
   bool isValid() =>
       _id.isValid() &&
       _title.isValid() &&
       _releaseDate.isValid() &&
+      _upc.isValid() &&
       _artistId.isValid();
 
   // GETTERS ========
   VOInt get id => _id;
   VOString get title => _title;
   VOString get releaseDate => _releaseDate;
+  VOInt get upc => _upc;
   VOInt get artistId => _artistId;
 
   String get pic => '${_id.value}.jpg';
@@ -33,17 +37,18 @@ class Album extends Entity {
         'id': _id.value.toString(),
         'title': _title.value,
         'releaseDate': _releaseDate.value,
+        'upc': _upc.value.toString(),
         'artistId': _artistId.value.toString(),
       };
 
   @override
   String toString() =>
-      'id: ${_id.toString()} title: ${_title.toString()} releaseDate: ${_releaseDate.toString()} artistId: ${_artistId.toString()}';
+      'id: ${_id.value} title: ${_title.value} releaseDate: ${_releaseDate.value} upc: ${_upc.value} artistId: ${_artistId.value}';
 
   void printInfo() {
     print('-------------------------------------------------------');
     print(
-        '${_title.value} (${_id.value}) from ${_releaseDate.value} by ${_artistId.value}');
+        '${_title.value} (${_id.value}) from ${_releaseDate.value} by ${_artistId.value} upc ${_upc.value}');
   }
 }
 

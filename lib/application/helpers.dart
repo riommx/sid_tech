@@ -80,3 +80,24 @@ String kbpsFromFilePath({@required String filePath}) =>
 
 int idFromFilePath({@required String filePath}) => int.tryParse(filePath
     .substring(filePath.lastIndexOf(']') + 2, filePath.lastIndexOf('-') - 1));
+
+// FOLDER ===================
+String folderPreview({String name}) {
+  final foldersPreview = [
+    '_0123456789ab',
+    'cd',
+    'efg',
+    'hijkl',
+    'mno',
+    'pqr',
+    'suvxywz',
+    't'
+  ];
+  var firstChar = name.substring(0, 1).toLowerCase();
+  var folder = 'special';
+  foldersPreview.forEach((element) {
+    if (element.contains(firstChar)) folder = element;
+  });
+  // RETURN;
+  return folder;
+}

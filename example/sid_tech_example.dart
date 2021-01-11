@@ -1,14 +1,17 @@
 import 'package:sid_tech/application/muzeek.dart';
-import 'package:sid_tech/domain/muzeek_factory.dart';
-import 'package:sid_tech/sid_tech.dart';
 
 Future<void> main() async {
-  var muz = Muzeek();
+  var muz = await Muzeek.create();
   //await muz.scan();
-  await muz.load();
+  //await muz.scan(playlists: true);
+  //await muz.scan(fromPlaylists: true);
+  await muz.scan(trackFiles: true);
+  var albums = muz.listTopAlbums();
+  albums.forEach((element) {
+    print('\n=========================================================');
+    print(element);
+  });
 
-  await muz.scan(fromTrackFiles: true);
-  print(await muz.save());
   muz.lengths();
 }
 

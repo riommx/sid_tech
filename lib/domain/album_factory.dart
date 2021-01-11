@@ -12,12 +12,14 @@ class AlbumFactory implements EntityFactory {
     @required VOInt id,
     @required VOString title,
     @required VOString releaseDate,
+    @required VOInt upc,
     @required VOInt artistId,
   }) =>
       Album(
         id,
         title,
         releaseDate,
+        upc,
         artistId,
       );
 
@@ -26,6 +28,7 @@ class AlbumFactory implements EntityFactory {
         map['id'],
         map['title'],
         map['releaseDate'],
+        map['upc'],
         map['artistId'],
       );
 }
