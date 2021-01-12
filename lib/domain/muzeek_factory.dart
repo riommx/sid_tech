@@ -1,6 +1,4 @@
 import 'package:meta/meta.dart';
-import 'package:sid_tech/application/muzeek.dart';
-import 'package:sid_tech/application/muzeek_helpers.dart';
 import 'package:sid_tech/core/entity.dart';
 //
 import 'package:sid_tech/domain/artist.dart';
@@ -69,35 +67,6 @@ abstract class Muz {
       );
 
   // =====================================================================
-  static Entity fromDeezerTrackMap({@required Map map, @required Type type}) {
-    var entity;
-    switch (type) {
-      case Artist:
-        entity = artist(id: map['artist']['id'], name: map['artist']['name']);
-        break;
-      case Album:
-        entity = album(
-            id: map['album']['id'],
-            title: map['album']['title'],
-            releaseDate: '',
-            upc: 0,
-            artistId: map['artist']['id']);
-        break;
-      case Track:
-        entity = track(
-            id: map['id'],
-            title: map['title'],
-            duration: map['duration'],
-            albumId: map['album']['id'],
-            artistId: map['artist']['id'],
-            previewURL: map['preview']);
-        break;
-    }
-    //
-    return entity;
-  }
-
-  // =====================================================================
   static Entity fromMap({@required Map map, @required Type type}) {
     var entity;
     switch (type) {
@@ -111,7 +80,7 @@ abstract class Muz {
             id: int.parse(map['id']),
             title: map['title'],
             releaseDate: map['releaseDate'],
-            upc: map['upc'],
+            upc: int.parse(map['upc']),
             artistId: int.parse(map['artistId']));
         break;
       //
@@ -135,7 +104,7 @@ abstract class Muz {
         break;
       //
       case TrackFiles:
-        entity = trackFiles(id: map['id'], files: map['files']);
+        entity = trackFiles(id: int.parse(map['id']), files: map['files']);
         break;
     }
     //

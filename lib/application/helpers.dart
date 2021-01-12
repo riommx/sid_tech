@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'dart:io';
 import 'dart:convert' as convert;
 
-// FILE   ======================================================================
+// =============================================================================
 Future<Map> readMap({@required String path}) async {
   //
   var file = File(path);
@@ -19,10 +19,12 @@ Future<Map> readMap({@required String path}) async {
     map.forEach(
         (key, value) => intKeysMap.putIfAbsent(int.parse(key), () => value));
   }
-  // RETURN
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return intKeysMap;
 }
 
+// =============================================================================
 Future<bool> writeMap({@required String path, @required Map map}) async {
   //
   var newMap = {};
@@ -32,10 +34,12 @@ Future<bool> writeMap({@required String path, @required Map map}) async {
   //
   var file = await File(path);
   var shoudBeFile = await file.writeAsString(content);
-  // RETURN
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return await shoudBeFile.exists() ? true : false;
 }
 
+// =============================================================================
 Future<List> listPathContent({String pathFrom, bool recursive = false}) async {
   //
   var dir = Directory(pathFrom);
@@ -47,41 +51,60 @@ Future<List> listPathContent({String pathFrom, bool recursive = false}) async {
       list.add(filepath);
     }
   });
-  // RETURN
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return list;
 }
 
-// STRING ======================================================================
+// =============================================================================
 String fullPathFromFileSystemEntity(String path) =>
+    //
+    // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
     path.substring(path.indexOf('\'') + 1, path.length - 1);
 
+// =============================================================================
 String removeIvalidChars(String string) {
   var newString = string.length > 150 ? string.substring(0, 100) : string;
-  // RETURN
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return newString.replaceAll(RegExp(r'["*/:?|\\<>]'), '_');
 }
 
-// File Path String =========
-
+// =============================================================================
 String pathFromFilePath({@required String filePath}) =>
+    //
+    // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
     filePath.substring(0, filePath.lastIndexOf('\\'));
 
+// =============================================================================
 String fileFromFilePath({@required String filePath}) =>
+    //
+    // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
     filePath.substring(filePath.lastIndexOf('\\') + 1);
 
+// =============================================================================
 String extFromFilePath({@required String filePath}) =>
+    //
+    // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
     filePath.substring(filePath.lastIndexOf('.') + 1).toLowerCase();
 
+// =============================================================================
 String kbpsFromFilePath({@required String filePath}) =>
+    //
+    // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
     filePath.contains('128kbps') || filePath.contains('320kbps')
         ? filePath.substring(
             filePath.lastIndexOf('kbps') - 3, filePath.lastIndexOf('kbps'))
         : '';
 
-int idFromFilePath({@required String filePath}) => int.tryParse(filePath
-    .substring(filePath.lastIndexOf(']') + 2, filePath.lastIndexOf('-') - 1));
+// =============================================================================
+int idFromFilePath({@required String filePath}) =>
+    //
+    // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
+    int.tryParse(filePath.substring(
+        filePath.lastIndexOf(']') + 2, filePath.lastIndexOf('-') - 1));
 
-// FOLDER ===================
+// =============================================================================
 String folderPreview({String name}) {
   final foldersPreview = [
     '_0123456789ab',
@@ -98,6 +121,7 @@ String folderPreview({String name}) {
   foldersPreview.forEach((element) {
     if (element.contains(firstChar)) folder = element;
   });
-  // RETURN;
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return folder;
 }

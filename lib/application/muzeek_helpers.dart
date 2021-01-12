@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:sid_tech/application/deezer_helpers.dart';
 import 'package:sid_tech/application/paths.dart';
 //
 import 'package:sid_tech/domain/muzeek_factory.dart';
@@ -16,7 +17,8 @@ Future<Map> load({@required Map what}) async {
     //
     map.putIfAbsent(key, () => entity);
   });
-
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return map;
 }
 
@@ -33,7 +35,7 @@ Future<Map> scanTrackFiles({String pathScan, bool recursive = false}) async {
   var nTracks = 0;
   // LOG FIM ===================
   //
-  final tracks = <int, List<String>>{};
+  final tracks = {}; //<int, List<String>>{};
   final notDeezer = <String>[];
   final other = <String>[];
   final lrc = <String>[];
@@ -61,12 +63,17 @@ Future<Map> scanTrackFiles({String pathScan, bool recursive = false}) async {
         //
         var id = idFromFilePath(filePath: file);
         if (tracks.containsKey(id)) {
-          tracks[id].add(file);
+          tracks[id]['files'].add(file);
         } else {
           // LOG ===================
           nTracks++;
           //
-          tracks.putIfAbsent(id, () => [file]);
+          tracks.putIfAbsent(
+              id,
+              () => {
+                    'id': id.toString(),
+                    'files': [file]
+                  });
         }
         //
       } else {
@@ -93,10 +100,93 @@ Future<Map> scanTrackFiles({String pathScan, bool recursive = false}) async {
   //
   // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return {
-    'trackFiles': tracks,
+    'kind': 'trackFiles',
+    'values': tracks,
     'notDeezer': notDeezer,
     'lrc': lrc,
     'other': other,
+  };
+}
+
+// ============================================================================
+Future<Map> scanPlaylists() async {
+  //
+  // LOG ===================
+  print('start Scan Playlists: ${DateTime.now()}');
+  //
+  var playlists = {};
+  var index = 0;
+  var next = false;
+  do {
+    var deezerPlaylists = await deezer_API(
+        what: 'user', id: '2668644462', arguments: '/playlists?index=${index}');
+    //
+    for (var pl in deezerPlaylists['data']) {
+      var id = pl['id'];
+      var name = pl['title'];
+      playlists.putIfAbsent(
+          id, () => {'id': id.toString(), 'name': name, 'tracks': []});
+    }
+    index += 25;
+    next = deezerPlaylists.containsKey('next');
+  } while (next);
+
+  //
+  // LOG ===================
+  print('end of Scan Playlists: ${DateTime.now()} - ${playlists.length} pls');
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
+  return {
+    'kind': 'playlists',
+    'values': playlists,
+  };
+}
+
+// ============================================================================
+Future<Map> scanFromPlaylists({@required Map playlists}) async {
+  //
+  // LOG ===================
+  print('start Scan From Playlists: ${DateTime.now()}');
+
+  var returnMap = {
+    'tracks': {},
+    'artists': {},
+    'albums': {},
+    'playlists': playlists,
+  };
+
+  await Future.forEach(playlists.keys, (playId) async {
+    var playlist = await deezer_API(what: 'playlist', id: playId);
+    //
+    // LOG ===================
+    print(playlists[playId]);
+    //
+    for (var trackMap in playlist['tracks']['data']) {
+      //
+      var id = trackMap['id'].toString();
+      returnMap['playlists'][playId]['tracks'].add(id);
+
+      if (!returnMap['tracks'].containsKey(id)) {
+        var track = fromDeezerTrackMap(track: trackMap, kind: 'tracks');
+        returnMap['tracks'].putIfAbsent(id, () => track);
+        var album = fromDeezerTrackMap(track: trackMap, kind: 'albums');
+        returnMap['albums'].putIfAbsent(album['id'], () => album);
+        var artist = fromDeezerTrackMap(track: trackMap, kind: 'artists');
+        returnMap['artists'].putIfAbsent(artist['id'], () => artist);
+      }
+    }
+    //
+    // LOG ===================
+    print(returnMap['playlists'][playId]);
+    //
+  });
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
+  return {
+    'tracks': {'kind': 'tracks', 'values': returnMap['tracks']},
+    'albums': {'kind': 'albums', 'values': returnMap['albums']},
+    'artists': {'kind': 'artists', 'values': returnMap['artists']},
+    'playlists': {'kind': 'playlists', 'values': returnMap['playlists']},
   };
 }
 
@@ -111,6 +201,8 @@ Future<bool> save({@required Map maps}) async {
     });
     success = await writeMap(path: Paths.WHAT[kind], map: map);
   });
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return success;
 }
 

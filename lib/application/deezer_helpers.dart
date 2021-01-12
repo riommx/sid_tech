@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -22,7 +22,8 @@ Future<Map> deezer_API({String what, String id, String arguments = ''}) async {
   } else {
     map = {'failure': 'Request failed with status: ${response.statusCode}.'};
   }
-  // RETURN
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return map;
 }
 
@@ -58,7 +59,8 @@ Future<List> scanDeezerPics({Map artists, Map albums = const {}}) async {
       downloaded.add(file);
     }
   });
-  // RETURN
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return downloaded;
 }
 
@@ -79,6 +81,41 @@ Future<bool> download({String url, String path}) async {
     });
     dowloaded = true;
   }
-  // RETURN
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return dowloaded;
+}
+
+// =====================================================================
+Map fromDeezerTrackMap({@required Map track, @required String kind}) {
+  var map;
+  switch (kind) {
+    case 'artists':
+      map = {
+        'id': track['artist']['id'].toString(),
+        'name': track['artist']['name']
+      };
+      break;
+    case 'albums':
+      map = {
+        'id': track['album']['id'].toString(),
+        'title': track['album']['title'],
+        'releaseDate': '1974-05-09',
+        'upc': '0',
+        'artistId': track['artist']['id'].toString()
+      };
+      break;
+    case 'tracks':
+      map = {
+        'id': track['id'].toString(),
+        'title': track['title'],
+        'duration': track['duration'].toString(),
+        'albumId': track['album']['id'].toString(),
+        'artistId': track['artist']['id'].toString(),
+        'previewURL': track['preview']
+      };
+  }
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
+  return map;
 }

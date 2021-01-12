@@ -1,8 +1,11 @@
+import 'dart:ffi';
+
 import 'package:sid_tech/application/muzeek_helpers.dart';
 import 'package:sid_tech/application/helpers.dart';
 import 'package:sid_tech/application/deezer_helpers.dart';
 //
 import 'package:sid_tech/application/paths.dart';
+import 'package:sid_tech/core/entity.dart';
 //
 import 'package:sid_tech/domain/artist.dart';
 import 'package:sid_tech/domain/album.dart';
@@ -11,7 +14,6 @@ import 'package:sid_tech/domain/playlist.dart';
 import 'package:sid_tech/domain/track_files.dart';
 //
 import 'package:sid_tech/domain/muzeek_factory.dart';
-import 'package:sid_tech/domain/vos.dart';
 
 class Muzeek {
   final Map _tracks;
@@ -19,9 +21,6 @@ class Muzeek {
   final Map _artists;
   final Map _playlists;
   final Map _trackFiles;
-
-  Muzeek._(this._artists, this._albums, this._tracks, this._playlists,
-      this._trackFiles);
 
   static List WHAT = [
     {
@@ -52,6 +51,10 @@ class Muzeek {
   ];
 
 // ============================================================================
+  Muzeek._(this._artists, this._albums, this._tracks, this._playlists,
+      this._trackFiles);
+
+// ============================================================================
   static Future<Muzeek> create() async {
     //
     var maps = {};
@@ -64,7 +67,7 @@ class Muzeek {
   }
 
 // ============================================================================
-  Map maps() => {
+  Map entityMaps() => {
         'artists': _artists,
         'albums': _albums,
         'tracks': _tracks,
@@ -73,9 +76,22 @@ class Muzeek {
       };
 
 // ============================================================================
+  Map entityMap({String kind = ''}) =>
+      kind == '' ? entityMaps() : entityMaps()[kind];
+
+// ============================================================================
+  Type entityType({String kind = ''}) {
+    var type = Entity;
+    WHAT.forEach((element) {
+      if (element['kind'] == kind) type = element['type'];
+    });
+    return type;
+  }
+
+// ============================================================================
   // FOR LOG
   void lengths() =>
-      maps().forEach((key, value) => print('${key} => ${value.length}'));
+      entityMaps().forEach((key, value) => print('${key} => ${value.length}'));
 
 // ============================================================================
   Future<void> scan({
@@ -87,78 +103,64 @@ class Muzeek {
     bool pics = false,
   }) async {
     //
-    if (playlists) await _scanPlaylists();
-    //
-    if (trackFiles) {
-      var scanMap =
-          await scanTrackFiles(pathScan: Paths.WHAT['lib'], recursive: true);
-      scanMap['trackFiles'].forEach((key, value) {
-        var vo =
-            Muz.fromMap(map: {'id': key, 'files': value}, type: TrackFiles);
-        _trackFiles.putIfAbsent(key, () => vo);
-      });
+    var scansList = [];
+
+    if (playlists) {
+      scansList.add(await scanPlaylists());
     }
     //
-    if (fromPlaylists) await _scanFromPlaylists();
+    if (trackFiles) {
+      scansList.add(
+          await scanTrackFiles(pathScan: Paths.WHAT['lib'], recursive: true));
+    }
+    //
+    if (fromPlaylists) {
+      var playlistsMap = {};
+      _playlists.forEach((key, value) =>
+          playlistsMap.putIfAbsent(key.toString(), () => value.toMap()));
+      var scanned = await scanFromPlaylists(playlists: playlistsMap);
+      scansList.add(scanned['tracks']);
+      scansList.add(scanned['artists']);
+      scansList.add(scanned['albums']);
+      scansList.add(scanned['playlists']);
+      _playlists.clear();
+      print(_playlists.length);
+    }
     //
     if (fromTrackFiles) await _scanFromTrackFiles();
     //
     if (pics) await _scanPics();
     //
     if (previews) await _scanDeezerPreviews();
-
-    await save(maps: maps());
-  }
-
-  Future<void> _scanPlaylists() async {
     //
-    // FOR LOG
-    //print('start Scan Playlists: ${DateTime.now()}');
-    //
-
-    var index = 0;
-    var next = false;
-
-    do {
-      var playlists = await deezer_API(
-          what: 'user',
-          id: '2668644462',
-          arguments: '/playlists?index=${index}');
-      for (var pl in playlists['data']) {
-        var id = pl['id'];
-        var name = pl['title'];
-        _playlists.putIfAbsent(
-            id, () => Muz.playlist(id: id, name: name, tracks: []));
-      }
-      index += 25;
-      next = playlists.containsKey('next');
-    } while (next);
-    // LOG
-    //print('end of Scan Playlists: ${DateTime.now()}');
-    //print('playlists ${_playlists.length}');
-  }
-
-  Future<void> _scanFromPlaylists() async {
-    // FOR LOG
-    //print('start Scan From Playlists: ${DateTime.now()}');
-
-    await Future.forEach(_playlists.keys, (playId) async {
-      var playlist = await deezer_API(what: 'playlist', id: playId.toString());
-      // LOG
-      //print(_playlists[playId]);
+    scansList.forEach((scanMap) {
       //
-      for (var trackMap in playlist['tracks']['data']) {
-        //
-        var id = trackMap['id'];
-        _playlists[playId].tracks.add(VOs.id(id));
-        if (!_tracks.containsKey(id)) {
-          newTrack(trackMap: trackMap);
+      scanMap['values'].forEach((id, map) {
+        if (scanMap['kind'] == 'albums') {
+          print(map);
         }
-      }
+        var entity =
+            Muz.fromMap(map: map, type: entityType(kind: scanMap['kind']));
+        var target = entityMap(kind: scanMap['kind']);
+        target.putIfAbsent(id, () => entity);
+      });
+      //
     });
-    // LOG
-    //print('end of Scan From Playlists: ${DateTime.now()}');
+    //
+    await save(maps: entityMaps());
+    print(_trackFiles.keys.first.runtimeType);
+    print(_playlists.keys.first.runtimeType);
   }
+
+  // for test only
+  Future<void> saveAlbums() async {
+    await save(maps: {
+      'albums': _albums,
+    });
+  }
+
+  // LOG
+  //print('end of Scan From Playlists: ${DateTime.now()}');
 
   void newTrack({Map trackMap}) {
     var id = trackMap['id'];

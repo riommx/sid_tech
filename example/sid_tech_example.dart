@@ -2,10 +2,10 @@ import 'package:sid_tech/application/muzeek.dart';
 
 Future<void> main() async {
   var muz = await Muzeek.create();
-  //await muz.scan();
-  //await muz.scan(playlists: true);
-  //await muz.scan(fromPlaylists: true);
-  await muz.scan(trackFiles: true);
+  //await muz.scan(trackFiles: true);
+  await muz.scan(playlists: true);
+  await muz.scan(fromPlaylists: true);
+  // await muz.saveAlbums();
   var albums = muz.listTopAlbums();
   albums.forEach((element) {
     print('\n=========================================================');
