@@ -191,6 +191,149 @@ Future<Map> scanFromPlaylists({@required Map playlists}) async {
 }
 
 // ============================================================================
+Future<Map> scanFromTrackFiles(
+    {@required Map trackFiles, @required Map tracks}) async {
+  //
+  // LOG ===================
+  print('start Scan From TrackFiles: ${DateTime.now()}');
+  var newT = 0;
+  //
+  var returnMap = {
+    'tracks': {},
+    'artists': {},
+    'albums': {},
+  };
+
+  //
+  await Future.forEach(trackFiles.keys, (trackId) async {
+    print(trackId);
+    if (!tracks.containsKey(trackId)) {
+      var trackMap = await deezer_API(what: 'track', id: trackId.toString());
+      //
+      // LOG ===================
+      newT++;
+      print('===========================================================');
+      print(newT);
+      //
+      var id = trackId.toString();
+      var track = fromDeezerTrackMap(track: trackMap, kind: 'tracks');
+      returnMap['tracks'].putIfAbsent(id, () => track);
+      var album = fromDeezerTrackMap(track: trackMap, kind: 'albums');
+      returnMap['albums'].putIfAbsent(album['id'], () => album);
+      var artist = fromDeezerTrackMap(track: trackMap, kind: 'artists');
+      returnMap['artists'].putIfAbsent(artist['id'], () => artist);
+    }
+  });
+  //
+  // LOG ===================
+  print('end of Scan From TrackFiles: ${DateTime.now()}');
+  print('new tracks $newT');
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
+  return {
+    'tracks': {'kind': 'tracks', 'values': returnMap['tracks']},
+    'albums': {'kind': 'albums', 'values': returnMap['albums']},
+    'artists': {'kind': 'artists', 'values': returnMap['artists']},
+  };
+}
+
+// ============================================================================
+Future<List> scanPics({
+  @required Map artists,
+  Map albums = const {},
+}) async {
+  //
+  // LOG ===================
+  print('start Scan Pics: ${DateTime.now()}');
+  var stopW = Stopwatch();
+  stopW.start();
+  //
+  var pics = await scanDeezerPics(artists: artists, albums: albums);
+  //
+  // LOG ===================
+  stopW.stop();
+  print('end of Scan Pics: ${DateTime.now()} - ${stopW.elapsed.toString()}');
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
+  return pics;
+}
+
+// ============================================================================
+Future<List> scanDeezerPreviews({
+  @required Map tracks,
+  @required Map artists,
+}) async {
+  //
+  // LOG ===================
+  print('Start scan Previews at ${DateTime.now()}');
+  var stopW = Stopwatch();
+  stopW.start();
+  var total = 0;
+  var subTotal = 0;
+  //
+  var downloaded = [];
+  //
+  await Future.forEach(tracks.values, (track) async {
+    //
+    // LOG ===================
+    if (subTotal == 500) {
+      subTotal = 0;
+      print(total);
+      print(
+          '$total at ${DateTime.now()} - elapsed: ${stopW.elapsed.toString()}');
+    }
+    subTotal++;
+    total++;
+    //
+    var url = track.previewURL.value;
+    if (url != '') {
+      var artist = artists[track.artistId.value];
+      var name = removeIvalidChars(artist.name.value);
+      var title = removeIvalidChars(track.title.value);
+      var folder = folderPreview(name: name);
+      var filename =
+          '${Paths.WHAT['previews']}${folder}\\$name - $title - ${track.id.value}.mp3';
+      var success = await download(url: url, path: filename);
+      //
+      if (success) downloaded.add(filename);
+    }
+  });
+  //
+  // LOG ===================
+  stopW.stop();
+  print(
+      'End of scan previews at ${DateTime.now()} - elapsed: ${stopW.elapsed.toString()}');
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
+  return downloaded;
+}
+
+// ============================================================================
+Future<Map> scanReleaseDate({@required Map albums}) async {
+  //
+  // LOG ===================
+  print('start Scan Release Date: ${DateTime.now()}');
+  var total = albums.length;
+
+  await Future.forEach(albums.keys, (id) async {
+    var album = await deezer_API(what: 'album', id: id);
+    //
+    var upc = album['upc'] ?? '0';
+    upc = int.tryParse(upc) == null ? '0' : upc;
+    albums[id]['upc'] = upc;
+    //
+    var releaseDate = album['release_date'] ?? '1974-05-09';
+    albums[id]['releaseDate'] = releaseDate;
+    //
+    print(albums[id]);
+    print('faltam ${total--}');
+  });
+  //
+  // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
+  return {'kind': 'albums', 'values': albums};
+}
+
+// ============================================================================
 Future<bool> save({@required Map maps}) async {
   var success = false;
   //

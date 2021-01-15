@@ -1,8 +1,4 @@
-import 'dart:ffi';
-
 import 'package:sid_tech/application/muzeek_helpers.dart';
-import 'package:sid_tech/application/helpers.dart';
-import 'package:sid_tech/application/deezer_helpers.dart';
 //
 import 'package:sid_tech/application/paths.dart';
 import 'package:sid_tech/core/entity.dart';
@@ -93,6 +89,18 @@ class Muzeek {
   void lengths() =>
       entityMaps().forEach((key, value) => print('${key} => ${value.length}'));
 
+  void checkArtists() {
+    print('==============checking artists===========================');
+    _tracks.forEach((trackId, track) {
+      if (_artists.containsKey(track.artistId.value)) {
+        print(_artists[track.artistId.value]);
+        print('=========================================');
+      } else {
+        print('bingo');
+      }
+    });
+  }
+
 // ============================================================================
   Future<void> scan({
     bool playlists = false,
@@ -101,6 +109,7 @@ class Muzeek {
     bool fromTrackFiles = false,
     bool previews = false,
     bool pics = false,
+    bool releaseDate = false,
   }) async {
     //
     var scansList = [];
@@ -112,6 +121,14 @@ class Muzeek {
     if (trackFiles) {
       scansList.add(
           await scanTrackFiles(pathScan: Paths.WHAT['lib'], recursive: true));
+    }
+    //
+    if (releaseDate) {
+      var albumsMap = {};
+      _albums.forEach((key, value) =>
+          albumsMap.putIfAbsent(key.toString(), () => value.toMap()));
+      scansList.add(await scanReleaseDate(albums: albumsMap));
+      _albums.clear();
     }
     //
     if (fromPlaylists) {
@@ -127,18 +144,34 @@ class Muzeek {
       print(_playlists.length);
     }
     //
-    if (fromTrackFiles) await _scanFromTrackFiles();
+    if (fromTrackFiles) {
+      var scanned =
+          await scanFromTrackFiles(trackFiles: _trackFiles, tracks: _tracks);
+      scansList.add(scanned['tracks']);
+      scansList.add(scanned['artists']);
+      scansList.add(scanned['albums']);
+    }
     //
-    if (pics) await _scanPics();
+    if (pics) {
+      var newPics = await scanPics(artists: _artists);
+      print('${newPics.length} NEW PICTURES ============');
+      newPics.forEach((element) => print(element));
+      newPics = await scanPics(artists: _artists, albums: _albums);
+      print('${newPics.length} NEW COVERS ============');
+      newPics.forEach((element) => print(element));
+    }
     //
-    if (previews) await _scanDeezerPreviews();
+    if (previews) {
+      var newPreviews =
+          await scanDeezerPreviews(artists: _artists, tracks: _tracks);
+      newPreviews.forEach((element) => print(element));
+    }
     //
+    var saveIt = false;
     scansList.forEach((scanMap) {
       //
       scanMap['values'].forEach((id, map) {
-        if (scanMap['kind'] == 'albums') {
-          print(map);
-        }
+        saveIt = true;
         var entity =
             Muz.fromMap(map: map, type: entityType(kind: scanMap['kind']));
         var target = entityMap(kind: scanMap['kind']);
@@ -147,112 +180,7 @@ class Muzeek {
       //
     });
     //
-    await save(maps: entityMaps());
-    print(_trackFiles.keys.first.runtimeType);
-    print(_playlists.keys.first.runtimeType);
-  }
-
-  // for test only
-  Future<void> saveAlbums() async {
-    await save(maps: {
-      'albums': _albums,
-    });
-  }
-
-  // LOG
-  //print('end of Scan From Playlists: ${DateTime.now()}');
-
-  void newTrack({Map trackMap}) {
-    var id = trackMap['id'];
-    Track track = Muz.fromDeezerTrackMap(map: trackMap, type: Track);
-    _tracks.putIfAbsent(id, () => track);
-
-    Album album = Muz.fromDeezerTrackMap(map: trackMap, type: Album);
-    _albums.putIfAbsent(album.id.value, () => album);
-    //
-    Artist artist = Muz.fromDeezerTrackMap(map: trackMap, type: Artist);
-    _artists.putIfAbsent(artist.id.value, () => artist);
-  }
-
-  Future<void> _scanFromTrackFiles() async {
-    // LOG
-    //print('start Scan From TrackFiles: ${DateTime.now()}');
-    //var newT = 0;
-    await Future.forEach(_trackFiles.keys, (id) async {
-      if (!_tracks.containsKey(id)) {
-        var trackMap = await deezer_API(what: 'track', id: id.toString());
-        // LOG
-        //newT++;
-        newTrack(trackMap: trackMap);
-      }
-    });
-    // LOG
-    //print('new tracks $newT');
-    //print('end of Scan From TrackFiles: ${DateTime.now()}');
-  }
-
-  // ============================================================================
-  Future<List> _scanDeezerPreviews() async {
-    // LOG
-    print('Start scan Previews at ${DateTime.now()}');
-    var stopW = Stopwatch();
-    stopW.start();
-    var total = 0;
-    var subTotal = 0;
-    //
-    var downloaded = [];
-    await Future.forEach(_tracks.values, (track) async {
-      // LOG
-
-      if (subTotal == 500) {
-        subTotal = 0;
-        print(total);
-        print(
-            '$total at ${DateTime.now()} - elapsed: ${stopW.elapsed.toString()}');
-      }
-
-      subTotal++;
-      total++;
-      //
-      var url = track.previewURL.value;
-      if (url != '') {
-        var artist = _artists[track.artistId.value];
-        var name = removeIvalidChars(artist.name.value);
-        var title = removeIvalidChars(track.title.value);
-        var folder = folderPreview(name: name);
-        var filename =
-            '${Paths.WHAT['previews']}${folder}\\$name - $title - ${track.id.value}.mp3';
-        var success = await download(url: url, path: filename);
-        // LOG
-        if (success) downloaded.add(filename);
-      }
-    });
-    // LOG
-    stopW.stop();
-    print(
-        'End of scan previews at ${DateTime.now()} - elapsed: ${stopW.elapsed.toString()}');
-    // RETURN
-    return downloaded;
-  }
-
-  // ============================================================================
-  Future<void> _scanPics() async {
-    // FOR LOG
-    print('start Scan Artists: ${DateTime.now()}');
-    var stopW = Stopwatch();
-    stopW.start();
-    //
-    var artistsPics = await scanDeezerPics(artists: _artists);
-
-    print('start Scan Albums: ${DateTime.now()}');
-
-    var albumsPics = await scanDeezerPics(artists: _artists, albums: _albums);
-
-    // FOR LOG
-    stopW.stop();
-    print('end of Scan Pics: ${DateTime.now()} - ${stopW.elapsed.toString()}');
-    print('artists: ${artistsPics.length} / albums: ${albumsPics.length}');
-    //VOID
+    if (saveIt) await save(maps: entityMaps());
   }
 
   Map albums({List idList}) {
@@ -265,36 +193,28 @@ class Muzeek {
     idList.forEach((id) {
       var album = _albums[id];
       albumsMap.putIfAbsent(
-          id,
-          () => <String, dynamic>{
-                'album': album,
-                'songs': 0,
-                'artists': <Artist>{},
-                'tracks': <int, dynamic>{}
-              });
+          id, () => {'album': album, 'songs': 0, 'artists': {}, 'tracks': {}});
     });
     //
-    _tracks.forEach((id, track) {
+    _tracks.forEach((trackId, track) {
       //
-      var artist = track.artistId.value;
-      var album = track.albumId.value;
+      var artistId = track.artistId.value;
+      var albumId = track.albumId.value;
+
       //
-      if (albumsMap.containsKey(album)) {
-        //
-        albumsMap[album]['artists'].add(_artists[artist]);
-        albumsMap[album]['songs']++;
-        //
-        if (!albumsMap[album]['tracks'].containsKey(artist)) {
-          albumsMap[album]['tracks'].putIfAbsent(artist, () => <Track>{});
-        }
-        albumsMap[album]['tracks'][artist].add(track);
-      }
+      albumsMap[albumId]['songs']++;
+      //
+      albumsMap[albumId]['artists']
+          .putIfAbsent(artistId, () => _artists[artistId]);
+      albumsMap[albumId]['tracks'].putIfAbsent(trackId, () => track);
+      //
     });
     //
     return albumsMap;
   }
 
-  List listTopAlbums() {
+  List listTopAlbums({int howMany = 50}) {
+    howMany = howMany < 1 ? 1 : howMany;
     var albumsMap = albums(idList: []);
     var topAlbums = [];
     albumsMap.forEach((key, value) {
@@ -303,25 +223,10 @@ class Muzeek {
     topAlbums.sort((a, b) => b['songs'].compareTo(a['songs']));
 
     // RETURN
-    return topAlbums;
-  }
-/*
-  List topArtists() {
-    var artistsMap = artists(idList: []);
-    var topArtists = [];
-    artistsMap.forEach((key, value) {
-      topArtists.add(value);
-      //({'songs': value['songs'], 'artist': key});
-    });
-    topArtists.sort((a, b) => b['songs'].compareTo(a['songs']));
-
-    //RETURN
-    return topArtists;
+    return topAlbums.getRange(0, howMany).toList();
   }
 
-
-// ============================================================================
-  Map artists({List<int> idList}) {
+  Map artists({List idList}) {
     //
     if (idList.isEmpty) {
       idList.addAll(List.from(_artists.keys));
@@ -331,35 +236,35 @@ class Muzeek {
     idList.forEach((id) {
       var artist = _artists[id];
       artistsMap.putIfAbsent(
-          id,
-          () => <String, dynamic>{
-                'artist': artist,
-                'songs': 0,
-                'albums': <Album>{},
-                'tracks': <int, dynamic>{}
-              });
+          id, () => {'artist': artist, 'songs': 0, 'albums': {}, 'tracks': {}});
     });
     //
-    _tracks.forEach((id, track) {
+    _tracks.forEach((trackId, track) {
       //
-      var artist = track['track'].artist;
-      var album = track['track'].album;
+      var artistId = track.artistId.value;
+      var albumId = track.albumId.value;
       //
-      if (artistsMap.containsKey(artist)) {
-        //
-        artistsMap[artist]['albums'].add(_albums[album]);
-        artistsMap[artist]['songs']++;
-        //
-        if (!artistsMap[artist]['tracks'].containsKey(album)) {
-          artistsMap[artist]['tracks'].putIfAbsent(album, () => <Track>{});
-        }
-        artistsMap[artist]['tracks'][album].add(track['track']);
-      }
+      artistsMap[artistId]['songs']++;
+      //
+      artistsMap[artistId]['albums']
+          .putIfAbsent(albumId, () => _albums[albumId]);
+
+      artistsMap[artistId]['tracks'].putIfAbsent(trackId, () => track);
     });
     //
     return artistsMap;
   }
 
+  List listTopArtists({int howMany = 50}) {
+    howMany = howMany < 1 ? 1 : howMany;
+    var artistsMap = artists(idList: []);
+    var topArtists = [];
+    artistsMap.forEach((key, value) {
+      topArtists.add(value);
+    });
+    topArtists.sort((a, b) => b['songs'].compareTo(a['songs']));
 
-  */
+    //RETURN
+    return topArtists.getRange(0, howMany).toList();
+  }
 }
