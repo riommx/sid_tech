@@ -3,6 +3,17 @@ import 'package:kt_dart/kt.dart';
 //
 import 'package:sid_tech/core/failures.dart';
 
+Either<ValueFailure<dynamic>, dynamic> validateValueNotNull(
+  dynamic value,
+  dynamic foo,
+) {
+  if (value != null) {
+    return right(value);
+  } else {
+    return left(ValueFailure.nullValue(type: value.runtimeType));
+  }
+}
+
 // STRING
 Either<ValueFailure<String>, String> validateStrValueNotNull(
   String value,

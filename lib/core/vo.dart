@@ -1,40 +1,54 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 //
+import 'package:sid_tech/core/i_validatable.dart';
 import 'package:sid_tech/core/failures.dart';
 import 'package:sid_tech/core/errors.dart';
 
-abstract class ValueObject<T> extends Equatable {
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
+abstract class ValueObject<T> extends Equatable implements IValidatable {
   //
-  final Either<ValueFailure<T>, T> _unit;
-  //
-  const ValueObject(this._unit);
-  //
-  T get value => _unit.fold((l) => null, id);
+  // ===========================================================================
+  const ValueObject(this._value);
 
+  // ===========================================================================
+  final Either<ValueFailure<T>, T> _value;
+
+  // ===========================================================================
+  T get value => _value.fold((l) => null, id);
+
+  // ===========================================================================
   Either<ValueFailure<T>, Unit> get failureOrUnit {
-    return _unit.fold(
+    return _value.fold(
       (l) => left(l),
       (r) => right(unit),
     );
   }
 
-  //
+  // ===========================================================================
   /// Throws [UnexpectedValueError] containing the [ValueFailure]
   T getOrCrash() {
     // id = identity - same as writing (right) => right
-    return _unit.fold((f) => throw UnexpectedValueError(f), id);
+    return _value.fold((f) => throw UnexpectedValueError(f), id);
   }
 
-  //
-  bool isValid() => _unit.isRight();
-  //
+  // ===========================================================================
   @override
-  String toString() => _unit.fold((l) => l.toString(), (r) => r.toString());
-  //
-  // for Equatable
+  bool isValid() => _value.isRight();
+
+  // ===========================================================================
   @override
-  List<Object> get props => [_unit];
+  String toString() => _value.fold((l) => l.toString(), (r) => r.toString());
+
+  // ===========================================================================
+  // FOR Equatable
+  @override
+  List<Object> get props => [_value];
 }
 
 // ******************************************************************
@@ -51,5 +65,5 @@ abstract class ValueObject<T> extends Equatable {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  v 1.1
 // ******************************************************************

@@ -6,7 +6,14 @@ import 'package:sid_tech/core/validators.dart';
 import 'package:sid_tech/core/vo_factory.dart';
 import 'package:sid_tech/core/vo_int.dart';
 
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
 class VOIntFactory implements VOFactory {
+  // ===========================================================================
   @override
   VOInt create({
     @required int value,
@@ -15,10 +22,10 @@ class VOIntFactory implements VOFactory {
     RegExp regex,
   }) {
     //
-    Either<ValueFailure<int>, int> vo;
-    //
     final validations = [];
-    validations.add({'function': validateIntValueNotNull, 'parameter': VOInt});
+    //
+    validations.add({'function': validateValueNotNull, 'parameter': null});
+    //
     if (maxValue != null) {
       validations.add({'function': validateMaxValue, 'parameter': maxValue});
     }
@@ -29,7 +36,7 @@ class VOIntFactory implements VOFactory {
       validations.add({'function': validateIntRegex, 'parameter': regex});
     }
     //
-    //
+    Either<ValueFailure<int>, int> vo;
     var i = 0;
     //
     do {
@@ -58,5 +65,5 @@ class VOIntFactory implements VOFactory {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  v 1.1
 // ******************************************************************

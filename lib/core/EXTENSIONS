@@ -1,0 +1,34 @@
+environment:
+  sdk: '>=2.6.0 <3.0.0'
+
+
+extension StringExtensions on String {
+  bool get isValidEmail {
+    final emailRegExp = RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    return emailRegExp.hasMatch(this);
+  }
+}
+
+// Usage
+main() {
+  'someString'.isValidEmail;
+}
+
+extension StringExtensions on String {
+  String concatWithSpace(String other) {
+    return '$this $other';
+  }
+
+  /// DOCUMENTATION IS SUPPORTED: Concatenates two strings with a space in between.
+  String operator &(String other) => '$this $other';
+}
+
+main() {
+  'one'.concatWithSpace('two');
+  'one' & 'two';
+}
+
+extension NumGenericExtensions<T extends num> on T {
+  T addTen() => this + 10;
+}
+

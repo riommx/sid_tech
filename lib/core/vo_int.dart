@@ -3,7 +3,14 @@ import 'package:dartz/dartz.dart';
 import 'package:sid_tech/core/vo.dart';
 import 'package:sid_tech/core/failures.dart';
 
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
 class VOInt extends ValueObject<int> {
+  // ===========================================================================
   const VOInt(Either<ValueFailure<int>, int> unit) : super(unit);
 }
 
@@ -21,5 +28,5 @@ class VOInt extends ValueObject<int> {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  v 1.1
 // ******************************************************************

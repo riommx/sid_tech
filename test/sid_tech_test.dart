@@ -1,16 +1,9 @@
-import 'package:sid_tech/src/sid_tech_base.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('A group of tests', () {
-    Awesome awesome;
+    setUp(() {});
 
-    setUp(() {
-      awesome = Awesome();
-    });
-
-    test('First Test', () {
-      expect(awesome.isAwesome, isTrue);
-    });
+    test('First Test', () {});
   });
 }
