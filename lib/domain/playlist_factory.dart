@@ -2,16 +2,16 @@ import 'package:meta/meta.dart';
 //
 import 'package:sid_tech/core/entity_factory.dart';
 import 'package:sid_tech/domain/playlist.dart';
-import 'package:sid_tech/core/vo_int.dart';
+import 'package:sid_tech/core/vo_num.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
 class PlaylistFactory implements EntityFactory {
   //
   @override
   Playlist create(
-          {@required VOInt id,
+          {@required VONum id,
           @required VOString name,
-          @required List<VOInt> tracks}) =>
+          @required List<VONum> tracks}) =>
       Playlist(id, name, tracks);
 
   @override

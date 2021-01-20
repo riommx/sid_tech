@@ -1,7 +1,9 @@
+import 'package:meta/meta.dart';
 import 'package:dartz/dartz.dart';
 //
 import 'package:sid_tech/core/vo.dart';
 import 'package:sid_tech/core/failures.dart';
+import 'package:sid_tech/core/validator_string.dart';
 
 // #############################################################################
 // #
@@ -10,8 +12,61 @@ import 'package:sid_tech/core/failures.dart';
 // #
 // #############################################################################
 class VOString extends ValueObject<String> {
+  //
   // ===========================================================================
-  const VOString(Either<ValueFailure<String>, String> unit) : super(unit);
+  @override
+  final Either<ValueFailure<String>, String> value;
+
+  // ===========================================================================
+  const VOString._(this.value);
+
+  // ===========================================================================
+  factory VOString({
+    @required String value,
+    bool notEmpty = false,
+    bool singleLine = false,
+    int minLength,
+    int maxLength,
+    bool dateTime = false,
+    RegExp regex,
+  }) {
+    final validator = ValidatorString(value);
+    //
+    var vo = validator.notNull();
+    if (vo.isLeft()) return VOString._(vo);
+    //
+    if (notEmpty) {
+      vo = validator.notEmpty();
+      if (vo.isLeft()) return VOString._(vo);
+    }
+    //
+    if (singleLine) {
+      vo = validator.singleLine();
+      if (vo.isLeft()) return VOString._(vo);
+    }
+    //
+    if (minLength != null) {
+      vo = validator.minLength(minLength);
+      if (vo.isLeft()) return VOString._(vo);
+    }
+    //
+    if (maxLength != null) {
+      vo = validator.maxLength(maxLength);
+      if (vo.isLeft()) return VOString._(vo);
+    }
+    //
+    if (dateTime) {
+      vo = validator.dateTime();
+      if (vo.isLeft()) return VOString._(vo);
+    }
+    //
+    if (regex != null) {
+      vo = validator.regex(regex);
+      if (vo.isLeft()) return VOString._(vo);
+    }
+    //
+    return VOString._(vo);
+  }
 }
 
 // ******************************************************************
@@ -28,5 +83,5 @@ class VOString extends ValueObject<String> {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.1
+// *  v 1.2
 // ******************************************************************

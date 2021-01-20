@@ -1,10 +1,9 @@
-import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:sid_tech/core/failures.dart';
-import 'package:sid_tech/core/validators.dart';
+import 'package:dartz/dartz.dart';
 //
-import 'package:sid_tech/core/vo_factory.dart';
-import 'package:sid_tech/core/vo_int.dart';
+import 'package:sid_tech/core/vo.dart';
+import 'package:sid_tech/core/failures.dart';
+import 'package:sid_tech/core/validator_num.dart';
 
 // #############################################################################
 // #
@@ -12,42 +11,52 @@ import 'package:sid_tech/core/vo_int.dart';
 // #
 // #
 // #############################################################################
-class VOIntFactory implements VOFactory {
+class VONum extends ValueObject<num> {
+  //
   // ===========================================================================
   @override
-  VOInt create({
-    @required int value,
-    int maxValue,
-    int minValue,
+  final Either<ValueFailure<num>, num> value;
+
+  // ===========================================================================
+  const VONum._(this.value);
+
+  // ===========================================================================
+  factory VONum({
+    @required num value,
+    bool isDouble = false,
+    num minValue,
+    num maxValue,
     RegExp regex,
   }) {
+    final validator = ValidatorNum(value);
     //
-    final validations = [];
+    var vo = validator.notNull();
+    if (vo.isLeft()) return VONum._(vo);
     //
-    validations.add({'function': validateValueNotNull, 'parameter': null});
+    if (isDouble) {
+      vo = validator.isDouble();
+      if (vo.isLeft()) return VONum._(vo);
+    } else {
+      vo = validator.isInt();
+      if (vo.isLeft()) return VONum._(vo);
+    }
+    //
+    if (minValue != null) {
+      vo = validator.minValue(minValue);
+      if (vo.isLeft()) return VONum._(vo);
+    }
     //
     if (maxValue != null) {
-      validations.add({'function': validateMaxValue, 'parameter': maxValue});
+      vo = validator.maxValue(maxValue);
+      if (vo.isLeft()) return VONum._(vo);
     }
-    if (minValue != null) {
-      validations.add({'function': validateMinValue, 'parameter': minValue});
-    }
+    //
     if (regex != null) {
-      validations.add({'function': validateIntRegex, 'parameter': regex});
+      vo = validator.regex(regex);
+      if (vo.isLeft()) return VONum._(vo);
     }
     //
-    Either<ValueFailure<int>, int> vo;
-    var i = 0;
-    //
-    do {
-      vo = validations[i]['function'].call(
-        value,
-        validations[i]['parameter'],
-      );
-      i++;
-    } while (vo.isRight() && i < validations.length);
-    //
-    return VOInt(vo);
+    return VONum._(vo);
   }
 }
 
@@ -65,5 +74,5 @@ class VOIntFactory implements VOFactory {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.1
+// *  v 1.2
 // ******************************************************************

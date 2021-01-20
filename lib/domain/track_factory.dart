@@ -2,18 +2,18 @@ import 'package:meta/meta.dart';
 //
 import 'package:sid_tech/core/entity_factory.dart';
 import 'package:sid_tech/domain/track.dart';
-import 'package:sid_tech/core/vo_int.dart';
+import 'package:sid_tech/core/vo_num.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
 class TrackFactory implements EntityFactory {
   //
   @override
   Track create({
-    @required VOInt id,
+    @required VONum id,
     @required VOString title,
-    @required VOInt duration,
-    @required VOInt albumId,
-    @required VOInt artistId,
+    @required VONum duration,
+    @required VONum albumId,
+    @required VONum artistId,
     @required VOString previewURL,
   }) =>
       Track(

@@ -1,30 +1,25 @@
-import 'package:sid_tech/core/vo_int.dart';
-import 'package:sid_tech/core/vo_int_factory.dart';
+import 'package:sid_tech/core/vo_num.dart';
 import 'package:sid_tech/core/vo_string.dart';
-import 'package:sid_tech/core/vo_string_factory.dart';
 
 // TODO: FORMATAR TIPOS
 abstract class VOs {
-  static VOString name(String value) => VOStringFactory().create(value: value);
+  static VOString name(String value) => VOString(value: value);
 
-  static VOString title(String value) => VOStringFactory().create(value: value);
+  static VOString title(String value) => VOString(value: value);
 
-  static VOInt id(int value) => VOIntFactory().create(value: value);
+  static VONum id(int value) => VONum(value: value);
 
-  static VOInt upc(int value) => VOIntFactory().create(value: value);
+  static VONum upc(int value) => VONum(value: value);
 
-  static VOString date(String value) =>
-      VOStringFactory().create(value: value, dateTime: true);
+  static VOString date(String value) => VOString(value: value, dateTime: true);
 
-  static VOInt seconds(int value) =>
-      VOIntFactory().create(value: value, minValue: 1);
+  static VONum seconds(int value) => VONum(value: value, minValue: 1);
 
   // TODO: URL regex
-  static VOString url(String value) => VOStringFactory().create(value: value);
+  static VOString url(String value) => VOString(value: value);
 
   // TODO: TrackFile regex
-  static VOString trackFile(String value) =>
-      VOStringFactory().create(value: value);
+  static VOString trackFile(String value) => VOString(value: value);
 
   static List<VOString> files(List values) {
     var list = <VOString>[];
@@ -32,8 +27,8 @@ abstract class VOs {
     return list;
   }
 
-  static List<VOInt> tracks(List values) {
-    var list = <VOInt>[];
+  static List<VONum> tracks(List values) {
+    var list = <VONum>[];
     values.forEach((e) => list.add(id(e)));
     return list;
   }

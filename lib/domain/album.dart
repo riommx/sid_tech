@@ -1,14 +1,14 @@
 import 'package:sid_tech/core/entity.dart';
 //
-import 'package:sid_tech/core/vo_int.dart';
+import 'package:sid_tech/core/vo_num.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
 class Album extends Entity {
-  final VOInt _id;
+  final VONum _id;
   final VOString _title;
   final VOString _releaseDate; //  DateTime.parse("1969-07-20");
-  final VOInt _upc;
-  final VOInt _artistId;
+  final VONum _upc;
+  final VONum _artistId;
 
   const Album(
       this._id, this._title, this._releaseDate, this._upc, this._artistId);
@@ -21,11 +21,11 @@ class Album extends Entity {
       _artistId.isValid();
 
   // GETTERS ========
-  VOInt get id => _id;
+  VONum get id => _id;
   VOString get title => _title;
   VOString get releaseDate => _releaseDate;
-  VOInt get upc => _upc;
-  VOInt get artistId => _artistId;
+  VONum get upc => _upc;
+  VONum get artistId => _artistId;
 
   String get pic => '${_id.value}.jpg';
 
