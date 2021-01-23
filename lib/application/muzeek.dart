@@ -198,12 +198,10 @@ class Muzeek {
     //
     _tracks.forEach((trackId, track) {
       //
-      var artistId = track.artistId.value;
-      var albumId = track.albumId.value;
-
+      var artistId = track.artistId.value.value;
+      var albumId = track.albumId.value.value;
       //
       albumsMap[albumId]['songs']++;
-      //
       albumsMap[albumId]['artists']
           .putIfAbsent(artistId, () => _artists[artistId]);
       albumsMap[albumId]['tracks'].putIfAbsent(trackId, () => track);
@@ -241,8 +239,8 @@ class Muzeek {
     //
     _tracks.forEach((trackId, track) {
       //
-      var artistId = track.artistId.value;
-      var albumId = track.albumId.value;
+      var artistId = track.artistId.value.value;
+      var albumId = track.albumId.value.value;
       //
       artistsMap[artistId]['songs']++;
       //

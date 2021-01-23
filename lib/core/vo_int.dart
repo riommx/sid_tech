@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 //
 import 'package:sid_tech/core/vo.dart';
 import 'package:sid_tech/core/value_failure.dart';
-import 'package:sid_tech/core/validator_string.dart';
+import 'package:sid_tech/core/validator_num.dart';
 
 // #############################################################################
 // #
@@ -11,61 +11,28 @@ import 'package:sid_tech/core/validator_string.dart';
 // #
 // #
 // #############################################################################
-class VOString extends ValueObject<String> {
+class VOInt extends ValueObject<int> {
   //
   // ===========================================================================
   @override
-  final Either<ValueFailure<String>, String> value;
+  final Either<ValueFailure<int>, int> value;
 
   // ===========================================================================
-  const VOString._(this.value);
+  VOInt._(this.value);
 
   // ===========================================================================
-  factory VOString({
-    @required String value,
-    bool notEmpty = false,
-    bool singleLine = false,
-    int minLength,
-    int maxLength,
-    bool dateTime = false,
+  factory VOInt({
+    @required int value,
+    int minValue,
+    int maxValue,
     RegExp regex,
   }) {
-    final validator = ValidatorString(value);
+    final validator = ValidatorNum<int>(value, int);
     //
-    var vo = validator.notNull();
-    if (vo.isLeft()) return VOString._(vo);
+    final vo = validator.validate(
+        minValue: minValue, maxValue: maxValue, regex: regex);
     //
-    if (notEmpty) {
-      vo = validator.notEmpty();
-      if (vo.isLeft()) return VOString._(vo);
-    }
-    //
-    if (singleLine) {
-      vo = validator.singleLine();
-      if (vo.isLeft()) return VOString._(vo);
-    }
-    //
-    if (minLength != null) {
-      vo = validator.minLength(minLength);
-      if (vo.isLeft()) return VOString._(vo);
-    }
-    //
-    if (maxLength != null) {
-      vo = validator.maxLength(maxLength);
-      if (vo.isLeft()) return VOString._(vo);
-    }
-    //
-    if (dateTime) {
-      vo = validator.dateTime();
-      if (vo.isLeft()) return VOString._(vo);
-    }
-    //
-    if (regex != null) {
-      vo = validator.regex(regex);
-      if (vo.isLeft()) return VOString._(vo);
-    }
-    //
-    return VOString._(vo);
+    return VOInt._(vo);
   }
 }
 

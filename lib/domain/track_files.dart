@@ -1,10 +1,10 @@
 import 'package:sid_tech/core/entity.dart';
 //
-import 'package:sid_tech/core/vo_num.dart';
+import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
 class TrackFiles extends Entity {
-  final VONum _id;
+  final VOInt _id;
   final List<VOString> _files;
 
   const TrackFiles(this._id, this._files);
@@ -18,7 +18,7 @@ class TrackFiles extends Entity {
   }
 
   // GETTERS ========
-  VONum get id => _id;
+  VOInt get id => _id;
   List<VOString> get files => _files;
 
   @override

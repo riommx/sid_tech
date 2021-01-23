@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 //
 import 'package:sid_tech/core/i_validatable.dart';
-import 'package:sid_tech/core/failures.dart';
+import 'package:sid_tech/core/value_failure.dart';
 import 'package:sid_tech/core/errors.dart';
 
 // #############################################################################

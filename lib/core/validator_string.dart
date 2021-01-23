@@ -1,12 +1,15 @@
 import 'package:dartz/dartz.dart';
 //
 import 'package:sid_tech/core/validator.dart';
-import 'package:sid_tech/core/failures.dart';
+import 'package:sid_tech/core/value_failure.dart';
 
 class ValidatorString<String> extends Validator {
   //
   // ===========================================================================
-  const ValidatorString(String value) : super(value);
+  ValidatorString(String value) : super(value, String);
+
+  // ===========================================================================
+  //Either<ValueFailure<String>, String> isString() => right(value);
 
   // ===========================================================================
   Either<ValueFailure<String>, String> notEmpty() {

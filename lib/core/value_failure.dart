@@ -1,10 +1,7 @@
-//import 'dart:indexed_db';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 //
-part 'failures.freezed.dart';
+part 'value_failure.freezed.dart';
 
-//
 @freezed
 abstract class ValueFailure<T> with _$ValueFailure<T> {
 // VALIDATOR --------------------------

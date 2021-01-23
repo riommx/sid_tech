@@ -1,4 +1,4 @@
-import 'package:sid_tech/core/failures.dart';
+import 'package:sid_tech/core/value_failure.dart';
 
 //class NotAuthenticatedError extends Error {}
 

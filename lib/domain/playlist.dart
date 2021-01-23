@@ -1,12 +1,12 @@
 import 'package:sid_tech/core/entity.dart';
 //
-import 'package:sid_tech/core/vo_num.dart';
+import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
 class Playlist extends Entity {
-  final VONum _id;
+  final VOInt _id;
   final VOString _name;
-  final List<VONum> _tracks;
+  final List<VOInt> _tracks;
 
   const Playlist(this._id, this._name, this._tracks);
 
@@ -19,9 +19,9 @@ class Playlist extends Entity {
   }
 
   // GETTERS ========
-  VONum get id => _id;
+  VOInt get id => _id;
   VOString get name => _name;
-  List<VONum> get tracks => _tracks;
+  List<VOInt> get tracks => _tracks;
 
   @override
   Map toMap() => {

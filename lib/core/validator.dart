@@ -1,36 +1,84 @@
 import 'package:dartz/dartz.dart';
 //
-import 'package:sid_tech/core/failures.dart';
+import 'package:sid_tech/core/value_failure.dart';
 
 abstract class Validator<T> {
   //
-  // ===========================================================================
-  const Validator(this.value);
-
   final T value;
+  final Type type;
+  //
+  Map failure;
 
   // ===========================================================================
-  Either<ValueFailure<T>, T> notNull() {
-    if (value != null) {
-      return right(value);
-    } else {
-      return left(ValueFailure.nullValue(type: value.runtimeType));
-    }
+  Validator(this.value, this.type);
+  // ==
+
+  // ===========================================================================
+  dynamic notNull() {
+    //
+    failure = {
+      'right': value != null,
+      'String': ValueFailure<String>.nullValue(type: type),
+      'int': ValueFailure<int>.nullValue(type: type),
+      'double': ValueFailure<double>.nullValue(type: type),
+    };
+    return returnVO();
   }
+  // ==
 
   // ===========================================================================
-  Either<ValueFailure<T>, T> regex(RegExp regex) {
-    if (regex.hasMatch(value.toString())) {
-      return right(value);
-    } else {
-      return left(ValueFailure.invalidRegex(
-          failedValue: value,
+  dynamic regex(RegExp regex) {
+    failure = {
+      'right': regex.hasMatch(value.toString()),
+      'String': ValueFailure<String>.invalidRegex(
+          failedValue: value.toString(),
           regex: '${regex.pattern.toString()} ',
-          type: value.runtimeType));
+          type: value.runtimeType),
+      'int': ValueFailure<int>.invalidRegex(
+          failedValue: int.tryParse(value.toString()),
+          regex: '${regex.pattern.toString()} ',
+          type: value.runtimeType),
+      'double': ValueFailure<double>.invalidRegex(
+          failedValue: double.tryParse(value.toString()),
+          regex: '${regex.pattern.toString()} ',
+          type: value.runtimeType),
+    };
+    return returnVO();
+  }
+  // ==
+
+  // ===========================================================================
+  dynamic returnVO() {
+    switch (type) {
+      case String:
+        return voString();
+      //
+      case int:
+        return voInt();
+      //
+      case double:
+        return voDouble();
     }
   }
-}
+  // ==
 
+  // ===========================================================================
+  Either<ValueFailure<String>, String> voString() =>
+      failure['right'] ? right(value.toString()) : left(failure['String']);
+  // ==
+
+  // ===========================================================================
+  Either<ValueFailure<int>, int> voInt() => failure['right']
+      ? right(int.parse(value.toString()))
+      : left(failure['int']);
+  // ==
+
+  // ===========================================================================
+  Either<ValueFailure<double>, double> voDouble() => failure['right']
+      ? right(double.parse(value.toString()))
+      : left(failure['double']);
+  // ==
+}
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _
 // *   / ____| | | |  __ \    |__   __| |  ____|  / ____| | |  | |
@@ -45,5 +93,5 @@ abstract class Validator<T> {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  v 1.2
 // ******************************************************************

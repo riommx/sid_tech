@@ -2,18 +2,18 @@ import 'package:meta/meta.dart';
 //
 import 'package:sid_tech/core/entity_factory.dart';
 import 'package:sid_tech/domain/album.dart';
-import 'package:sid_tech/core/vo_num.dart';
+import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
 class AlbumFactory implements EntityFactory {
   //
   @override
   Album create({
-    @required VONum id,
+    @required VOInt id,
     @required VOString title,
     @required VOString releaseDate,
-    @required VONum upc,
-    @required VONum artistId,
+    @required VOInt upc,
+    @required VOInt artistId,
   }) =>
       Album(
         id,

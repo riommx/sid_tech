@@ -2,13 +2,13 @@ import 'package:meta/meta.dart';
 //
 import 'package:sid_tech/core/entity_factory.dart';
 import 'package:sid_tech/domain/artist.dart';
-import 'package:sid_tech/core/vo_num.dart';
+import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
 class ArtistFactory implements EntityFactory {
   //
   @override
-  Artist create({@required VONum id, @required VOString name}) =>
+  Artist create({@required VOInt id, @required VOString name}) =>
       Artist(id, name);
 
   @override

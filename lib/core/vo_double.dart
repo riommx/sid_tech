@@ -2,7 +2,7 @@ import 'package:meta/meta.dart';
 import 'package:dartz/dartz.dart';
 //
 import 'package:sid_tech/core/vo.dart';
-import 'package:sid_tech/core/failures.dart';
+import 'package:sid_tech/core/value_failure.dart';
 import 'package:sid_tech/core/validator_num.dart';
 
 // #############################################################################
@@ -11,52 +11,28 @@ import 'package:sid_tech/core/validator_num.dart';
 // #
 // #
 // #############################################################################
-class VONum extends ValueObject<num> {
+class VODouble extends ValueObject<double> {
   //
   // ===========================================================================
   @override
-  final Either<ValueFailure<num>, num> value;
+  final Either<ValueFailure<double>, double> value;
 
   // ===========================================================================
-  const VONum._(this.value);
+  VODouble._(this.value);
 
   // ===========================================================================
-  factory VONum({
-    @required num value,
-    bool isDouble = false,
-    num minValue,
-    num maxValue,
+  factory VODouble({
+    @required double value,
+    double minValue,
+    double maxValue,
     RegExp regex,
   }) {
-    final validator = ValidatorNum(value);
+    final validator = ValidatorNum<double>(value, double);
     //
-    var vo = validator.notNull();
-    if (vo.isLeft()) return VONum._(vo);
+    final vo = validator.validate(
+        minValue: minValue, maxValue: maxValue, regex: regex);
     //
-    if (isDouble) {
-      vo = validator.isDouble();
-      if (vo.isLeft()) return VONum._(vo);
-    } else {
-      vo = validator.isInt();
-      if (vo.isLeft()) return VONum._(vo);
-    }
-    //
-    if (minValue != null) {
-      vo = validator.minValue(minValue);
-      if (vo.isLeft()) return VONum._(vo);
-    }
-    //
-    if (maxValue != null) {
-      vo = validator.maxValue(maxValue);
-      if (vo.isLeft()) return VONum._(vo);
-    }
-    //
-    if (regex != null) {
-      vo = validator.regex(regex);
-      if (vo.isLeft()) return VONum._(vo);
-    }
-    //
-    return VONum._(vo);
+    return VODouble._(vo);
   }
 }
 

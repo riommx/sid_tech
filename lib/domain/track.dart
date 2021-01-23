@@ -1,15 +1,15 @@
 import 'package:sid_tech/core/entity.dart';
-import 'package:sid_tech/core/vo_num.dart';
+import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
 // TODO: freezed
 
 class Track extends Entity {
-  final VONum _id;
+  final VOInt _id;
   final VOString _title;
-  final VONum _duration; // seconds
-  final VONum _albumId;
-  final VONum _artistId;
+  final VOInt _duration; // seconds
+  final VOInt _albumId;
+  final VOInt _artistId;
   final VOString _previewURL;
 
   const Track(
@@ -30,11 +30,11 @@ class Track extends Entity {
       _previewURL.isValid();
 
   // GETTERS ========
-  VONum get id => _id;
+  VOInt get id => _id;
   VOString get title => _title;
-  VONum get duration => _duration;
-  VONum get albumId => _albumId;
-  VONum get artistId => _artistId;
+  VOInt get duration => _duration;
+  VOInt get albumId => _albumId;
+  VOInt get artistId => _artistId;
   VOString get previewURL => _previewURL;
 
   @override

@@ -1,4 +1,6 @@
-import 'package:sid_tech/core/vo_num.dart';
+import 'package:sid_tech/core/vo_double.dart';
+import 'package:sid_tech/core/vo_int.dart';
+import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
 // TODO: FORMATAR TIPOS
@@ -7,13 +9,13 @@ abstract class VOs {
 
   static VOString title(String value) => VOString(value: value);
 
-  static VONum id(int value) => VONum(value: value);
+  static VOInt id(int value) => VOInt(value: value);
 
-  static VONum upc(int value) => VONum(value: value);
+  static VOInt upc(int value) => VOInt(value: value);
 
   static VOString date(String value) => VOString(value: value, dateTime: true);
 
-  static VONum seconds(int value) => VONum(value: value, minValue: 1);
+  static VOInt seconds(int value) => VOInt(value: value, minValue: 1);
 
   // TODO: URL regex
   static VOString url(String value) => VOString(value: value);
@@ -27,11 +29,15 @@ abstract class VOs {
     return list;
   }
 
-  static List<VONum> tracks(List values) {
-    var list = <VONum>[];
+  static List<VOInt> tracks(List values) {
+    var list = <VOInt>[];
     values.forEach((e) => list.add(id(e)));
     return list;
   }
+
+  static VOInt idInt(int value) => VOInt(value: value, minValue: 2);
+  static VODouble idDouble(double value) =>
+      VODouble(value: value, minValue: 2.5);
 }
 
 // ******************************************************************

@@ -1,10 +1,10 @@
 import 'package:sid_tech/core/entity.dart';
 //
-import 'package:sid_tech/core/vo_num.dart';
+import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
 class Artist extends Entity {
-  final VONum _id;
+  final VOInt _id;
   final VOString _name;
 
   const Artist(this._id, this._name);
@@ -12,7 +12,7 @@ class Artist extends Entity {
   bool isValid() => _id.isValid() && _name.isValid();
 
   // GETTERS ========
-  VONum get id => _id;
+  VOInt get id => _id;
   VOString get name => _name;
 
   String get pic => '${_id.value}.jpg';
