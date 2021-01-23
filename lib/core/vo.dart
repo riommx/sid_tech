@@ -71,7 +71,7 @@ abstract class ValueObject<T> extends Equatable implements IValidatable {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.2
+// *  v 1.3
 // ******************************************************************
 
 /*

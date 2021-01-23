@@ -2,6 +2,12 @@ import 'package:dartz/dartz.dart';
 //
 import 'package:sid_tech/core/value_failure.dart';
 
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
 abstract class Validator<T> {
   //
   final T value;
@@ -93,5 +99,5 @@ abstract class Validator<T> {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.2
+// *  v 1.3
 // ******************************************************************

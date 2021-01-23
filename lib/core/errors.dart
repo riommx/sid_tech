@@ -1,7 +1,11 @@
 import 'package:sid_tech/core/value_failure.dart';
 
-//class NotAuthenticatedError extends Error {}
-
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
 class UnexpectedValueError extends Error {
   final ValueFailure valueFailure;
 
@@ -14,7 +18,6 @@ class UnexpectedValueError extends Error {
     return Error.safeToString('$explanation Failure was: $valueFailure');
   }
 }
-
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _
 // *   / ____| | | |  __ \    |__   __| |  ____|  / ____| | |  | |
@@ -29,5 +32,5 @@ class UnexpectedValueError extends Error {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  v 1.3
 // ******************************************************************

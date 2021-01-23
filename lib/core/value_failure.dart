@@ -2,6 +2,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 //
 part 'value_failure.freezed.dart';
 
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
 @freezed
 abstract class ValueFailure<T> with _$ValueFailure<T> {
 // VALIDATOR --------------------------
@@ -90,5 +96,5 @@ abstract class ValueFailure<T> with _$ValueFailure<T> {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  v 1.3
 // ******************************************************************

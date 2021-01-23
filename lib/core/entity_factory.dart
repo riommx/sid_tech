@@ -1,6 +1,11 @@
 import 'package:sid_tech/core/entity.dart';
 
-//
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
 abstract class EntityFactory {
   Entity create();
   Entity createFromMap();
@@ -20,5 +25,5 @@ abstract class EntityFactory {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊.△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈    --->  May the source be with you!  <---
-// *  v 1.0
-//
+// *  v 1.3
+// ******************************************************************

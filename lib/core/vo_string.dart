@@ -32,38 +32,14 @@ class VOString extends ValueObject<String> {
   }) {
     final validator = ValidatorString(value);
     //
-    var vo = validator.notNull();
-    if (vo.isLeft()) return VOString._(vo);
-    //
-    if (notEmpty) {
-      vo = validator.notEmpty();
-      if (vo.isLeft()) return VOString._(vo);
-    }
-    //
-    if (singleLine) {
-      vo = validator.singleLine();
-      if (vo.isLeft()) return VOString._(vo);
-    }
-    //
-    if (minLength != null) {
-      vo = validator.minLength(minLength);
-      if (vo.isLeft()) return VOString._(vo);
-    }
-    //
-    if (maxLength != null) {
-      vo = validator.maxLength(maxLength);
-      if (vo.isLeft()) return VOString._(vo);
-    }
-    //
-    if (dateTime) {
-      vo = validator.dateTime();
-      if (vo.isLeft()) return VOString._(vo);
-    }
-    //
-    if (regex != null) {
-      vo = validator.regex(regex);
-      if (vo.isLeft()) return VOString._(vo);
-    }
+    var vo = validator.validate(
+      notEmpty: notEmpty,
+      singleLine: singleLine,
+      minLength: minLength,
+      maxLength: maxLength,
+      dateTime: dateTime,
+      regex: regex,
+    );
     //
     return VOString._(vo);
   }
@@ -83,5 +59,5 @@ class VOString extends ValueObject<String> {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.2
+// *  v 1.3
 // ******************************************************************
