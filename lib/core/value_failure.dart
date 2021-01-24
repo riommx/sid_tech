@@ -23,6 +23,12 @@ abstract class ValueFailure<T> with _$ValueFailure<T> {
     @required Type type,
   }) = InvalidRegex<T>;
 
+  //
+  const factory ValueFailure.notPassTheValidation({
+    @required T failedValue,
+    @required Type type,
+    @required String message,
+  }) = NotPassTheValidation<T>;
 // VALIDATOR STRING -------------------
 
   //

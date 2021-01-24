@@ -29,6 +29,8 @@ class VOString extends ValueObject<String> {
     int maxLength,
     bool dateTime = false,
     RegExp regex,
+    bool Function(dynamic v) other,
+    String otherMessage,
   }) {
     final validator = ValidatorString(value);
     //
@@ -39,6 +41,8 @@ class VOString extends ValueObject<String> {
       maxLength: maxLength,
       dateTime: dateTime,
       regex: regex,
+      other: other,
+      otherMessage: otherMessage,
     );
     //
     return VOString._(vo);

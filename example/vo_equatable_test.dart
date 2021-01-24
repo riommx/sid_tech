@@ -1,8 +1,8 @@
 import 'package:sid_tech/domain/vos.dart';
 
 void main() {
-  var name1 = VOs.name(null); // ('Sid');
-  var name2 = VOs.name('Elisa');
+  var name1 = VOs.name2('Sid');
+  var name2 = VOs.name2('Elisa');
   print(name1 == name2);
   print(name2.toString());
   print(name1.value);
@@ -10,7 +10,7 @@ void main() {
   print(name1.getOrElse('Davi'));
   print(name2.getOrElse('Golias'));
 
-  var int1 = VOs.idInt(null); // (1);
+  var int1 = VOs.idInt(3);
   var int2 = VOs.idInt(4);
   print(int1 == int2);
   print(int2.toString());

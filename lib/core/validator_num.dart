@@ -18,6 +18,8 @@ class ValidatorNum<T> extends Validator {
     num minValue,
     num maxValue,
     RegExp regex,
+    bool Function(dynamic v) other,
+    String otherMessage,
   }) {
     var vo = notNull();
     if (vo.isLeft()) return vo;
@@ -44,6 +46,11 @@ class ValidatorNum<T> extends Validator {
     //
     if (regex != null) {
       vo = this.regex(regex);
+      if (vo.isLeft()) return vo;
+    }
+    //
+    if (other != null) {
+      vo = otherValidation(other, otherMessage);
       if (vo.isLeft()) return vo;
     }
     //

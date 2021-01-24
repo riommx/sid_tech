@@ -26,11 +26,17 @@ class VOInt extends ValueObject<int> {
     int minValue,
     int maxValue,
     RegExp regex,
+    bool Function(dynamic v) other,
+    String otherMessage,
   }) {
     final validator = ValidatorNum<int>(value, int);
     //
     final vo = validator.validate(
-        minValue: minValue, maxValue: maxValue, regex: regex);
+        minValue: minValue,
+        maxValue: maxValue,
+        regex: regex,
+        other: other,
+        otherMessage: otherMessage);
     //
     return VOInt._(vo);
   }

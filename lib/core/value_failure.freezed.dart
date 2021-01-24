@@ -31,6 +31,18 @@ class _$ValueFailureTearOff {
   }
 
 // ignore: unused_element
+  NotPassTheValidation<T> notPassTheValidation<T>(
+      {@required T failedValue,
+      @required Type type,
+      @required String message}) {
+    return NotPassTheValidation<T>(
+      failedValue: failedValue,
+      type: type,
+      message: message,
+    );
+  }
+
+// ignore: unused_element
   Empty<T> empty<T>({@required T failedValue}) {
     return Empty<T>(
       failedValue: failedValue,
@@ -126,6 +138,8 @@ mixin _$ValueFailure<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -141,6 +155,7 @@ mixin _$ValueFailure<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -157,6 +172,7 @@ mixin _$ValueFailure<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -172,6 +188,7 @@ mixin _$ValueFailure<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -265,6 +282,8 @@ class _$NullValue<T> implements NullValue<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -278,6 +297,7 @@ class _$NullValue<T> implements NullValue<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -296,6 +316,7 @@ class _$NullValue<T> implements NullValue<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -320,6 +341,7 @@ class _$NullValue<T> implements NullValue<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -333,6 +355,7 @@ class _$NullValue<T> implements NullValue<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -351,6 +374,7 @@ class _$NullValue<T> implements NullValue<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -461,6 +485,8 @@ class _$InvalidRegex<T> implements InvalidRegex<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -474,6 +500,7 @@ class _$InvalidRegex<T> implements InvalidRegex<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -492,6 +519,7 @@ class _$InvalidRegex<T> implements InvalidRegex<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -516,6 +544,7 @@ class _$InvalidRegex<T> implements InvalidRegex<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -529,6 +558,7 @@ class _$InvalidRegex<T> implements InvalidRegex<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -547,6 +577,7 @@ class _$InvalidRegex<T> implements InvalidRegex<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -577,6 +608,215 @@ abstract class InvalidRegex<T> implements ValueFailure<T> {
   String get regex;
   Type get type;
   $InvalidRegexCopyWith<T, InvalidRegex<T>> get copyWith;
+}
+
+/// @nodoc
+abstract class $NotPassTheValidationCopyWith<T, $Res> {
+  factory $NotPassTheValidationCopyWith(NotPassTheValidation<T> value,
+          $Res Function(NotPassTheValidation<T>) then) =
+      _$NotPassTheValidationCopyWithImpl<T, $Res>;
+  $Res call({T failedValue, Type type, String message});
+}
+
+/// @nodoc
+class _$NotPassTheValidationCopyWithImpl<T, $Res>
+    extends _$ValueFailureCopyWithImpl<T, $Res>
+    implements $NotPassTheValidationCopyWith<T, $Res> {
+  _$NotPassTheValidationCopyWithImpl(NotPassTheValidation<T> _value,
+      $Res Function(NotPassTheValidation<T>) _then)
+      : super(_value, (v) => _then(v as NotPassTheValidation<T>));
+
+  @override
+  NotPassTheValidation<T> get _value => super._value as NotPassTheValidation<T>;
+
+  @override
+  $Res call({
+    Object failedValue = freezed,
+    Object type = freezed,
+    Object message = freezed,
+  }) {
+    return _then(NotPassTheValidation<T>(
+      failedValue:
+          failedValue == freezed ? _value.failedValue : failedValue as T,
+      type: type == freezed ? _value.type : type as Type,
+      message: message == freezed ? _value.message : message as String,
+    ));
+  }
+}
+
+/// @nodoc
+class _$NotPassTheValidation<T> implements NotPassTheValidation<T> {
+  const _$NotPassTheValidation(
+      {@required this.failedValue, @required this.type, @required this.message})
+      : assert(failedValue != null),
+        assert(type != null),
+        assert(message != null);
+
+  @override
+  final T failedValue;
+  @override
+  final Type type;
+  @override
+  final String message;
+
+  @override
+  String toString() {
+    return 'ValueFailure<$T>.notPassTheValidation(failedValue: $failedValue, type: $type, message: $message)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is NotPassTheValidation<T> &&
+            (identical(other.failedValue, failedValue) ||
+                const DeepCollectionEquality()
+                    .equals(other.failedValue, failedValue)) &&
+            (identical(other.type, type) ||
+                const DeepCollectionEquality().equals(other.type, type)) &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality().equals(other.message, message)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(failedValue) ^
+      const DeepCollectionEquality().hash(type) ^
+      const DeepCollectionEquality().hash(message);
+
+  @override
+  $NotPassTheValidationCopyWith<T, NotPassTheValidation<T>> get copyWith =>
+      _$NotPassTheValidationCopyWithImpl<T, NotPassTheValidation<T>>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object>({
+    @required TResult nullValue(Type type),
+    @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
+    @required TResult empty(T failedValue),
+    @required TResult multiline(T failedValue),
+    @required TResult shortLength(T failedValue, int length, int minLength),
+    @required TResult exceedingLength(T failedValue, int length, int maxLength),
+    @required TResult invalidDateTime(T failedValue),
+    @required TResult valueNotInt(T failedValue),
+    @required TResult valueNotDouble(T failedValue),
+    @required TResult overMaxValue(T failedValue, String max),
+    @required TResult subMinValue(T failedValue, String min),
+    @required TResult listTooLong(T failedValue, int max),
+  }) {
+    assert(nullValue != null);
+    assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
+    assert(empty != null);
+    assert(multiline != null);
+    assert(shortLength != null);
+    assert(exceedingLength != null);
+    assert(invalidDateTime != null);
+    assert(valueNotInt != null);
+    assert(valueNotDouble != null);
+    assert(overMaxValue != null);
+    assert(subMinValue != null);
+    assert(listTooLong != null);
+    return notPassTheValidation(failedValue, type, message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object>({
+    TResult nullValue(Type type),
+    TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
+    TResult empty(T failedValue),
+    TResult multiline(T failedValue),
+    TResult shortLength(T failedValue, int length, int minLength),
+    TResult exceedingLength(T failedValue, int length, int maxLength),
+    TResult invalidDateTime(T failedValue),
+    TResult valueNotInt(T failedValue),
+    TResult valueNotDouble(T failedValue),
+    TResult overMaxValue(T failedValue, String max),
+    TResult subMinValue(T failedValue, String min),
+    TResult listTooLong(T failedValue, int max),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (notPassTheValidation != null) {
+      return notPassTheValidation(failedValue, type, message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object>({
+    @required TResult nullValue(NullValue<T> value),
+    @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
+    @required TResult empty(Empty<T> value),
+    @required TResult multiline(Multiline<T> value),
+    @required TResult shortLength(ShortLength<T> value),
+    @required TResult exceedingLength(ExceedingLength<T> value),
+    @required TResult invalidDateTime(InvalidDateTime<T> value),
+    @required TResult valueNotInt(ValueNotInt<T> value),
+    @required TResult valueNotDouble(ValueNotDouble<T> value),
+    @required TResult overMaxValue(OverMaxValue<T> value),
+    @required TResult subMinValue(SubMinValue<T> value),
+    @required TResult listTooLong(ListTooLong<T> value),
+  }) {
+    assert(nullValue != null);
+    assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
+    assert(empty != null);
+    assert(multiline != null);
+    assert(shortLength != null);
+    assert(exceedingLength != null);
+    assert(invalidDateTime != null);
+    assert(valueNotInt != null);
+    assert(valueNotDouble != null);
+    assert(overMaxValue != null);
+    assert(subMinValue != null);
+    assert(listTooLong != null);
+    return notPassTheValidation(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object>({
+    TResult nullValue(NullValue<T> value),
+    TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
+    TResult empty(Empty<T> value),
+    TResult multiline(Multiline<T> value),
+    TResult shortLength(ShortLength<T> value),
+    TResult exceedingLength(ExceedingLength<T> value),
+    TResult invalidDateTime(InvalidDateTime<T> value),
+    TResult valueNotInt(ValueNotInt<T> value),
+    TResult valueNotDouble(ValueNotDouble<T> value),
+    TResult overMaxValue(OverMaxValue<T> value),
+    TResult subMinValue(SubMinValue<T> value),
+    TResult listTooLong(ListTooLong<T> value),
+    @required TResult orElse(),
+  }) {
+    assert(orElse != null);
+    if (notPassTheValidation != null) {
+      return notPassTheValidation(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NotPassTheValidation<T> implements ValueFailure<T> {
+  const factory NotPassTheValidation(
+      {@required T failedValue,
+      @required Type type,
+      @required String message}) = _$NotPassTheValidation<T>;
+
+  T get failedValue;
+  Type get type;
+  String get message;
+  $NotPassTheValidationCopyWith<T, NotPassTheValidation<T>> get copyWith;
 }
 
 /// @nodoc
@@ -640,6 +880,8 @@ class _$Empty<T> implements Empty<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -653,6 +895,7 @@ class _$Empty<T> implements Empty<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -671,6 +914,7 @@ class _$Empty<T> implements Empty<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -695,6 +939,7 @@ class _$Empty<T> implements Empty<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -708,6 +953,7 @@ class _$Empty<T> implements Empty<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -726,6 +972,7 @@ class _$Empty<T> implements Empty<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -817,6 +1064,8 @@ class _$Multiline<T> implements Multiline<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -830,6 +1079,7 @@ class _$Multiline<T> implements Multiline<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -848,6 +1098,7 @@ class _$Multiline<T> implements Multiline<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -872,6 +1123,7 @@ class _$Multiline<T> implements Multiline<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -885,6 +1137,7 @@ class _$Multiline<T> implements Multiline<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -903,6 +1156,7 @@ class _$Multiline<T> implements Multiline<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -1016,6 +1270,8 @@ class _$ShortLength<T> implements ShortLength<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -1029,6 +1285,7 @@ class _$ShortLength<T> implements ShortLength<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -1047,6 +1304,7 @@ class _$ShortLength<T> implements ShortLength<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -1071,6 +1329,7 @@ class _$ShortLength<T> implements ShortLength<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -1084,6 +1343,7 @@ class _$ShortLength<T> implements ShortLength<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -1102,6 +1362,7 @@ class _$ShortLength<T> implements ShortLength<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -1220,6 +1481,8 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -1233,6 +1496,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -1251,6 +1515,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -1275,6 +1540,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -1288,6 +1554,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -1306,6 +1573,7 @@ class _$ExceedingLength<T> implements ExceedingLength<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -1403,6 +1671,8 @@ class _$InvalidDateTime<T> implements InvalidDateTime<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -1416,6 +1686,7 @@ class _$InvalidDateTime<T> implements InvalidDateTime<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -1434,6 +1705,7 @@ class _$InvalidDateTime<T> implements InvalidDateTime<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -1458,6 +1730,7 @@ class _$InvalidDateTime<T> implements InvalidDateTime<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -1471,6 +1744,7 @@ class _$InvalidDateTime<T> implements InvalidDateTime<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -1489,6 +1763,7 @@ class _$InvalidDateTime<T> implements InvalidDateTime<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -1582,6 +1857,8 @@ class _$ValueNotInt<T> implements ValueNotInt<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -1595,6 +1872,7 @@ class _$ValueNotInt<T> implements ValueNotInt<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -1613,6 +1891,7 @@ class _$ValueNotInt<T> implements ValueNotInt<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -1637,6 +1916,7 @@ class _$ValueNotInt<T> implements ValueNotInt<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -1650,6 +1930,7 @@ class _$ValueNotInt<T> implements ValueNotInt<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -1668,6 +1949,7 @@ class _$ValueNotInt<T> implements ValueNotInt<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -1760,6 +2042,8 @@ class _$ValueNotDouble<T> implements ValueNotDouble<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -1773,6 +2057,7 @@ class _$ValueNotDouble<T> implements ValueNotDouble<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -1791,6 +2076,7 @@ class _$ValueNotDouble<T> implements ValueNotDouble<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -1815,6 +2101,7 @@ class _$ValueNotDouble<T> implements ValueNotDouble<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -1828,6 +2115,7 @@ class _$ValueNotDouble<T> implements ValueNotDouble<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -1846,6 +2134,7 @@ class _$ValueNotDouble<T> implements ValueNotDouble<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -1947,6 +2236,8 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -1960,6 +2251,7 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -1978,6 +2270,7 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -2002,6 +2295,7 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -2015,6 +2309,7 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -2033,6 +2328,7 @@ class _$OverMaxValue<T> implements OverMaxValue<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -2136,6 +2432,8 @@ class _$SubMinValue<T> implements SubMinValue<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -2149,6 +2447,7 @@ class _$SubMinValue<T> implements SubMinValue<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -2167,6 +2466,7 @@ class _$SubMinValue<T> implements SubMinValue<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -2191,6 +2491,7 @@ class _$SubMinValue<T> implements SubMinValue<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -2204,6 +2505,7 @@ class _$SubMinValue<T> implements SubMinValue<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -2222,6 +2524,7 @@ class _$SubMinValue<T> implements SubMinValue<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),
@@ -2325,6 +2628,8 @@ class _$ListTooLong<T> implements ListTooLong<T> {
   TResult when<TResult extends Object>({
     @required TResult nullValue(Type type),
     @required TResult invalidRegex(T failedValue, String regex, Type type),
+    @required
+        TResult notPassTheValidation(T failedValue, Type type, String message),
     @required TResult empty(T failedValue),
     @required TResult multiline(T failedValue),
     @required TResult shortLength(T failedValue, int length, int minLength),
@@ -2338,6 +2643,7 @@ class _$ListTooLong<T> implements ListTooLong<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -2356,6 +2662,7 @@ class _$ListTooLong<T> implements ListTooLong<T> {
   TResult maybeWhen<TResult extends Object>({
     TResult nullValue(Type type),
     TResult invalidRegex(T failedValue, String regex, Type type),
+    TResult notPassTheValidation(T failedValue, Type type, String message),
     TResult empty(T failedValue),
     TResult multiline(T failedValue),
     TResult shortLength(T failedValue, int length, int minLength),
@@ -2380,6 +2687,7 @@ class _$ListTooLong<T> implements ListTooLong<T> {
   TResult map<TResult extends Object>({
     @required TResult nullValue(NullValue<T> value),
     @required TResult invalidRegex(InvalidRegex<T> value),
+    @required TResult notPassTheValidation(NotPassTheValidation<T> value),
     @required TResult empty(Empty<T> value),
     @required TResult multiline(Multiline<T> value),
     @required TResult shortLength(ShortLength<T> value),
@@ -2393,6 +2701,7 @@ class _$ListTooLong<T> implements ListTooLong<T> {
   }) {
     assert(nullValue != null);
     assert(invalidRegex != null);
+    assert(notPassTheValidation != null);
     assert(empty != null);
     assert(multiline != null);
     assert(shortLength != null);
@@ -2411,6 +2720,7 @@ class _$ListTooLong<T> implements ListTooLong<T> {
   TResult maybeMap<TResult extends Object>({
     TResult nullValue(NullValue<T> value),
     TResult invalidRegex(InvalidRegex<T> value),
+    TResult notPassTheValidation(NotPassTheValidation<T> value),
     TResult empty(Empty<T> value),
     TResult multiline(Multiline<T> value),
     TResult shortLength(ShortLength<T> value),

@@ -26,11 +26,17 @@ class VODouble extends ValueObject<double> {
     double minValue,
     double maxValue,
     RegExp regex,
+    bool Function(dynamic v) other,
+    String otherMessage,
   }) {
     final validator = ValidatorNum<double>(value, double);
     //
     final vo = validator.validate(
-        minValue: minValue, maxValue: maxValue, regex: regex);
+        minValue: minValue,
+        maxValue: maxValue,
+        regex: regex,
+        other: other,
+        otherMessage: otherMessage);
     //
     return VODouble._(vo);
   }

@@ -13,7 +13,7 @@ abstract class Validator<T> {
   final T value;
   final Type type;
   //
-  Map failure;
+  Map _voMap;
 
   // ===========================================================================
   Validator(this.value, this.type);
@@ -22,7 +22,7 @@ abstract class Validator<T> {
   // ===========================================================================
   dynamic notNull() {
     //
-    failure = {
+    _voMap = {
       'right': value != null,
       'String': ValueFailure<String>.nullValue(type: type),
       'int': ValueFailure<int>.nullValue(type: type),
@@ -34,24 +34,63 @@ abstract class Validator<T> {
 
   // ===========================================================================
   dynamic regex(RegExp regex) {
-    failure = {
-      'right': regex.hasMatch(value.toString()),
-      'String': ValueFailure<String>.invalidRegex(
-          failedValue: value.toString(),
-          regex: '${regex.pattern.toString()} ',
-          type: value.runtimeType),
-      'int': ValueFailure<int>.invalidRegex(
-          failedValue: int.tryParse(value.toString()),
-          regex: '${regex.pattern.toString()} ',
-          type: value.runtimeType),
-      'double': ValueFailure<double>.invalidRegex(
-          failedValue: double.tryParse(value.toString()),
-          regex: '${regex.pattern.toString()} ',
-          type: value.runtimeType),
-    };
+    var failure;
+    switch (type) {
+      case String:
+        failure = ValueFailure<String>.invalidRegex(
+            failedValue: value.toString(),
+            regex: '${regex.pattern.toString()} ',
+            type: value.runtimeType);
+        break;
+      //
+      case int:
+        failure = ValueFailure<int>.invalidRegex(
+            failedValue: int.tryParse(value.toString()),
+            regex: '${regex.pattern.toString()} ',
+            type: value.runtimeType);
+        break;
+      //
+      case double:
+        failure = ValueFailure<double>.invalidRegex(
+            failedValue: double.tryParse(value.toString()),
+            regex: '${regex.pattern.toString()} ',
+            type: value.runtimeType);
+        break;
+    }
+    _voMap = {'right': regex.hasMatch(value.toString()), 'failure': failure};
+    //
     return returnVO();
   }
   // ==
+
+  dynamic otherValidation(bool Function(T v) other, [String msg]) {
+    //, String message) {
+    var message = msg ?? 'Fail in other kind of validation';
+    var failure;
+    switch (type) {
+      case String:
+        failure = ValueFailure<String>.notPassTheValidation(
+            failedValue: value.toString(), type: type, message: message);
+        break;
+      //
+      case int:
+        failure = ValueFailure<int>.notPassTheValidation(
+            failedValue: int.tryParse(value.toString()),
+            type: type,
+            message: message);
+        break;
+      //
+      case double:
+        failure = ValueFailure<double>.notPassTheValidation(
+            failedValue: double.tryParse(value.toString()),
+            type: type,
+            message: message);
+        break;
+    }
+    _voMap = {'right': other(value), 'failure': failure};
+    //
+    return returnVO();
+  }
 
   // ===========================================================================
   dynamic returnVO() {
@@ -70,19 +109,19 @@ abstract class Validator<T> {
 
   // ===========================================================================
   Either<ValueFailure<String>, String> voString() =>
-      failure['right'] ? right(value.toString()) : left(failure['String']);
+      _voMap['right'] ? right(value.toString()) : left(_voMap['failure']);
   // ==
 
   // ===========================================================================
-  Either<ValueFailure<int>, int> voInt() => failure['right']
+  Either<ValueFailure<int>, int> voInt() => _voMap['right']
       ? right(int.parse(value.toString()))
-      : left(failure['int']);
+      : left(_voMap['failure']);
   // ==
 
   // ===========================================================================
-  Either<ValueFailure<double>, double> voDouble() => failure['right']
+  Either<ValueFailure<double>, double> voDouble() => _voMap['right']
       ? right(double.parse(value.toString()))
-      : left(failure['double']);
+      : left(_voMap['failure']);
   // ==
 }
 // ******************************************************************

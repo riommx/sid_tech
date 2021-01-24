@@ -1,10 +1,11 @@
 import 'package:sid_tech/core/vo_double.dart';
 import 'package:sid_tech/core/vo_int.dart';
-import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
 // TODO: FORMATAR TIPOS
 abstract class VOs {
+  //bool diferenteDeSid(String v) => v == 'Sid';
+
   static VOString name(String value) => VOString(value: value);
 
   static VOString title(String value) => VOString(value: value);
@@ -35,9 +36,17 @@ abstract class VOs {
     return list;
   }
 
-  static VOInt idInt(int value) => VOInt(value: value, minValue: 2);
+  static VOInt idInt(int value) => VOInt(
+      value: value,
+      minValue: 2,
+      other: (var v) => v.isEven,
+      otherMessage: 'Tem que ser PAR');
   static VODouble idDouble(double value) =>
       VODouble(value: value, minValue: 2.5);
+  static VOString name2(String value) => VOString(
+      value: value,
+      other: (var v) => v != 'Sid',
+      otherMessage: 'Não pode ser Sid');
 }
 
 // ******************************************************************

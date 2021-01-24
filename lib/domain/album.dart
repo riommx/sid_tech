@@ -3,6 +3,31 @@ import 'package:sid_tech/core/entity.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
+// class UniqueId extends ValueObject<String> {
+//   @override
+//   final Either<ValueFailure<String>, String> value;
+
+//   // We cannot let a simple String be passed in. This would allow for possible non-unique IDs.
+//   factory UniqueId() {
+//     return UniqueId._(
+//       right(Uuid().v1()),
+//     );
+//   }
+
+//   /// Used with strings we trust are unique, such as database IDs.
+//   factory UniqueId.fromUniqueString(String uniqueIdStr) {
+//     assert(uniqueIdStr != null);
+//     return UniqueId._(
+//       right(uniqueIdStr),
+//     );
+//   }
+
+//   const UniqueId._(this.value);
+// }
+// abstract class IEntity {
+//   UniqueId get id;
+// }
+
 class Album extends Entity {
   final VOInt _id;
   final VOString _title;
@@ -68,3 +93,51 @@ class Album extends Entity {
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
 // * v 1.0
 // ******************************************************************
+
+// import 'package:dartz/dartz.dart';
+// import 'package:flutter/foundation.dart';
+// import 'package:freezed_annotation/freezed_annotation.dart';
+// import 'package:kt_dart/collection.dart';
+
+// import 'package:finished_notes_firebase_ddd_course/domain/core/entity.dart';
+// import 'package:finished_notes_firebase_ddd_course/domain/core/failures.dart';
+// import 'package:finished_notes_firebase_ddd_course/domain/core/value_objects.dart';
+// import 'package:finished_notes_firebase_ddd_course/domain/notes/todo_item.dart';
+// import 'package:finished_notes_firebase_ddd_course/domain/notes/value_objects.dart';
+// import 'package:finished_notes_firebase_ddd_course/domain/notes/value_objects.dart';
+
+// part 'note.freezed.dart';
+
+// @freezed
+// abstract class Note with _$Note implements IEntity {
+//   const factory Note({
+//     @required UniqueId id,
+//     @required NoteBody body,
+//     @required NoteColor color,
+//     @required List3<TodoItem> todos,
+//   }) = _Note;
+
+//   factory Note.empty() => Note(
+//         id: UniqueId(),
+//         body: NoteBody(''),
+//         color: NoteColor(NoteColor.predefinedColors[0]),
+//         todos: List3(emptyList()),
+//       );
+// }
+
+// extension NoteX on Note {
+//   Option<ValueFailure<dynamic>> get failureOption {
+//     return body.failureOrUnit
+//         .andThen(color.failureOrUnit)
+//         .andThen(todos.failureOrUnit)
+//         .andThen(
+//           todos
+//               .getOrCrash()
+//               .map((todoItem) => todoItem.failureOption)
+//               .filter((o) => o.isSome())
+//               .getOrElse(0, (_) => none())
+//               .fold(() => right(unit), (f) => left(f)),
+//         )
+//         .fold((f) => some(f), (_) => none());
+//   }
+// }

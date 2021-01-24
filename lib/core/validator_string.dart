@@ -22,6 +22,8 @@ class ValidatorString<String> extends Validator {
     int maxLength,
     bool dateTime = false,
     RegExp regex,
+    dynamic otherMessage,
+    bool Function(String v) other,
   }) {
     var vo = notNull();
     if (vo.isLeft()) return vo;
@@ -55,6 +57,12 @@ class ValidatorString<String> extends Validator {
       vo = this.regex(regex);
       if (vo.isLeft()) return vo;
     }
+    //
+    if (other != null) {
+      vo = otherValidation(other, otherMessage);
+      if (vo.isLeft()) return vo;
+    }
+
     return vo;
   }
 
