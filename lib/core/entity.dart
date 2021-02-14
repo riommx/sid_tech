@@ -1,4 +1,7 @@
+import 'package:dartz/dartz.dart';
+//
 import 'package:sid_tech/core/i_validatable.dart';
+import 'package:sid_tech/core/value_failure.dart';
 
 // #############################################################################
 // #
@@ -10,6 +13,7 @@ import 'package:sid_tech/core/i_validatable.dart';
 abstract class Entity implements IValidatable {
   const Entity();
   Map toMap();
+  Option<ValueFailure<dynamic>> get failureOption;
 }
 
 // ******************************************************************
@@ -25,6 +29,6 @@ abstract class Entity implements IValidatable {
 // *  ┈┈┃┊┊┊╱▽▽▽┛┈┈  -< Designed by Sedinir Consentini @ 2021 >-
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
-// *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.3
+// *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
+// *  v 1.5
 // ******************************************************************

@@ -348,6 +348,52 @@ Future<bool> save({@required Map maps}) async {
   // RETURN <<<<<<<<<<<<<<<<<<<<<<<<
   return success;
 }
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//Track
+// void printInfo() {
+//   print('-------------------------------------------------------');
+//   print(
+//       '${title.value} (${this.id.value}) - ${duration.value} seconds from ${albumId.value} by ${artistId.value} on ${previewURL.value}');
+// }
+
+//TrackFiles
+// void printInfo() {
+//   print('-------------------------------------------------------');
+//   print(this.id.value);
+//   files.forEach((f) => print(f.value));
+// }
+
+// Artist
+// String get pic => '${id.value}.jpg';
+
+// String get urlPic =>
+//     'https://api.deezer.com/artist/${id.value}/image?size=xl';
+
+// void printInfo() {
+//   print('-------------------------------------------------------');
+//   print('${name.value} (${this.id.value})');
+// }
+
+// Album
+// String get pic => '${this.id.value}.jpg';
+
+// String get urlPic =>
+//     'https://api.deezer.com/album/${this.id.value}/image?size=xl';
+
+// void printInfo() {
+//   print('-------------------------------------------------------');
+//   print(
+//       '${title.value} (${this.id.value}) from ${releaseDate.value} by ${artistId.value} upc ${upc.value}');
+// }
+
+// Playlist
+// void printInfo() {
+//   print('-------------------------------------------------------');
+//   print('${name.value} (${this.id.value})');
+//   print('tracks: ${tracks.toString()}');
+// }
+
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 /*import 'package:sid_tech/application/paths.dart';
 

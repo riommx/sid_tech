@@ -3,7 +3,7 @@
 /// More dartdocs go here.
 library sid_tech;
 
-export 'domain/vos.dart';
+//export 'domain/vos.dart';
 export 'domain/muzeek_factory.dart';
 // TODO: Export any libraries intended for clients of this package.
 
@@ -21,5 +21,5 @@ export 'domain/muzeek_factory.dart';
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  v 1.5
 // ******************************************************************

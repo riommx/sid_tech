@@ -4,9 +4,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:dartz/dartz.dart';
 //
 import 'package:sid_tech/core/entity.dart';
-import 'package:sid_tech/core/value_failure.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
+import 'package:sid_tech/core/value_failure.dart';
 
 part 'album.freezed.dart';
 
@@ -18,8 +18,9 @@ part 'album.freezed.dart';
 // #############################################################################
 @freezed
 abstract class Album extends Entity with _$Album {
+  //
   const Album._();
-
+  //
   const factory Album({
     @required VOInt id,
     @required VOString title,
@@ -28,20 +29,7 @@ abstract class Album extends Entity with _$Album {
     @required VOInt artistId,
   }) = _Album;
 
-  // implements IValidatable
-  @override
-  bool isValid() =>
-      this.id.isValid() &&
-      title.isValid() &&
-      releaseDate.isValid() &&
-      upc.isValid() &&
-      artistId.isValid();
-
-  // String get pic => '${this.id.value}.jpg';
-
-  // String get urlPic =>
-  //     'https://api.deezer.com/album/${this.id.value}/image?size=xl';
-
+  // from Entity
   @override
   Map toMap() => {
         // id = identity - same as writing (right) => right
@@ -52,18 +40,8 @@ abstract class Album extends Entity with _$Album {
         'artistId': artistId.value.fold((l) => l, id).toString(),
       };
 
+  // from Entity
   @override
-  String toString() =>
-      'Album(id: ${this.id.value} title: ${title.value} releaseDate: ${releaseDate.value} upc: ${upc.value} artistId: ${artistId.value})';
-
-  void printInfo() {
-    print('-------------------------------------------------------');
-    print(
-        '${title.value} (${this.id.value}) from ${releaseDate.value} by ${artistId.value} upc ${upc.value}');
-  }
-}
-
-extension AlbumX on Album {
   Option<ValueFailure<dynamic>> get failureOption {
     return this
         .id
@@ -73,6 +51,23 @@ extension AlbumX on Album {
         .andThen(upc.failureOrUnit)
         .andThen(artistId.failureOrUnit)
         .fold((f) => some(f), (_) => none());
+  }
+
+  // from IValidatable
+  @override
+  bool isValid() =>
+      this.id.isValid() &&
+      title.isValid() &&
+      releaseDate.isValid() &&
+      upc.isValid() &&
+      artistId.isValid();
+
+  @override
+  String toString() {
+    var str = 'Album(id: ${this.id.value}';
+    str += ' title: ${title.value} releaseDate: ${releaseDate.value}';
+    str += ' upc: ${upc.value} artistId: ${artistId.value})';
+    return str;
   }
 }
 // ******************************************************************
@@ -89,5 +84,5 @@ extension AlbumX on Album {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.4
+// *  v 1.5
 // ******************************************************************

@@ -6,6 +6,7 @@ import 'package:dartz/dartz.dart';
 import 'package:sid_tech/core/entity.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
+import 'package:sid_tech/core/value_failure.dart';
 
 part 'track_files.freezed.dart';
 
@@ -17,14 +18,38 @@ part 'track_files.freezed.dart';
 // #############################################################################
 @freezed
 abstract class TrackFiles extends Entity with _$TrackFiles {
+  //
   const TrackFiles._();
-
+  //
   const factory TrackFiles({
     @required VOInt id,
     @required List<VOString> files,
   }) = _TrackFiles;
 
-  // implements IValidatable
+  // from Entity
+  @override
+  Map toMap() => {
+        // id = identity - same as writing (right) => right
+        'id': this.id.value.fold((l) => l, id).toString(),
+        'files': _filesToList(),
+      };
+
+  // from Entity
+  @override
+  Option<ValueFailure<dynamic>> get failureOption => this
+      .id
+      .failureOrUnit
+      .andThen(
+        files
+            .cast()
+            .map((file) => file.failureOrUnit)
+            .where((e) => e.isLeft())
+            .first(orElse: (_) => none())
+            .fold(() => right(unit), (f) => left(f)),
+      )
+      .fold((f) => some(f), (_) => none());
+
+  // from IValidatable
   @override
   bool isValid() {
     var valid = this.id.isValid();
@@ -34,13 +59,7 @@ abstract class TrackFiles extends Entity with _$TrackFiles {
     return valid;
   }
 
-  @override
-  Map toMap() => {
-        // id = identity - same as writing (right) => right
-        'id': this.id.value.fold((l) => l, id).toString(),
-        'files': _filesToList(),
-      };
-
+  // for toMap()
   List _filesToList() {
     var list = [];
     files.forEach((f) => list.add(f.value.fold((l) => l, id)));
@@ -50,14 +69,7 @@ abstract class TrackFiles extends Entity with _$TrackFiles {
   @override
   String toString() =>
       'TrackFiles(id: ${this.id.toString()} files: ${files.toString()})';
-
-  void printInfo() {
-    print('-------------------------------------------------------');
-    print(this.id.value);
-    files.forEach((f) => print(f.value));
-  }
 }
-
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _
 // *   / ____| | | |  __ \    |__   __| |  ____|  / ____| | |  | |
@@ -72,5 +84,5 @@ abstract class TrackFiles extends Entity with _$TrackFiles {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.4
+// *  v 1.5
 // ******************************************************************

@@ -6,6 +6,7 @@ import 'package:dartz/dartz.dart';
 import 'package:sid_tech/core/entity.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
+import 'package:sid_tech/core/value_failure.dart';
 
 part 'track.freezed.dart';
 
@@ -28,16 +29,7 @@ abstract class Track extends Entity with _$Track {
     @required VOString previewURL,
   }) = _Track;
 
-  // implements IValidatable
-  @override
-  bool isValid() =>
-      this.id.isValid() &&
-      title.isValid() &&
-      duration.isValid() &&
-      albumId.isValid() &&
-      artistId.isValid() &&
-      previewURL.isValid();
-
+  // from Entity
   @override
   Map toMap() => {
         // id = identity - same as writing (right) => right
@@ -49,17 +41,39 @@ abstract class Track extends Entity with _$Track {
         'previewURL': previewURL.value.fold((l) => l, id),
       };
 
+  // from Entity
   @override
-  String toString() =>
-      'Track(id: ${this.id.toString()} title: ${title.toString()} duration: ${duration.toString()} albumId: ${albumId.toString()} artistId: ${artistId.toString()} previewURL: ${previewURL.toString()})';
+  Option<ValueFailure<dynamic>> get failureOption {
+    return this
+        .id
+        .failureOrUnit
+        .andThen(title.failureOrUnit)
+        .andThen(duration.failureOrUnit)
+        .andThen(albumId.failureOrUnit)
+        .andThen(artistId.failureOrUnit)
+        .andThen(previewURL.failureOrUnit)
+        .fold((f) => some(f), (_) => none());
+  }
 
-  void printInfo() {
-    print('-------------------------------------------------------');
-    print(
-        '${title.value} (${this.id.value}) - ${duration.value} seconds from ${albumId.value} by ${artistId.value} on ${previewURL.value}');
+  // from IValidatable
+  @override
+  bool isValid() =>
+      this.id.isValid() &&
+      title.isValid() &&
+      duration.isValid() &&
+      albumId.isValid() &&
+      artistId.isValid() &&
+      previewURL.isValid();
+
+  @override
+  String toString() {
+    var str = 'Track(id: ${this.id.toString()}';
+    str += ' title: ${title.toString()} duration: ${duration.toString()}';
+    str += ' albumId: ${albumId.toString()} artistId: ${artistId.toString()}';
+    str += ' previewURL: ${previewURL.toString()})';
+    return str;
   }
 }
-
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _
 // *   / ____| | | |  __ \    |__   __| |  ____|  / ____| | |  | |
@@ -74,5 +88,5 @@ abstract class Track extends Entity with _$Track {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.4
+// *  v 1.5
 // ******************************************************************
