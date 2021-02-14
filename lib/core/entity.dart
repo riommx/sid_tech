@@ -1,10 +1,13 @@
+import 'package:sid_tech/core/i_validatable.dart';
+
 // #############################################################################
 // #
 // #  TODO: Comment class
 // #
 // #
 // #############################################################################
-abstract class Entity {
+
+abstract class Entity implements IValidatable {
   const Entity();
   Map toMap();
 }

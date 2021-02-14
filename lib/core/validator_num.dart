@@ -14,12 +14,12 @@ class ValidatorNum<T> extends Validator {
   // ===========================================================================
   ValidatorNum(T value, Type type) : super(value, type);
 
-  Either<ValueFailure<T>, T> validate({
+  Either<ValueFailure<T>, T> call({
     num minValue,
     num maxValue,
     RegExp regex,
-    bool Function(dynamic v) other,
-    String otherMessage,
+    bool Function(dynamic v) otherValidation,
+    String otherValidationMessage,
   }) {
     var vo = notNull();
     if (vo.isLeft()) return vo;
@@ -49,8 +49,8 @@ class ValidatorNum<T> extends Validator {
       if (vo.isLeft()) return vo;
     }
     //
-    if (other != null) {
-      vo = otherValidation(other, otherMessage);
+    if (otherValidation != null) {
+      vo = this.otherValidation(otherValidation, otherValidationMessage);
       if (vo.isLeft()) return vo;
     }
     //
@@ -58,52 +58,40 @@ class ValidatorNum<T> extends Validator {
   }
 
   // ===========================================================================
-  Either<ValueFailure<double>, double> isDouble() {
-    if (value is double) {
-      return right(value);
-    } else {
-      return left(
-        ValueFailure.valueNotDouble(failedValue: value),
-      );
-    }
-  }
+  Either<ValueFailure<double>, double> isDouble() => value is double
+      ? right(value)
+      : left(
+          ValueFailure.valueNotDouble(failedValue: value),
+        );
 
   // ===========================================================================
-  Either<ValueFailure<int>, int> isInt() {
-    if (value is int) {
-      return right(value);
-    } else {
-      return left(
-        ValueFailure.valueNotDouble(failedValue: value),
-      );
-    }
-  }
+  Either<ValueFailure<int>, int> isInt() => value is int
+      ? right(value)
+      : left(
+          ValueFailure.valueNotDouble(failedValue: value),
+        );
 
   // ===========================================================================
   Either<ValueFailure<T>, T> minValue(
     num minValue,
-  ) {
-    if (value >= minValue) {
-      return right(value);
-    } else {
-      return left(
-        ValueFailure.subMinValue(failedValue: value, min: minValue.toString()),
-      );
-    }
-  }
+  ) =>
+      value < minValue
+          ? left(
+              ValueFailure.subMinValue(
+                  failedValue: value, min: minValue.toString()),
+            )
+          : right(value);
 
   // ===========================================================================
   Either<ValueFailure<T>, T> maxValue(
     num maxValue,
-  ) {
-    if (value.length <= maxValue) {
-      return right(value);
-    } else {
-      return left(
-        ValueFailure.overMaxValue(failedValue: value, max: maxValue.toString()),
-      );
-    }
-  }
+  ) =>
+      value.length > maxValue
+          ? left(
+              ValueFailure.overMaxValue(
+                  failedValue: value, max: maxValue.toString()),
+            )
+          : right(value);
 }
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _
@@ -119,5 +107,5 @@ class ValidatorNum<T> extends Validator {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.3
+// *  v 1.4
 // ******************************************************************

@@ -15,15 +15,15 @@ class ValidatorString<String> extends Validator {
   ValidatorString(String value) : super(value, String);
 
   // ===========================================================================
-  Either<ValueFailure<String>, String> validate({
+  Either<ValueFailure<String>, String> call({
     bool notEmpty = false,
     bool singleLine = false,
     int minLength,
     int maxLength,
     bool dateTime = false,
     RegExp regex,
-    dynamic otherMessage,
-    bool Function(String v) other,
+    dynamic otherValidationMessage,
+    bool Function(String v) otherValidation,
   }) {
     var vo = notNull();
     if (vo.isLeft()) return vo;
@@ -58,8 +58,8 @@ class ValidatorString<String> extends Validator {
       if (vo.isLeft()) return vo;
     }
     //
-    if (other != null) {
-      vo = otherValidation(other, otherMessage);
+    if (otherValidation != null) {
+      vo = this.otherValidation(otherValidation, otherValidationMessage);
       if (vo.isLeft()) return vo;
     }
 
@@ -67,59 +67,46 @@ class ValidatorString<String> extends Validator {
   }
 
   // ===========================================================================
-  Either<ValueFailure<String>, String> notEmpty() {
-    if (value.isNotEmpty) {
-      return right(value);
-    } else {
-      return left(ValueFailure.empty(failedValue: value));
-    }
-  }
+  Either<ValueFailure<String>, String> notEmpty() => value.isEmpty
+      ? left(ValueFailure.empty(failedValue: value))
+      : right(value);
 
   // ===========================================================================
-  Either<ValueFailure<String>, String> singleLine() {
-    if (value.contains('\n')) {
-      return left(ValueFailure.multiline(failedValue: value));
-    } else {
-      return right(value);
-    }
-  }
+  Either<ValueFailure<String>, String> singleLine() => value.contains('\n')
+      ? left(ValueFailure.multiline(failedValue: value))
+      : right(value);
 
   // ===========================================================================
   Either<ValueFailure<String>, String> minLength(
     int minLength,
-  ) {
-    if (value.length >= minLength) {
-      return right(value);
-    } else {
-      return left(
-        ValueFailure.shortLength(
-            failedValue: value, minLength: minLength, length: value.length),
-      );
-    }
-  }
+  ) =>
+      value.length < minLength
+          ? left(
+              ValueFailure.shortLength(
+                  failedValue: value,
+                  minLength: minLength,
+                  length: value.length),
+            )
+          : right(value);
 
   // ===========================================================================
   Either<ValueFailure<String>, String> maxLength(
     int maxLength,
-  ) {
-    if (value.length <= maxLength) {
-      return right(value);
-    } else {
-      return left(
-        ValueFailure.exceedingLength(
-            failedValue: value, maxLength: maxLength, length: value.length),
-      );
-    }
-  }
+  ) =>
+      value.length > maxLength
+          ? left(
+              ValueFailure.exceedingLength(
+                  failedValue: value,
+                  maxLength: maxLength,
+                  length: value.length),
+            )
+          : right(value);
 
   // ===========================================================================
-  Either<ValueFailure<String>, String> dateTime() {
-    if (DateTime.tryParse(value) != null) {
-      return right(value);
-    } else {
-      return left(ValueFailure.invalidDateTime(failedValue: value));
-    }
-  }
+  Either<ValueFailure<String>, String> dateTime() =>
+      DateTime.tryParse(value) == null
+          ? left(ValueFailure.invalidDateTime(failedValue: value))
+          : right(value);
 }
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _
@@ -135,5 +122,5 @@ class ValidatorString<String> extends Validator {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.3
+// *  v 1.4
 // ******************************************************************

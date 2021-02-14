@@ -26,17 +26,17 @@ class VOInt extends ValueObject<int> {
     int minValue,
     int maxValue,
     RegExp regex,
-    bool Function(dynamic v) other,
-    String otherMessage,
+    bool Function(dynamic v) otherValidation,
+    String otherValidationMessage,
   }) {
     final validator = ValidatorNum<int>(value, int);
     //
-    final vo = validator.validate(
+    final vo = validator(
         minValue: minValue,
         maxValue: maxValue,
         regex: regex,
-        other: other,
-        otherMessage: otherMessage);
+        otherValidation: otherValidation,
+        otherValidationMessage: otherValidationMessage);
     //
     return VOInt._(vo);
   }
@@ -56,5 +56,5 @@ class VOInt extends ValueObject<int> {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.3
+// *  v 1.4
 // ******************************************************************

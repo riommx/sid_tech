@@ -23,23 +23,17 @@ abstract class ValueObject<T> extends Equatable implements IValidatable {
 
   // ===========================================================================
   /// Throws [UnexpectedValueError] containing the [ValueFailure]
-  T getOrCrash() {
-    // id = identity - same as writing (right) => right
-    return value.fold((f) => throw UnexpectedValueError(f), id);
-  }
+  // id = identity - same as writing (right) => right
+  T getOrCrash() => value.fold((f) => throw UnexpectedValueError(f), id);
 
   // ===========================================================================
-  T getOrElse(T defaultValue) {
-    return value.getOrElse(() => defaultValue);
-  }
+  T getOrElse(T defaultValue) => value.getOrElse(() => defaultValue);
 
   // ===========================================================================
-  Either<ValueFailure<dynamic>, Unit> get failureOrUnit {
-    return value.fold(
-      (l) => left(l),
-      (r) => right(unit),
-    );
-  }
+  Either<ValueFailure<dynamic>, Unit> get failureOrUnit => value.fold(
+        (l) => left(l),
+        (r) => right(unit),
+      );
 
   // ===========================================================================
   // FOR IValidatable
@@ -71,7 +65,7 @@ abstract class ValueObject<T> extends Equatable implements IValidatable {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.3
+// *  v 1.4
 // ******************************************************************
 
 /*

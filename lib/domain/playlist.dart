@@ -1,49 +1,62 @@
-import 'package:sid_tech/core/entity.dart';
+//import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:dartz/dartz.dart';
 //
+import 'package:sid_tech/core/entity.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
-class Playlist extends Entity {
-  final VOInt _id;
-  final VOString _name;
-  final List<VOInt> _tracks;
+part 'playlist.freezed.dart';
 
-  const Playlist(this._id, this._name, this._tracks);
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
+@freezed
+abstract class Playlist extends Entity with _$Playlist {
+  const Playlist._();
 
+  const factory Playlist({
+    @required VOInt id,
+    @required VOString name,
+    @required List<VOInt> tracks,
+  }) = _Playlist;
+
+  // implements IValidatable
+  @override
   bool isValid() {
-    var valid = true;
-    for (var track in _tracks) {
+    var valid = this.id.isValid() && name.isValid();
+    for (var track in tracks) {
       valid = valid && track.isValid();
     }
-    return valid && _id.isValid() && _name.isValid();
+    return valid;
   }
-
-  // GETTERS ========
-  VOInt get id => _id;
-  VOString get name => _name;
-  List<VOInt> get tracks => _tracks;
 
   @override
   Map toMap() => {
-        'id': _id.value.toString(),
-        'name': _name.value,
+        // id = identity - same as writing (right) => right
+        'id': this.id.value.fold((l) => l, id).toString(),
+        'name': name.value.fold((l) => l, id),
         'tracks': _tracksToList(),
       };
 
   List _tracksToList() {
     var list = [];
-    _tracks.forEach((t) => list.add(t.value.toString()));
+    tracks.forEach((t) => list.add(t.value.fold((l) => l, id)));
     return list;
   }
 
   @override
   String toString() =>
-      'id: ${_id.toString()} name: ${_name.toString()} tracks: ${_tracks.toString()}';
+      'Playlist(id: ${this.id.toString()} name: ${name.toString()} tracks: ${tracks.toString()})';
 
   void printInfo() {
     print('-------------------------------------------------------');
-    print('${_name.value} (${_id.value})');
-    print('tracks: ${_tracks.toString()}');
+    print('${name.value} (${this.id.value})');
+    print('tracks: ${tracks.toString()}');
   }
 }
 
@@ -60,6 +73,6 @@ class Playlist extends Entity {
 // *  ┈┈┃┊┊┊╱▽▽▽┛┈┈  -< Designed by Sedinir Consentini @ 2021 >-
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
-// *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
+// *  v 1.4
 // ******************************************************************

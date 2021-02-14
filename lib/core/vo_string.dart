@@ -29,20 +29,20 @@ class VOString extends ValueObject<String> {
     int maxLength,
     bool dateTime = false,
     RegExp regex,
-    bool Function(dynamic v) other,
-    String otherMessage,
+    bool Function(dynamic v) otherValidation,
+    String otherValidationMessage,
   }) {
     final validator = ValidatorString(value);
     //
-    var vo = validator.validate(
+    var vo = validator(
       notEmpty: notEmpty,
       singleLine: singleLine,
       minLength: minLength,
       maxLength: maxLength,
       dateTime: dateTime,
       regex: regex,
-      other: other,
-      otherMessage: otherMessage,
+      otherValidation: otherValidation,
+      otherValidationMessage: otherValidationMessage,
     );
     //
     return VOString._(vo);

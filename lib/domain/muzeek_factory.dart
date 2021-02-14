@@ -13,6 +13,12 @@ import 'package:sid_tech/domain/track_files.dart';
 import 'package:sid_tech/domain/track_files_factory.dart';
 import 'package:sid_tech/domain/vos.dart';
 
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
 abstract class Muz {
   //
   static Artist artist({
@@ -126,5 +132,5 @@ abstract class Muz {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈    --->  May the source be with you!  <---
-// *  v 1.0
+// *  v 1.4
 // ******************************************************************

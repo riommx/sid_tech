@@ -5,6 +5,12 @@ import 'package:sid_tech/domain/playlist.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
 class PlaylistFactory implements EntityFactory {
   //
   @override
@@ -12,13 +18,13 @@ class PlaylistFactory implements EntityFactory {
           {@required VOInt id,
           @required VOString name,
           @required List<VOInt> tracks}) =>
-      Playlist(id, name, tracks);
+      Playlist(id: id, name: name, tracks: tracks);
 
   @override
   Playlist createFromMap({@required Map map}) => Playlist(
-        map['id'],
-        map['name'],
-        map['tracks'],
+        id: map['id'],
+        name: map['name'],
+        tracks: map['tracks'],
       );
 }
 
@@ -36,5 +42,5 @@ class PlaylistFactory implements EntityFactory {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈    --->  May the source be with you!  <---
-// *  v 1.0
+// *  v 1.4
 // ******************************************************************

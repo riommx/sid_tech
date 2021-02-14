@@ -26,17 +26,17 @@ class VODouble extends ValueObject<double> {
     double minValue,
     double maxValue,
     RegExp regex,
-    bool Function(dynamic v) other,
-    String otherMessage,
+    bool Function(dynamic v) otherValidation,
+    String otherValidationMessage,
   }) {
     final validator = ValidatorNum<double>(value, double);
     //
-    final vo = validator.validate(
+    final vo = validator(
         minValue: minValue,
         maxValue: maxValue,
         regex: regex,
-        other: other,
-        otherMessage: otherMessage);
+        otherValidation: otherValidation,
+        otherValidationMessage: otherValidationMessage);
     //
     return VODouble._(vo);
   }
@@ -56,5 +56,5 @@ class VODouble extends ValueObject<double> {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.3
+// *  v 1.4
 // ******************************************************************

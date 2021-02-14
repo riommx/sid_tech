@@ -1,60 +1,62 @@
+//import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:dartz/dartz.dart';
+//
 import 'package:sid_tech/core/entity.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
-// TODO: freezed
+part 'track.freezed.dart';
 
-class Track extends Entity {
-  final VOInt _id;
-  final VOString _title;
-  final VOInt _duration; // seconds
-  final VOInt _albumId;
-  final VOInt _artistId;
-  final VOString _previewURL;
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
+@freezed
+abstract class Track extends Entity with _$Track {
+  const Track._();
 
-  const Track(
-    this._id,
-    this._title,
-    this._duration,
-    this._albumId,
-    this._artistId,
-    this._previewURL,
-  );
+  const factory Track({
+    @required VOInt id,
+    @required VOString title,
+    @required VOInt duration, // seconds
+    @required VOInt albumId,
+    @required VOInt artistId,
+    @required VOString previewURL,
+  }) = _Track;
 
+  // implements IValidatable
+  @override
   bool isValid() =>
-      _id.isValid() &&
-      _title.isValid() &&
-      _duration.isValid() &&
-      _albumId.isValid() &&
-      _artistId.isValid() &&
-      _previewURL.isValid();
-
-  // GETTERS ========
-  VOInt get id => _id;
-  VOString get title => _title;
-  VOInt get duration => _duration;
-  VOInt get albumId => _albumId;
-  VOInt get artistId => _artistId;
-  VOString get previewURL => _previewURL;
+      this.id.isValid() &&
+      title.isValid() &&
+      duration.isValid() &&
+      albumId.isValid() &&
+      artistId.isValid() &&
+      previewURL.isValid();
 
   @override
   Map toMap() => {
-        'id': _id.value.toString(),
-        'title': _title.value,
-        'duration': _duration.value.toString(),
-        'albumId': _albumId.value.toString(),
-        'artistId': _artistId.value.toString(),
-        'previewURL': _previewURL.value,
+        // id = identity - same as writing (right) => right
+        'id': this.id.value.fold((l) => l, id).toString(),
+        'title': title.value.fold((l) => l, id),
+        'duration': duration.value.fold((l) => l, id).toString(),
+        'albumId': albumId.value.fold((l) => l, id).toString(),
+        'artistId': artistId.value.fold((l) => l, id).toString(),
+        'previewURL': previewURL.value.fold((l) => l, id),
       };
 
   @override
   String toString() =>
-      'id: ${_id.toString()} title: ${_title.toString()} duration: ${_duration.toString()} albumId: ${_albumId.toString()} artistId: ${_artistId.toString()} previewURL: ${_previewURL.toString()}';
+      'Track(id: ${this.id.toString()} title: ${title.toString()} duration: ${duration.toString()} albumId: ${albumId.toString()} artistId: ${artistId.toString()} previewURL: ${previewURL.toString()})';
 
   void printInfo() {
     print('-------------------------------------------------------');
     print(
-        '${_title.value} (${_id.value}) - ${_duration.value} seconds from ${_albumId.value} by ${_artistId.value} on ${_previewURL.value}');
+        '${title.value} (${this.id.value}) - ${duration.value} seconds from ${albumId.value} by ${artistId.value} on ${previewURL.value}');
   }
 }
 
@@ -71,6 +73,6 @@ class Track extends Entity {
 // *  ┈┈┃┊┊┊╱▽▽▽┛┈┈  -< Designed by Sedinir Consentini @ 2021 >-
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
-// *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
+// *  v 1.4
 // ******************************************************************

@@ -5,19 +5,24 @@ import 'package:sid_tech/domain/artist.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
 class ArtistFactory implements EntityFactory {
   //
   @override
   Artist create({@required VOInt id, @required VOString name}) =>
-      Artist(id, name);
+      Artist(id: id, name: name);
 
   @override
   Artist createFromMap({@required Map map}) => Artist(
-        map['id'],
-        map['name'],
+        id: map['id'],
+        name: map['name'],
       );
 }
-
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _
 // *   / ____| | | |  __ \    |__   __| |  ____|  / ____| | |  | |

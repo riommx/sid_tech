@@ -1,45 +1,60 @@
-import 'package:sid_tech/core/entity.dart';
+//import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:dartz/dartz.dart';
 //
+import 'package:sid_tech/core/entity.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
-class TrackFiles extends Entity {
-  final VOInt _id;
-  final List<VOString> _files;
+part 'track_files.freezed.dart';
 
-  const TrackFiles(this._id, this._files);
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
+@freezed
+abstract class TrackFiles extends Entity with _$TrackFiles {
+  const TrackFiles._();
 
+  const factory TrackFiles({
+    @required VOInt id,
+    @required List<VOString> files,
+  }) = _TrackFiles;
+
+  // implements IValidatable
+  @override
   bool isValid() {
-    var valid = true;
-    for (var file in _files) {
+    var valid = this.id.isValid();
+    for (var file in files) {
       valid = valid && file.isValid();
     }
     return valid;
   }
 
-  // GETTERS ========
-  VOInt get id => _id;
-  List<VOString> get files => _files;
-
   @override
   Map toMap() => {
-        'id': _id.value.toString(),
+        // id = identity - same as writing (right) => right
+        'id': this.id.value.fold((l) => l, id).toString(),
         'files': _filesToList(),
       };
 
   List _filesToList() {
     var list = [];
-    _files.forEach((f) => list.add(f.value));
+    files.forEach((f) => list.add(f.value.fold((l) => l, id)));
     return list;
   }
 
   @override
-  String toString() => 'id: ${_id.toString()} files: ${_files.toString()}';
+  String toString() =>
+      'TrackFiles(id: ${this.id.toString()} files: ${files.toString()})';
 
   void printInfo() {
     print('-------------------------------------------------------');
-    print(_id.value);
-    _files.forEach((f) => print(f.value));
+    print(this.id.value);
+    files.forEach((f) => print(f.value));
   }
 }
 
@@ -56,6 +71,6 @@ class TrackFiles extends Entity {
 // *  ┈┈┃┊┊┊╱▽▽▽┛┈┈  -< Designed by Sedinir Consentini @ 2021 >-
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
-// *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
+// *  v 1.4
 // ******************************************************************

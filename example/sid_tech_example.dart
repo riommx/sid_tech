@@ -12,11 +12,18 @@ Future<void> main() async {
   //await muz.scan(releaseDate: true);
   //muz.checkArtists();
   muz.listTopAlbums(howMany: 10).forEach((element) {
-    print(element['album'].title.value);
+    print(element['album']
+        .title
+        .value
+        .fold((l) => l, (r) => r)); // .getOrElse(() => 'FAILURE'));
   });
 
   muz.listTopArtists(howMany: 10).forEach((element) {
-    print(element['artist'].name.value);
+    print(element['artist'].name.value.toString());
+  });
+
+  muz.listTopArtists(howMany: 10).forEach((element) {
+    print(element['artist'].toMap());
   });
 
   muz.lengths();

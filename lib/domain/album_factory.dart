@@ -5,6 +5,12 @@ import 'package:sid_tech/domain/album.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
 class AlbumFactory implements EntityFactory {
   //
   @override
@@ -16,20 +22,20 @@ class AlbumFactory implements EntityFactory {
     @required VOInt artistId,
   }) =>
       Album(
-        id,
-        title,
-        releaseDate,
-        upc,
-        artistId,
+        id: id,
+        title: title,
+        releaseDate: releaseDate,
+        upc: upc,
+        artistId: artistId,
       );
 
   @override
   Album createFromMap({@required Map map}) => Album(
-        map['id'],
-        map['title'],
-        map['releaseDate'],
-        map['upc'],
-        map['artistId'],
+        id: map['id'],
+        title: map['title'],
+        releaseDate: map['releaseDate'],
+        upc: map['upc'],
+        artistId: map['artistId'],
       );
 }
 
@@ -46,6 +52,6 @@ class AlbumFactory implements EntityFactory {
 // *  ┈┈┃┊┊┊╱▽▽▽┛┈┈  -< Designed by Sedinir Consentini @ 2021 >-
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
-// *  ┊┊┊┊╭━━━━━━╯┈┈   --->  May the source be with you!  <---
-// * v 1.0
+// *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
+// *  v 1.4
 // ******************************************************************

@@ -1,13 +1,17 @@
 import 'package:meta/meta.dart';
 //
-import 'package:sid_tech/core/entity_factory.dart';
 import 'package:sid_tech/domain/track.dart';
 import 'package:sid_tech/core/vo_int.dart';
 import 'package:sid_tech/core/vo_string.dart';
 
-class TrackFactory implements EntityFactory {
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
+class TrackFactory {
   //
-  @override
   Track create({
     @required VOInt id,
     @required VOString title,
@@ -17,22 +21,20 @@ class TrackFactory implements EntityFactory {
     @required VOString previewURL,
   }) =>
       Track(
-        id,
-        title,
-        duration,
-        albumId,
-        artistId,
-        previewURL,
-      );
+          id: id,
+          title: title,
+          duration: duration,
+          albumId: albumId,
+          artistId: artistId,
+          previewURL: previewURL);
 
-  @override
   Track createFromMap({@required Map map}) => Track(
-        map['id'],
-        map['title'],
-        map['duration'],
-        map['albumId'],
-        map['artistId'],
-        map['previewURL'],
+        id: map['id'],
+        title: map['title'],
+        duration: map['duration'],
+        albumId: map['albumId'],
+        artistId: map['artistId'],
+        previewURL: map['previewURL'],
       );
 }
 
@@ -50,5 +52,5 @@ class TrackFactory implements EntityFactory {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.0
+// *  v 1.4
 // ******************************************************************
