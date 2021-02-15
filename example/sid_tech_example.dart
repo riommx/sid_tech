@@ -19,7 +19,7 @@ Future<void> main() async {
   });
 
   muz.listTopArtists(howMany: 10).forEach((element) {
-    print(element['artist'].name.value.toString());
+    print(element['artist'].name.getOrCrash());
   });
 
   muz.listTopArtists(howMany: 10).forEach((element) {

@@ -1,4 +1,4 @@
-import 'package:sid_tech/application/muzeek_helpers.dart';
+import 'package:sid_tech/application/muzeek_helper.dart';
 //
 import 'package:sid_tech/application/paths.dart';
 import 'package:sid_tech/core/entity.dart';
@@ -56,7 +56,7 @@ class Muzeek {
     var maps = {};
     //
     for (var what in WHAT) {
-      maps[what['kind']] = await load(what: what);
+      maps[what['kind']] = await MuzeekHelper.load(what: what);
     }
     return Muzeek._(maps['artists'], maps['albums'], maps['tracks'],
         maps['playlists'], maps['trackFiles']);
@@ -115,19 +115,19 @@ class Muzeek {
     var scansList = [];
 
     if (playlists) {
-      scansList.add(await scanPlaylists());
+      scansList.add(await MuzeekHelper.scanPlaylists());
     }
     //
     if (trackFiles) {
-      scansList.add(
-          await scanTrackFiles(pathScan: Paths.WHAT['lib'], recursive: true));
+      scansList.add(await MuzeekHelper.scanTrackFiles(
+          pathScan: Paths.WHAT['lib'], recursive: true));
     }
     //
     if (releaseDate) {
       var albumsMap = {};
       _albums.forEach((key, value) =>
           albumsMap.putIfAbsent(key.toString(), () => value.toMap()));
-      scansList.add(await scanReleaseDate(albums: albumsMap));
+      scansList.add(await MuzeekHelper.scanReleaseDate(albums: albumsMap));
       _albums.clear();
     }
     //
@@ -135,7 +135,8 @@ class Muzeek {
       var playlistsMap = {};
       _playlists.forEach((key, value) =>
           playlistsMap.putIfAbsent(key.toString(), () => value.toMap()));
-      var scanned = await scanFromPlaylists(playlists: playlistsMap);
+      var scanned =
+          await MuzeekHelper.scanFromPlaylists(playlists: playlistsMap);
       scansList.add(scanned['tracks']);
       scansList.add(scanned['artists']);
       scansList.add(scanned['albums']);
@@ -145,25 +146,25 @@ class Muzeek {
     }
     //
     if (fromTrackFiles) {
-      var scanned =
-          await scanFromTrackFiles(trackFiles: _trackFiles, tracks: _tracks);
+      var scanned = await MuzeekHelper.scanFromTrackFiles(
+          trackFiles: _trackFiles, tracks: _tracks);
       scansList.add(scanned['tracks']);
       scansList.add(scanned['artists']);
       scansList.add(scanned['albums']);
     }
     //
     if (pics) {
-      var newPics = await scanPics(artists: _artists);
+      var newPics = await MuzeekHelper.scanPics(artists: _artists);
       print('${newPics.length} NEW PICTURES ============');
       newPics.forEach((element) => print(element));
-      newPics = await scanPics(artists: _artists, albums: _albums);
+      newPics = await MuzeekHelper.scanPics(artists: _artists, albums: _albums);
       print('${newPics.length} NEW COVERS ============');
       newPics.forEach((element) => print(element));
     }
     //
     if (previews) {
-      var newPreviews =
-          await scanDeezerPreviews(artists: _artists, tracks: _tracks);
+      var newPreviews = await MuzeekHelper.scanDeezerPreviews(
+          artists: _artists, tracks: _tracks);
       newPreviews.forEach((element) => print(element));
     }
     //
@@ -180,7 +181,7 @@ class Muzeek {
       //
     });
     //
-    if (saveIt) await save(maps: entityMaps());
+    if (saveIt) await MuzeekHelper.save(maps: entityMaps());
   }
 
   Map albums({List idList}) {
