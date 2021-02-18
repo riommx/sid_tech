@@ -114,6 +114,7 @@ abstract class DeezerHelper {
           'previewURL': track['preview']
         };
     }
+    return {};
   }
 }
 // ******************************************************************

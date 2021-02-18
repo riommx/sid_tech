@@ -1,23 +1,44 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+//
+import '../../domain/artist/artist.dart';
+import '../../domain/artist/artist_factory.dart';
+
 // #############################################################################
 // #
 // #  TODO: Comment class
 // #
 // #
 // #############################################################################
-abstract class Paths {
-  static const WHAT = {
-    'lib': 'F:\\_____DADOS\\_____DEEZ\\Muzeek',
-    //\\MP3 128\\BR SAMBA 2 - 59 de 63',
-    'tracks': 'E:\\__DEEZ\\muzeek\\tracks.txt',
-    'albums': 'E:\\__DEEZ\\muzeek\\albums.txt',
-    'artists': 'E:\\__DEEZ\\muzeek\\artists.txt',
-    'playlists': 'E:\\__DEEZ\\muzeek\\playlists.txt',
-    'covers': 'E:\\__DEEZ\\muzeek\\covers\\',
-    'pictures': 'E:\\__DEEZ\\muzeek\\pictures\\',
-    'previews': 'E:\\__DEEZ\\muzeek\\previews\\',
-    'trackFiles': 'E:\\__DEEZ\\muzeek\\trackFiles.txt',
-  };
-  static const USER = '2668644462';
+part 'artist_dto.freezed.dart';
+part 'artist_dto.g.dart';
+
+@freezed
+abstract class ArtistDTO implements _$ArtistDTO {
+  const ArtistDTO._();
+
+  const factory ArtistDTO({
+    @JsonKey(ignore: false) String id,
+    @required String name,
+    //@required @ServerTimestampConverter() FieldValue serverTimeStamp,
+  }) = _ArtistDTO;
+
+  factory ArtistDTO.fromDomain(Artist artist) => ArtistDTO(
+        id: artist.id.getOrCrash().toString(),
+        name: artist.name.getOrCrash(),
+        //serverTimeStamp: FieldValue.serverTimestamp(),
+      );
+
+  Artist toDomain() => ArtistFactory().create(
+        id: int.parse(id),
+        name: name,
+      );
+
+  factory ArtistDTO.fromJson(Map<String, dynamic> json) =>
+      _$ArtistDTOFromJson(json);
+
+  // factory TrackDTO.fromFirestore(DocumentSnapshot doc) {
+  //   return TrackDTO.fromJson(doc.data()).copyWith(id: doc.id);
+  // }
 }
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _
@@ -33,5 +54,5 @@ abstract class Paths {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.5
+// *  v 2.0
 // ******************************************************************

@@ -23,7 +23,7 @@ Future<void> main() async {
   });
 
   muz.listTopArtists(howMany: 10).forEach((element) {
-    print(element['artist'].toMap());
+    print(element['artist'].toString());
   });
 
   muz.lengths();

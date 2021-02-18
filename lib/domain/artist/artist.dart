@@ -1,23 +1,48 @@
+//import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:dartz/dartz.dart';
+//
+import '../core/entity/entity.dart';
+import '../core/vo/vo_int.dart';
+import '../core/vo/vo_string.dart';
+import '../core/failures/value_failure.dart';
+
+part 'artist.freezed.dart';
+
 // #############################################################################
 // #
 // #  TODO: Comment class
 // #
 // #
 // #############################################################################
-abstract class Paths {
-  static const WHAT = {
-    'lib': 'F:\\_____DADOS\\_____DEEZ\\Muzeek',
-    //\\MP3 128\\BR SAMBA 2 - 59 de 63',
-    'tracks': 'E:\\__DEEZ\\muzeek\\tracks.txt',
-    'albums': 'E:\\__DEEZ\\muzeek\\albums.txt',
-    'artists': 'E:\\__DEEZ\\muzeek\\artists.txt',
-    'playlists': 'E:\\__DEEZ\\muzeek\\playlists.txt',
-    'covers': 'E:\\__DEEZ\\muzeek\\covers\\',
-    'pictures': 'E:\\__DEEZ\\muzeek\\pictures\\',
-    'previews': 'E:\\__DEEZ\\muzeek\\previews\\',
-    'trackFiles': 'E:\\__DEEZ\\muzeek\\trackFiles.txt',
-  };
-  static const USER = '2668644462';
+@freezed
+abstract class Artist extends Entity implements _$Artist {
+  //
+  const Artist._();
+  //
+  const factory Artist({
+    @required VOInt id,
+    @required VOString name,
+  }) = _Artist;
+
+  // from Entity
+  @override
+  Option<ValueFailure<dynamic>> get failureOption {
+    return this
+        .id
+        .failureOrUnit
+        .andThen(name.failureOrUnit)
+        .fold((f) => some(f), (_) => none());
+  }
+
+  // implements IValidatable
+  @override
+  bool isValid() => this.id.isValid() && name.isValid();
+
+  @override
+  String toString() =>
+      'Artist(id: ${this.id.toString()} name: ${name.toString()})';
 }
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _

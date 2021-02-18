@@ -44,50 +44,53 @@ abstract class MuzeekHelper {
     var nTracks = 0;
     // LOG FIM ===================
     //
-    final tracks = {}; //<int, List<String>>{};
-    final notDeezer = <String>[];
-    final other = <String>[];
-    final lrc = <String>[];
-
+    final tracks = {};
+    final notDeezer = [];
+    final other = [];
+    final lrc = [];
+    //
     var files =
         await Helper.listPathContent(pathFrom: pathScan, recursive: recursive);
-
+    //
     files.forEach((file) {
       //
       // LOG INI ===================
-      if (subTotal == 500) {
-        subTotal = 0;
-        print(
-            '$total files at ${DateTime.now()} - elapsed: ${stopW.elapsed.toString()}');
-      }
-      subTotal++;
       total++;
+      subTotal = subTotal == 500 ? 0 : subTotal++;
+      var log = subTotal < 500
+          ? ''
+          : '$total files at ${DateTime.now()} - elapsed: ${stopW.elapsed}';
+      if (subTotal == 500) print(log);
       // LOG FIM ===================
       //
       switch (Helper.extFromFilePath(filePath: file).toLowerCase()) {
         // +++++++++++++
         case 'mp3':
+          //
+          // LOG ===================
+          nfiles++;
+          // if is MP3 but not a correct Deezer name
           if (Helper.kbpsFromFilePath(filePath: file) == '') {
             notDeezer.add(file);
             break;
           }
-          //
-          // LOG ===================
-          nfiles++;
-          //
+          // get the track id from the file
           var id = Helper.idFromFilePath(filePath: file);
           if (tracks.containsKey(id)) {
+            // if there is id track just add the file
             tracks[id]['files'].add(file);
           } else {
-            // LOG ===================
-            nTracks++;
-            //
+            // else create the track and add the file
             tracks.putIfAbsent(
                 id,
                 () => {
                       'id': id.toString(),
                       'files': [file]
                     });
+            //
+            // LOG ===================
+            nTracks++;
+            //
           }
           break;
         // +++++++++++++
@@ -131,9 +134,7 @@ abstract class MuzeekHelper {
     var deezerPlaylists;
     do {
       deezerPlaylists = await DeezerHelper.deezer_API(
-          what: 'user',
-          id: '2668644462',
-          arguments: '/playlists?index=${index}');
+          what: 'user', id: Paths.USER, arguments: '/playlists?index=${index}');
       //
       for (var pl in deezerPlaylists['data']) {
         var id = pl['id'];
@@ -155,7 +156,6 @@ abstract class MuzeekHelper {
     };
   }
 
-  // TODO: Parei AQUI!!!
   // ============================================================================
   static Future<Map> scanFromPlaylists({@required Map playlists}) async {
     //
@@ -181,7 +181,7 @@ abstract class MuzeekHelper {
         var id = trackMap['id'].toString();
         returnMap['playlists'][playId]['tracks'].add(id);
 
-        if (!returnMap['tracks'].containsKey(id)) {
+        if (returnMap['tracks'].containsKey(id) == false) {
           var track =
               DeezerHelper.fromDeezerTrackMap(track: trackMap, kind: 'tracks');
           returnMap['tracks'].putIfAbsent(id, () => track);
@@ -224,8 +224,8 @@ abstract class MuzeekHelper {
 
     //
     await Future.forEach(trackFiles.keys, (trackId) async {
-      print(trackId);
-      if (!tracks.containsKey(trackId)) {
+      //
+      if (tracks.containsKey(trackId) == false) {
         var trackMap = await DeezerHelper.deezer_API(
             what: 'track', id: trackId.toString());
         //
@@ -372,6 +372,23 @@ abstract class MuzeekHelper {
     return success;
   }
 }
+// ******************************************************************
+// *    _____   _   _____      _______   ______    _____   _    _
+// *   / ____| | | |  __ \    |__   __| |  ____|  / ____| | |  | |
+// *  | (___   | | | |  | |      | |    | |__    | |      | |__| |
+// *   \___ \  | | | |  | |      | |    |  __|   | |      |  __  |
+// *   ____) | |_| | |__| |      | |    | |____  | |____  | |  | |
+// *  |_____/  (_) |_____/       |_|    |______|  \_____| |_|  |_|
+// *
+// *  ┈┈┈╭━━╮┈┈┈┈┈┈
+// *  ┈┈╭╯┊◣╰━━━━╮┈┈
+// *  ┈┈┃┊┊┊╱▽▽▽┛┈┈  -< Designed by Sedinir Consentini @ 2021 >-
+// *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
+// *  ━━╯┊┊┊╲△△△┓┈┈
+// *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
+// *  v 1.5
+// ******************************************************************
+
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //Track
 // void printInfo() {

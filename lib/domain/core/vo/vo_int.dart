@@ -1,23 +1,45 @@
+import 'package:meta/meta.dart';
+import 'package:dartz/dartz.dart';
+//
+import '../entity/validator_num.dart';
+import '../failures/value_failure.dart';
+import 'vo.dart';
+
 // #############################################################################
 // #
 // #  TODO: Comment class
 // #
 // #
 // #############################################################################
-abstract class Paths {
-  static const WHAT = {
-    'lib': 'F:\\_____DADOS\\_____DEEZ\\Muzeek',
-    //\\MP3 128\\BR SAMBA 2 - 59 de 63',
-    'tracks': 'E:\\__DEEZ\\muzeek\\tracks.txt',
-    'albums': 'E:\\__DEEZ\\muzeek\\albums.txt',
-    'artists': 'E:\\__DEEZ\\muzeek\\artists.txt',
-    'playlists': 'E:\\__DEEZ\\muzeek\\playlists.txt',
-    'covers': 'E:\\__DEEZ\\muzeek\\covers\\',
-    'pictures': 'E:\\__DEEZ\\muzeek\\pictures\\',
-    'previews': 'E:\\__DEEZ\\muzeek\\previews\\',
-    'trackFiles': 'E:\\__DEEZ\\muzeek\\trackFiles.txt',
-  };
-  static const USER = '2668644462';
+class VOInt extends ValueObject<int> {
+  //
+  // ===========================================================================
+  @override
+  final Either<ValueFailure<int>, int> value;
+
+  // ===========================================================================
+  VOInt._(this.value);
+
+  // ===========================================================================
+  factory VOInt({
+    @required int value,
+    int minValue,
+    int maxValue,
+    RegExp regex,
+    bool Function(dynamic v) otherValidation,
+    String otherValidationMessage,
+  }) {
+    final validator = ValidatorNum<int>(value, int);
+    //
+    final vo = validator(
+        minValue: minValue,
+        maxValue: maxValue,
+        regex: regex,
+        otherValidation: otherValidation,
+        otherValidationMessage: otherValidationMessage);
+    //
+    return VOInt._(vo);
+  }
 }
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _
@@ -33,5 +55,5 @@ abstract class Paths {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.5
+// *  v 2.0
 // ******************************************************************

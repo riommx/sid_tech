@@ -1,17 +1,19 @@
+import 'package:kt_dart/kt.dart';
 import 'package:meta/meta.dart';
-import 'package:sid_tech/core/entity.dart';
+
+import 'album/album.dart';
+import 'album/album_factory.dart';
+import 'artist/artist.dart';
+import 'artist/artist_factory.dart';
+import 'core/entity/entity.dart';
+import 'core/vo/vos.dart';
+import 'playlist/playlist.dart';
+import 'playlist/playlist_factory.dart';
+import 'track/track.dart';
+import 'track/track_factory.dart';
+import 'track_files/track_files.dart';
+import 'track_files/track_files_factory.dart';
 //
-import 'package:sid_tech/domain/artist.dart';
-import 'package:sid_tech/domain/artist_factory.dart';
-import 'package:sid_tech/domain/album.dart';
-import 'package:sid_tech/domain/album_factory.dart';
-import 'package:sid_tech/domain/playlist.dart';
-import 'package:sid_tech/domain/playlist_factory.dart';
-import 'package:sid_tech/domain/track.dart';
-import 'package:sid_tech/domain/track_factory.dart';
-import 'package:sid_tech/domain/track_files.dart';
-import 'package:sid_tech/domain/track_files_factory.dart';
-import 'package:sid_tech/domain/vos.dart';
 
 // #############################################################################
 // #
@@ -21,56 +23,56 @@ import 'package:sid_tech/domain/vos.dart';
 // #############################################################################
 abstract class Muz {
   //
-  static Artist artist({
-    @required int id,
-    @required String name,
-  }) =>
-      ArtistFactory().create(id: VOs.id(id), name: VOs.name(name));
+  // static Artist artist({
+  //   @required int id,
+  //   @required String name,
+  // }) =>
+  //     ArtistFactory().create(id: VOs.id(id), name: VOs.name(name));
 
-  static Playlist playlist({
-    @required int id,
-    @required String name,
-    @required List tracks,
-  }) =>
-      PlaylistFactory().create(
-          id: VOs.id(id), name: VOs.name(name), tracks: VOs.tracks(tracks));
+  // static Playlist playlist({
+  //   @required int id,
+  //   @required String name,
+  //   @required List<int> tracks,
+  // }) =>
+  //     PlaylistFactory().create(
+  //         id: VOs.id(id), name: VOs.name(name), tracks: VOs.ids(tracks));
 
-  static TrackFiles trackFiles({
-    @required int id,
-    @required List files,
-  }) =>
-      TrackFilesFactory().create(id: VOs.id(id), files: VOs.files(files));
+  // static TrackFiles trackFiles({
+  //   @required int id,
+  //   @required List files,
+  // }) =>
+  //     TrackFilesFactory().create(id: VOs.id(id), files: VOs.files(files));
 
-  static Album album({
-    @required int id,
-    @required String title,
-    @required String releaseDate,
-    @required int upc,
-    @required int artistId,
-  }) =>
-      AlbumFactory().create(
-          id: VOs.id(id),
-          title: VOs.title(title),
-          releaseDate: VOs.date(releaseDate),
-          upc: VOs.upc(upc),
-          artistId: VOs.id(artistId));
+  // static Album album({
+  //   @required int id,
+  //   @required String title,
+  //   @required String releaseDate,
+  //   @required int upc,
+  //   @required int artistId,
+  // }) =>
+  //     AlbumFactory().create(
+  //         id: VOs.id(id),
+  //         title: VOs.title(title),
+  //         releaseDate: VOs.date(releaseDate),
+  //         upc: VOs.upc(upc),
+  //         artistId: VOs.id(artistId));
 
-  static Track track({
-    @required int id,
-    @required String title,
-    @required int duration,
-    @required int albumId,
-    @required int artistId,
-    @required String previewURL,
-  }) =>
-      TrackFactory().create(
-        id: VOs.id(id),
-        title: VOs.title(title),
-        duration: VOs.seconds(duration),
-        albumId: VOs.id(albumId),
-        artistId: VOs.id(artistId),
-        previewURL: VOs.url(previewURL),
-      );
+  // static Track track({
+  //   @required int id,
+  //   @required String title,
+  //   @required int duration,
+  //   @required int albumId,
+  //   @required int artistId,
+  //   @required String previewURL,
+  // }) =>
+  //     TrackFactory().create(
+  //       id: VOs.id(id),
+  //       title: VOs.title(title),
+  //       duration: VOs.seconds(duration),
+  //       albumId: VOs.id(albumId),
+  //       artistId: VOs.id(artistId),
+  //       previewURL: VOs.url(previewURL),
+  //     );
 
   // =====================================================================
   static Entity fromMap({@required Map map, @required Type type}) {
@@ -78,11 +80,12 @@ abstract class Muz {
     switch (type) {
       //
       case Artist:
-        entity = artist(id: int.parse(map['id']), name: map['name']);
+        entity =
+            ArtistFactory().create(id: int.parse(map['id']), name: map['name']);
         break;
       //
       case Album:
-        entity = album(
+        entity = AlbumFactory().create(
             id: int.parse(map['id']),
             title: map['title'],
             releaseDate: map['releaseDate'],
@@ -91,7 +94,7 @@ abstract class Muz {
         break;
       //
       case Track:
-        entity = track(
+        entity = TrackFactory().create(
           id: int.parse(map['id']),
           title: map['title'],
           duration: int.parse(map['duration']),
@@ -102,22 +105,26 @@ abstract class Muz {
         break;
       //
       case Playlist:
-        var intList = [];
+        var intList = KtMutableList<int>.empty();
         map['tracks'].forEach((e) => intList.add(int.parse(e)));
-        entity = playlist(
-            id: int.parse(map['id']), name: map['name'], tracks: intList);
-
+        entity = PlaylistFactory().create(
+          id: int.parse(map['id']),
+          name: map['name'],
+          tracks: intList.toList(),
+        );
         break;
       //
       case TrackFiles:
-        entity = trackFiles(id: int.parse(map['id']), files: map['files']);
+        var ktlist = KtMutableList<String>.empty();
+        map['files'].forEach((file) => ktlist.add(file));
+        entity = TrackFilesFactory()
+            .create(id: int.parse(map['id']), files: ktlist.toList());
         break;
     }
     //
     return entity;
   }
 }
-
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _
 // *   / ____| | | |  __ \    |__   __| |  ____|  / ____| | |  | |
@@ -132,5 +139,5 @@ abstract class Muz {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈    --->  May the source be with you!  <---
-// *  v 1.4
+// *  v 1.4 - 2.0
 // ******************************************************************

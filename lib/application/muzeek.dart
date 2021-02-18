@@ -1,16 +1,21 @@
+import 'package:sid_tech/application/paths.dart';
 import 'package:sid_tech/application/muzeek_helper.dart';
 //
-import 'package:sid_tech/application/paths.dart';
-import 'package:sid_tech/core/entity.dart';
-//
-import 'package:sid_tech/domain/artist.dart';
-import 'package:sid_tech/domain/album.dart';
-import 'package:sid_tech/domain/track.dart';
-import 'package:sid_tech/domain/playlist.dart';
-import 'package:sid_tech/domain/track_files.dart';
+import 'package:sid_tech/domain/core/entity/entity.dart';
+import 'package:sid_tech/domain/album/album.dart';
+import 'package:sid_tech/domain/artist/artist.dart';
+import 'package:sid_tech/domain/track/track.dart';
+import 'package:sid_tech/domain/playlist/playlist.dart';
+import 'package:sid_tech/domain/track_files/track_files.dart';
 //
 import 'package:sid_tech/domain/muzeek_factory.dart';
 
+// #############################################################################
+// #
+// #  TODO: Comment class
+// #
+// #
+// #############################################################################
 class Muzeek {
   final Map _tracks;
   final Map _albums;
@@ -84,11 +89,13 @@ class Muzeek {
     return type;
   }
 
-// ============================================================================
   // FOR LOG
+// ============================================================================
   void lengths() =>
       entityMaps().forEach((key, value) => print('${key} => ${value.length}'));
 
+  // FOR LOG
+// ============================================================================
   void checkArtists() {
     print('==============checking artists===========================');
     _tracks.forEach((trackId, track) {
@@ -267,3 +274,19 @@ class Muzeek {
     return topArtists.getRange(0, howMany).toList();
   }
 }
+// ******************************************************************
+// *    _____   _   _____      _______   ______    _____   _    _
+// *   / ____| | | |  __ \    |__   __| |  ____|  / ____| | |  | |
+// *  | (___   | | | |  | |      | |    | |__    | |      | |__| |
+// *   \___ \  | | | |  | |      | |    |  __|   | |      |  __  |
+// *   ____) | |_| | |__| |      | |    | |____  | |____  | |  | |
+// *  |_____/  (_) |_____/       |_|    |______|  \_____| |_|  |_|
+// *
+// *  ┈┈┈╭━━╮┈┈┈┈┈┈
+// *  ┈┈╭╯┊◣╰━━━━╮┈┈
+// *  ┈┈┃┊┊┊╱▽▽▽┛┈┈  -< Designed by Sedinir Consentini @ 2021 >-
+// *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
+// *  ━━╯┊┊┊╲△△△┓┈┈
+// *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
+// *  v 1.5
+// ******************************************************************

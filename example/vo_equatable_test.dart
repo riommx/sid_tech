@@ -1,4 +1,4 @@
-import 'package:sid_tech/domain/vos.dart';
+import 'package:sid_tech/domain/core/vo/vos.dart';
 
 void main() {
   var name1 = VOs.name2('Sid');

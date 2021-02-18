@@ -1,23 +1,35 @@
+import 'package:meta/meta.dart';
+//
+import '../core/entity/entity_factory.dart';
+import '../core/vo/vos.dart';
+import 'track.dart';
+
 // #############################################################################
 // #
 // #  TODO: Comment class
 // #
 // #
 // #############################################################################
-abstract class Paths {
-  static const WHAT = {
-    'lib': 'F:\\_____DADOS\\_____DEEZ\\Muzeek',
-    //\\MP3 128\\BR SAMBA 2 - 59 de 63',
-    'tracks': 'E:\\__DEEZ\\muzeek\\tracks.txt',
-    'albums': 'E:\\__DEEZ\\muzeek\\albums.txt',
-    'artists': 'E:\\__DEEZ\\muzeek\\artists.txt',
-    'playlists': 'E:\\__DEEZ\\muzeek\\playlists.txt',
-    'covers': 'E:\\__DEEZ\\muzeek\\covers\\',
-    'pictures': 'E:\\__DEEZ\\muzeek\\pictures\\',
-    'previews': 'E:\\__DEEZ\\muzeek\\previews\\',
-    'trackFiles': 'E:\\__DEEZ\\muzeek\\trackFiles.txt',
-  };
-  static const USER = '2668644462';
+class TrackFactory implements EntityFactory {
+  //
+  // from EntityFactory
+  @override
+  Track create({
+    @required int id,
+    @required String title,
+    @required int duration,
+    @required int albumId,
+    @required int artistId,
+    @required String previewURL,
+  }) =>
+      Track(
+        id: VOs.id(id),
+        title: VOs.title(title),
+        duration: VOs.seconds(duration),
+        albumId: VOs.id(albumId),
+        artistId: VOs.id(artistId),
+        previewURL: VOs.url(previewURL),
+      );
 }
 // ******************************************************************
 // *    _____   _   _____      _______   ______    _____   _    _
@@ -33,5 +45,5 @@ abstract class Paths {
 // *  ┈┈┃┊┊┊~~~   ┈┈┈┈       -< Rio de Janeiro - Brazil >-
 // *  ━━╯┊┊┊╲△△△┓┈┈
 // *  ┊┊┊┊╭━━━━━━━╯┈┈   --->  May the source be with you!  <---
-// *  v 1.5
+// *  v 2.0
 // ******************************************************************
